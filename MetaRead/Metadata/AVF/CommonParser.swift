@@ -16,7 +16,7 @@ fileprivate let key_language: String = AVMetadataKey.commonKeyLanguage.rawValue
 
 class CommonParser: AVAssetParser {
     
-    var keySpace: AVMetadataKeySpace {.common}
+    let keySpace: AVMetadataKeySpace = .common
     
     func getTitle(_ meta: AVFMetadata) -> String? {
         meta.common[key_title]?.stringValue

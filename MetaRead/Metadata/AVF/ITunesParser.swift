@@ -6,7 +6,7 @@ import AVFoundation
  */
 class ITunesParser: AVAssetParser {
     
-    var keySpace: AVMetadataKeySpace {.iTunes}
+    let keySpace: AVMetadataKeySpace = .iTunes
     
 //    private let essentialFieldKeys: Set<String> = [ITunesSpec.key_title, ITunesSpec.key_artist, ITunesSpec.key_originalArtist, ITunesSpec.key_originalArtist2, ITunesSpec.key_album, ITunesSpec.key_originalAlbum, ITunesSpec.key_composer, ITunesSpec.key_conductor, ITunesSpec.key_conductor2, ITunesSpec.key_genre, ITunesSpec.key_predefGenre, ITunesSpec.key_genreID, ITunesSpec.key_discNumber, ITunesSpec.key_discNumber2, ITunesSpec.key_trackNumber, ITunesSpec.key_releaseDate, ITunesSpec.key_releaseYear, ITunesSpec.key_lyrics, ITunesSpec.key_art]
     
@@ -40,6 +40,10 @@ class ITunesParser: AVAssetParser {
     
     func getAlbum(_ meta: AVFMetadata) -> String? {
         (keys_album.firstNonNilMappedValue {meta.iTunes[$0]})?.stringValue
+    }
+    
+    func getComposer(_ meta: AVFMetadata) -> String? {
+        meta.iTunes[ITunesSpec.key_composer]?.stringValue
     }
     
     func getGenre(_ meta: AVFMetadata) -> String? {

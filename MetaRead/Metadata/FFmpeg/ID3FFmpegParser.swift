@@ -5,8 +5,6 @@ class ID3FFmpegParser: FFMpegMetadataParser {
     
     static let instance = ID3FFmpegParser()
     
-    var keySpace: AVMetadataKeySpace {.id3}
-    
     private let keys_duration: [String] = [ID3_V24Spec.key_duration, ID3_V22Spec.key_duration].map {$0.lowercased()}
     
     private let keys_title: [String] = [ID3_V24Spec.key_title, ID3_V22Spec.key_title, ID3_V1Spec.key_title].map {$0.lowercased()}
@@ -14,6 +12,7 @@ class ID3FFmpegParser: FFMpegMetadataParser {
     private let keys_artist: [String] = [ID3_V24Spec.key_artist, ID3_V22Spec.key_artist, ID3_V1Spec.key_artist, ID3_V24Spec.key_originalArtist, ID3_V22Spec.key_originalArtist].map {$0.lowercased()}
     private let keys_album: [String] = [ID3_V24Spec.key_album, ID3_V22Spec.key_album, ID3_V1Spec.key_album, ID3_V24Spec.key_originalAlbum, ID3_V22Spec.key_originalAlbum].map {$0.lowercased()}
     private let keys_genre: [String] = [ID3_V24Spec.key_genre, ID3_V22Spec.key_genre, ID3_V1Spec.key_genre].map {$0.lowercased()}
+    private let keys_composer: [String] = [ID3_V24Spec.key_composer, ID3_V22Spec.key_composer].map {$0.lowercased()}
     
     private let keys_discNumber: [String] = [ID3_V24Spec.key_discNumber, ID3_V22Spec.key_discNumber].map {$0.lowercased()}
     private let keys_trackNumber: [String] = [ID3_V24Spec.key_trackNumber, ID3_V22Spec.key_trackNumber, ID3_V1Spec.key_trackNumber].map {$0.lowercased()}
@@ -78,6 +77,10 @@ class ID3FFmpegParser: FFMpegMetadataParser {
     
     func getAlbum(_ meta: FFmpegMetadataReaderContext) -> String? {
         keys_album.firstNonNilMappedValue {meta.id3Metadata.essentialFields[$0]}
+    }
+    
+    func getComposer(_ meta: FFmpegMetadataReaderContext) -> String? {
+        keys_composer.firstNonNilMappedValue {meta.id3Metadata.essentialFields[$0]}
     }
     
     func getGenre(_ meta: FFmpegMetadataReaderContext) -> String? {

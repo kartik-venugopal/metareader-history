@@ -13,6 +13,8 @@ protocol AVAssetParser {
     
     func getAlbum(_ meta: AVFMetadata) -> String?
     
+    func getComposer(_ meta: AVFMetadata) -> String?
+    
     func getGenre(_ meta: AVFMetadata) -> String?
     
     func getLyrics(_ meta: AVFMetadata) -> String?
@@ -34,25 +36,17 @@ protocol AVAssetParser {
 
 extension AVAssetParser {
     
-    func getDuration(_ meta: AVFMetadata) -> Double? {
-        return nil
-    }
+    func getDuration(_ meta: AVFMetadata) -> Double? {nil}
     
-    func getDiscNumber(_ meta: AVFMetadata) -> (number: Int?, total: Int?)? {
-        return nil
-    }
+    func getDiscNumber(_ meta: AVFMetadata) -> (number: Int?, total: Int?)? {nil}
     
-    func getTrackNumber(_ meta: AVFMetadata) -> (number: Int?, total: Int?)? {
-        return nil
-    }
+    func getTrackNumber(_ meta: AVFMetadata) -> (number: Int?, total: Int?)? {nil}
     
-    func getLyrics(_ meta: AVFMetadata) -> String? {
-        return nil
-    }
+    func getLyrics(_ meta: AVFMetadata) -> String? {nil}
     
-    func getYear(_ meta: AVFMetadata) -> Int? {
-        return nil
-    }
+    func getYear(_ meta: AVFMetadata) -> Int? {nil}
+    
+    func getComposer(_ meta: AVFMetadata) -> String? {nil}
 }
 
 class AVFMetadata {
@@ -76,38 +70,26 @@ class AVFMetadata {
         
         for item in items {
             
-            if let key = item.commonKeyAsString {
-                
-                common[key] = item
-                continue
-            }
-            
-            if let keySpace = item.keySpace {
+            if let keySpace = item.keySpace, let key = item.keyAsString {
                 
                 switch keySpace {
                     
                 case .id3:
                     
-                    if let key = item.keyAsString {
-                        id3[key] = item
-                    }
+                    id3[key] = item
                     
                 case .iTunes:
                     
-                    if let key = item.keyAsString {
-                        iTunes[key] = item
-                    }
+                    iTunes[key] = item
                     
                 case .common:
                 
-                    if let key = item.keyAsString {
-                        common[key] = item
-                    }
+                    common[key] = item
                     
                 default:
                     
                     // iTunes long format
-                    if keySpace.rawValue.lowercased() == "itlk", let key = item.keyAsString {
+                    if keySpace.rawValue.lowercased() == "itlk" {
                         iTunes[key] = item
                     }
                 }

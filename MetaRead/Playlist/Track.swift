@@ -31,6 +31,8 @@ class Track: Hashable {
     var album: String?
     var genre: String?
     
+    var composer: String?
+    
     var art: NSImage?
     
     var trackNumber: Int?
@@ -103,6 +105,8 @@ extension AVMetadataItem {
     }
     
     var keyAsString: String? {
+        
+        // TODO: Revisit this
         
         if let key = self.key as? String {
             return StringUtils.cleanUpString(key).trim()

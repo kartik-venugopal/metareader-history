@@ -83,6 +83,10 @@ class VorbisCommentParser: FFMpegMetadataParser {
         meta.vorbisMetadata.essentialFields[key_album] ?? meta.vorbisMetadata.essentialFields[key_originalAlbum]
     }
     
+    func getComposer(_ meta: FFmpegMetadataReaderContext) -> String? {
+        meta.vorbisMetadata.essentialFields[key_composer]
+    }
+    
     func getGenre(_ meta: FFmpegMetadataReaderContext) -> String? {
         meta.vorbisMetadata.essentialFields[key_genre]
     }

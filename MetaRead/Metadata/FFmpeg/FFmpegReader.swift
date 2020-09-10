@@ -61,6 +61,7 @@ class FFMpegReader {
             track.album = nilIfEmpty(relevantParsers.firstNonNilMappedValue {$0.getAlbum(context)})
             track.genre = nilIfEmpty(relevantParsers.firstNonNilMappedValue {$0.getGenre(context)})
             track.year = relevantParsers.firstNonNilMappedValue {$0.getYear(context)}
+            track.composer = relevantParsers.firstNonNilMappedValue {$0.getComposer(context)}
             
             var trackNumberAndTotal = relevantParsers.firstNonNilMappedValue {$0.getTrackNumber(context)}
             if let trackNum = trackNumberAndTotal?.number, trackNumberAndTotal?.total == nil,

@@ -24,6 +24,7 @@ class AVFReader {
         track.album = parsers.firstNonNilMappedValue {$0.getAlbum(meta)}
         track.genre = parsers.firstNonNilMappedValue {$0.getGenre(meta)}
         track.year = parsers.firstNonNilMappedValue {$0.getYear(meta)}
+        track.composer = parsers.firstNonNilMappedValue {$0.getComposer(meta)}
         
         let trackNum: (number: Int?, total: Int?)? = parsers.firstNonNilMappedValue {$0.getTrackNumber(meta)}
         track.trackNumber = trackNum?.number

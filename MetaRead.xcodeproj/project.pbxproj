@@ -203,9 +203,9 @@
 		3EDE5519250A54F3002AE4D6 /* Playlist */ = {
 			isa = PBXGroup;
 			children = (
-				3EDE5563250A5541002AE4D6 /* Playlist.swift */,
 				3EDE5565250A5541002AE4D6 /* Playlist.xib */,
 				3EDE5566250A5541002AE4D6 /* PlaylistVC.swift */,
+				3EDE5563250A5541002AE4D6 /* Playlist.swift */,
 				3EDE5564250A5541002AE4D6 /* Track.swift */,
 				3EDE5562250A5541002AE4D6 /* TracksArray.swift */,
 			);
