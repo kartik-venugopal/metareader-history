@@ -24,6 +24,7 @@ class ID3FFmpegParser: FFMpegMetadataParser {
     private let keys_art: [String] = [ID3_V24Spec.key_art, ID3_V22Spec.key_art].map {$0.lowercased()}
     
     private let essentialFieldKeys: Set<String> = {
+        
         Set<String>().union(ID3_V1Spec.essentialFieldKeys.map {$0.lowercased()}).union(ID3_V22Spec.essentialFieldKeys.map {$0.lowercased()}).union(ID3_V24Spec.essentialFieldKeys.map {$0.lowercased()})
     }()
     
@@ -74,7 +75,6 @@ class ID3FFmpegParser: FFMpegMetadataParser {
     func getArtist(_ meta: FFmpegMetadataReaderContext) -> String? {
         keys_artist.firstNonNilMappedValue {meta.id3Metadata.essentialFields[$0]}
     }
-  
     
     func getAlbum(_ meta: FFmpegMetadataReaderContext) -> String? {
         keys_album.firstNonNilMappedValue {meta.id3Metadata.essentialFields[$0]}
@@ -83,7 +83,6 @@ class ID3FFmpegParser: FFMpegMetadataParser {
     func getGenre(_ meta: FFmpegMetadataReaderContext) -> String? {
         keys_genre.firstNonNilMappedValue {meta.id3Metadata.essentialFields[$0]}
     }
-    
     
     func getDiscNumber(_ meta: FFmpegMetadataReaderContext) -> (number: Int?, total: Int?)? {
         

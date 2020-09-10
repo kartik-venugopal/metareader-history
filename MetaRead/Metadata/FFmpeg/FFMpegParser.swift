@@ -33,45 +33,27 @@ protocol FFMpegMetadataParser {
 
 extension FFMpegMetadataParser {
     
-    func getTitle(_ meta: FFmpegMetadataReaderContext) -> String? {
-        return nil
-    }
+    func getTitle(_ meta: FFmpegMetadataReaderContext) -> String? {nil}
     
-    func getArtist(_ meta: FFmpegMetadataReaderContext) -> String? {
-        return nil
-    }
+    func getArtist(_ meta: FFmpegMetadataReaderContext) -> String? {nil}
     
-    func getAlbum(_ meta: FFmpegMetadataReaderContext) -> String? {
-        return nil
-    }
+    func getAlbum(_ meta: FFmpegMetadataReaderContext) -> String? {nil}
     
-    func getGenre(_ meta: FFmpegMetadataReaderContext) -> String? {
-        return nil
-    }
+    func getGenre(_ meta: FFmpegMetadataReaderContext) -> String? {nil}
     
-    func getLyrics(_ meta: FFmpegMetadataReaderContext) -> String? {
-        return nil
-    }
+    func getLyrics(_ meta: FFmpegMetadataReaderContext) -> String? {nil}
     
-    func getDiscNumber(_ meta: FFmpegMetadataReaderContext) -> (number: Int?, total: Int?)? {
-        return nil
-    }
+    func getYear(_ meta: FFmpegMetadataReaderContext) -> Int? {nil}
     
-    func getTotalDiscs(_ meta: FFmpegMetadataReaderContext) -> Int? {
-        return nil
-    }
+    func getDiscNumber(_ meta: FFmpegMetadataReaderContext) -> (number: Int?, total: Int?)? {nil}
     
-    func getTrackNumber(_ meta: FFmpegMetadataReaderContext) -> (number: Int?, total: Int?)? {
-        return nil
-    }
+    func getTotalDiscs(_ meta: FFmpegMetadataReaderContext) -> Int? {nil}
     
-    func getTotalTracks(_ meta: FFmpegMetadataReaderContext) -> Int? {
-        return nil
-    }
+    func getTrackNumber(_ meta: FFmpegMetadataReaderContext) -> (number: Int?, total: Int?)? {nil}
+    
+    func getTotalTracks(_ meta: FFmpegMetadataReaderContext) -> Int? {nil}
  
-    func getDuration(_ meta: FFmpegMetadataReaderContext) -> Double? {
-        return nil
-    }
+    func getDuration(_ meta: FFmpegMetadataReaderContext) -> Double? {nil}
 }
 
 class FFmpegMetadataReaderContext {

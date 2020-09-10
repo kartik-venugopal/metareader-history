@@ -2,9 +2,13 @@ import Cocoa
 import AVFoundation
 
 fileprivate let key_title = "title"
+
 fileprivate let key_artist = "author"
 fileprivate let key_originalArtist = "originalartist"
 fileprivate let key_albumArtist = "albumartist"
+
+fileprivate let keys_artist: [String] = [key_artist, key_albumArtist, key_originalArtist]
+
 fileprivate let key_album = "albumtitle"
 fileprivate let key_originalAlbum = "originalalbumtitle"
 
@@ -21,6 +25,7 @@ fileprivate let key_totalDuration = "totalduration"
 
 fileprivate let key_disc = "partofset"
 fileprivate let key_discTotal = "disctotal"
+
 fileprivate let key_track = "tracknumber"
 fileprivate let key_track_zeroBased = "track"
 fileprivate let key_trackTotal = "tracktotal"
@@ -56,7 +61,8 @@ class WMParser: FFMpegMetadataParser {
     
     private let keyPrefix = "wm/"
     
-    private let essentialKeys: Set<String> = [key_title, key_artist, key_album, key_genre, key_genreId, key_disc, key_discTotal, key_track, key_track_zeroBased, key_trackTotal, key_year, key_lyrics]
+    private let essentialKeys: Set<String> = [key_title, key_artist, key_originalArtist, key_albumArtist, key_album, key_originalAlbum, key_genre, key_genreId,
+                                              key_disc, key_discTotal, key_track, key_track_zeroBased, key_trackTotal, key_year, key_originalYear, key_lyrics]
     
     private let ignoredKeys: Set<String> = ["wmfsdkneeded"]
     
@@ -64,21 +70,19 @@ class WMParser: FFMpegMetadataParser {
         
         let metadata = meta.wmMetadata
         
-        for (key, value) in meta.map {
+        for key in meta.map.keys {
             
-            let lcKey = key.lowercased().replacingOccurrences(of: keyPrefix, with: "").trim()
+            let lcKey = key.lowercased().trim().replacingOccurrences(of: keyPrefix, with: "")
             
             if !ignoredKeys.contains(lcKey) {
                 
                 if essentialKeys.contains(lcKey) {
                     
-                    metadata.essentialFields[lcKey] = value
-                    meta.map.removeValue(forKey: key)
+                    metadata.essentialFields[lcKey] = meta.map.removeValue(forKey: key)
                     
                 } else if genericKeys[lcKey] != nil {
                     
-                    metadata.genericFields[lcKey] = value
-                    meta.map.removeValue(forKey: key)
+                    metadata.genericFields[lcKey] = meta.map.removeValue(forKey: key)
                 }
                 
             } else {
@@ -92,15 +96,15 @@ class WMParser: FFMpegMetadataParser {
     }
     
     func getTitle(_ meta: FFmpegMetadataReaderContext) -> String? {
-        return meta.wmMetadata.essentialFields[key_title]
+        meta.wmMetadata.essentialFields[key_title]
     }
     
     func getArtist(_ meta: FFmpegMetadataReaderContext) -> String? {
-        return meta.wmMetadata.essentialFields[key_artist]
+        keys_artist.firstNonNilMappedValue({meta.wmMetadata.essentialFields[$0]})
     }
     
     func getAlbum(_ meta: FFmpegMetadataReaderContext) -> String? {
-        return meta.wmMetadata.essentialFields[key_album]
+        meta.wmMetadata.essentialFields[key_album] ?? meta.wmMetadata.essentialFields[key_originalAlbum]
     }
     
     func getGenre(_ meta: FFmpegMetadataReaderContext) -> String? {

@@ -8,6 +8,8 @@ fileprivate let key_artists = "artists"
 fileprivate let key_albumArtist = "albumartist"
 fileprivate let key_originalArtist = "original artist"
 
+fileprivate let keys_artist: [String] = [key_artist, key_albumArtist, key_originalArtist, key_artists]
+
 fileprivate let key_album = "album"
 fileprivate let key_originalAlbum = "original album"
 
@@ -36,19 +38,17 @@ class ApeV2Parser: FFMpegMetadataParser {
         
         let metadata = meta.apeMetadata
         
-        for (key, value) in meta.map {
+        for key in meta.map.keys {
             
             let lcKey = key.lowercased().trim()
             
             if essentialKeys.contains(lcKey) {
                 
-                metadata.essentialFields[lcKey] = value
-                meta.map.removeValue(forKey: key)
+                metadata.essentialFields[lcKey] = meta.map.removeValue(forKey: key)
                 
             } else if genericKeys[lcKey] != nil {
                 
-                metadata.genericFields[lcKey] = value
-                meta.map.removeValue(forKey: key)
+                metadata.genericFields[lcKey] = meta.map.removeValue(forKey: key)
             }
         }
     }
@@ -58,19 +58,19 @@ class ApeV2Parser: FFMpegMetadataParser {
     }
     
     func getTitle(_ meta: FFmpegMetadataReaderContext) -> String? {
-        return meta.apeMetadata.essentialFields[key_title]
+        meta.apeMetadata.essentialFields[key_title]
     }
     
     func getArtist(_ meta: FFmpegMetadataReaderContext) -> String? {
-        return meta.apeMetadata.essentialFields[key_artist] ?? meta.apeMetadata.essentialFields[key_artists]
+        keys_artist.firstNonNilMappedValue({meta.apeMetadata.essentialFields[$0]})
     }
     
     func getAlbum(_ meta: FFmpegMetadataReaderContext) -> String? {
-        return meta.apeMetadata.essentialFields[key_album]
+        meta.apeMetadata.essentialFields[key_album] ?? meta.apeMetadata.essentialFields[key_originalAlbum]
     }
     
     func getGenre(_ meta: FFmpegMetadataReaderContext) -> String? {
-        return meta.apeMetadata.essentialFields[key_genre]
+        meta.apeMetadata.essentialFields[key_genre]
     }
     
     func getDiscNumber(_ meta: FFmpegMetadataReaderContext) -> (number: Int?, total: Int?)? {
@@ -79,10 +79,6 @@ class ApeV2Parser: FFMpegMetadataParser {
             return ParserUtils.parseDiscOrTrackNumberString(discNumStr)
         }
         
-        return nil
-    }
-    
-    func getTotalDiscs(_ meta: FFmpegMetadataReaderContext) -> Int? {
         return nil
     }
     

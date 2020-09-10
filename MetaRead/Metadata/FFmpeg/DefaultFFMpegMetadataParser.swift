@@ -34,13 +34,4 @@ class DefaultFFMpegMetadataParser: FFMpegMetadataParser {
         
         return fTokens.joined(separator: " ")
     }
-    
-    func getYear(_ meta: FFmpegMetadataReaderContext) -> Int? {
-            
-    //        if let yearString = meta.vorbisMetadata?.essentialFields[key_year] {
-    //            return ParserUtils.parseYear(yearString)
-    //        }
-            
-            return nil
-        }
 }

@@ -9,6 +9,8 @@ fileprivate let key_albumArtist2 = "album_artist"
 fileprivate let key_originalArtist = "original artist"
 fileprivate let key_artists = "artists"
 
+fileprivate let keys_artist: [String] = [key_artist, key_albumArtist, key_albumArtist2, key_originalArtist, key_artists]
+
 fileprivate let key_album = "album"
 fileprivate let key_originalAlbum = "original album"
 
@@ -24,9 +26,13 @@ fileprivate let key_disc = "discnumber"
 fileprivate let key_discTotal = "disctotal"
 fileprivate let key_totalDiscs = "totaldiscs"
 
+fileprivate let keys_totalDiscs: [String] = [key_discTotal, key_totalDiscs]
+
 fileprivate let key_track = "tracknumber"
 fileprivate let key_trackTotal = "tracktotal"
 fileprivate let key_totalTracks = "totaltracks"
+
+fileprivate let keys_totalTracks: [String] = [key_trackTotal, key_totalTracks]
 
 fileprivate let key_lyrics = "lyrics"
 
@@ -66,19 +72,19 @@ class VorbisCommentParser: FFMpegMetadataParser {
     }
     
     func getTitle(_ meta: FFmpegMetadataReaderContext) -> String? {
-        return meta.vorbisMetadata.essentialFields[key_title]
+        meta.vorbisMetadata.essentialFields[key_title]
     }
     
     func getArtist(_ meta: FFmpegMetadataReaderContext) -> String? {
-        return meta.vorbisMetadata.essentialFields[key_artist] ?? meta.vorbisMetadata.essentialFields[key_artists]
+        keys_artist.firstNonNilMappedValue({meta.vorbisMetadata.essentialFields[$0]})
     }
     
     func getAlbum(_ meta: FFmpegMetadataReaderContext) -> String? {
-        return meta.vorbisMetadata.essentialFields[key_album]
+        meta.vorbisMetadata.essentialFields[key_album] ?? meta.vorbisMetadata.essentialFields[key_originalAlbum]
     }
     
     func getGenre(_ meta: FFmpegMetadataReaderContext) -> String? {
-        return meta.vorbisMetadata.essentialFields[key_genre]
+        meta.vorbisMetadata.essentialFields[key_genre]
     }
     
     func getDiscNumber(_ meta: FFmpegMetadataReaderContext) -> (number: Int?, total: Int?)? {
@@ -92,11 +98,10 @@ class VorbisCommentParser: FFMpegMetadataParser {
     
     func getTotalDiscs(_ meta: FFmpegMetadataReaderContext) -> Int? {
         
-        for key in [key_discTotal, key_totalDiscs] {
+        if let totalDiscsStr = keys_totalDiscs.firstNonNilMappedValue({meta.vorbisMetadata.essentialFields[$0]?.trim()}),
+            let totalDiscs = Int(totalDiscsStr) {
             
-            if let totalDiscsStr = meta.vorbisMetadata.essentialFields[key]?.trim(), let totalDiscs = Int(totalDiscsStr) {
-                return totalDiscs
-            }
+            return totalDiscs
         }
         
         return nil
@@ -113,11 +118,10 @@ class VorbisCommentParser: FFMpegMetadataParser {
     
     func getTotalTracks(_ meta: FFmpegMetadataReaderContext) -> Int? {
         
-        for key in [key_trackTotal, key_totalTracks] {
-
-            if let totalTracksStr = meta.vorbisMetadata.essentialFields[key]?.trim(), let totalTracks = Int(totalTracksStr) {
-                return totalTracks
-            }
+        if let totalTracksStr = keys_totalTracks.firstNonNilMappedValue({meta.vorbisMetadata.essentialFields[$0]?.trim()}),
+            let totalTracks = Int(totalTracksStr) {
+            
+            return totalTracks
         }
         
         return nil
