@@ -5,7 +5,7 @@ class AVFReader {
     static let instance: AVFReader = AVFReader()
     
     let commonParser: CommonParser = CommonParser()
-    let id3Parser: ID3Parser = ID3Parser.instance
+    let id3Parser: ID3Parser = ID3Parser()
     let iTunesParser: ITunesParser = ITunesParser()
     
     let parsersMap: [AVMetadataKeySpace: AVAssetParser]

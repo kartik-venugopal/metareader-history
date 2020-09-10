@@ -12,51 +12,31 @@ fileprivate let id_art: AVMetadataIdentifier = AVMetadataItem.identifier(forKey:
 
 fileprivate let key_language: String = AVMetadataKey.commonKeyLanguage.rawValue
 
-fileprivate let essentialFieldKeys: Set<String> = [key_title, key_artist, key_album, key_genre, key_art]
+//fileprivate let essentialFieldKeys: Set<String> = [key_title, key_artist, key_album, key_genre, key_art]
 
 class CommonParser: AVAssetParser {
     
     var keySpace: AVMetadataKeySpace {.common}
     
     func getTitle(_ meta: AVFMetadata) -> String? {
-        
-        if let titleItem = meta.common[key_title] {
-            return titleItem.stringValue
-        }
-        
-        return nil
+        meta.common[key_title]?.stringValue
     }
     
     func getArtist(_ meta: AVFMetadata) -> String? {
-        
-        if let artistItem = meta.common[key_artist] {
-            return artistItem.stringValue
-        }
-        
-        return nil
+        meta.common[key_artist]?.stringValue
     }
     
     func getAlbum(_ meta: AVFMetadata) -> String? {
-        
-        if let albumItem = meta.common[key_album] {
-            return albumItem.stringValue
-        }
-        
-        return nil
+        meta.common[key_album]?.stringValue
     }
     
     func getGenre(_ meta: AVFMetadata) -> String? {
-        
-        if let genreItem = meta.common[key_genre] {
-            return genreItem.stringValue
-        }
-        
-        return nil
+        meta.common[key_genre]?.stringValue
     }
     
     func getArt(_ meta: AVFMetadata) -> NSImage? {
         
-        if let item = meta.common[key_art], let imgData = item.dataValue, let image = NSImage(data: imgData) {
+        if let imgData = meta.common[key_art]?.dataValue, let image = NSImage(data: imgData) {
             return image
         }
         

@@ -32,6 +32,8 @@ fileprivate let key_lyrics = "lyrics"
 
 fileprivate let keys_year: [String] = ["year", "date", "originaldate", "originalyear", "original year", "originalreleasedate", "original_year"]
 
+fileprivate let key_duration: String = "length"
+
 class VorbisCommentParser: FFMpegMetadataParser {
     
     private let key_encodingTime = "encodingtime"
@@ -133,6 +135,15 @@ class VorbisCommentParser: FFMpegMetadataParser {
     func getLyrics(_ meta: FFmpegMetadataReaderContext) -> String? {
         return meta.vorbisMetadata.essentialFields[key_lyrics]
     }
+    
+    func getDuration(_ meta: FFmpegMetadataReaderContext) -> Double? {
+        
+        if let durationStr = meta.vorbisMetadata.essentialFields[key_duration], let durationMsecs = Double(durationStr) {
+            return durationMsecs / 1000
+        }
+        
+        return nil
+    }
 
     private let genericKeys: [String: String] = {
         
@@ -230,8 +241,6 @@ class VorbisCommentParser: FFMpegMetadataParser {
         map["label"] = "Label"
         
         map["language"] = "Language"
-        
-        map["length"] = "Length (ms)"
         
         map["love-dislike rating"] = "Love"
         

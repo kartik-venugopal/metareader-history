@@ -19,7 +19,7 @@ class ITunesParser: AVAssetParser {
     private let keys_year: [String] = [ITunesSpec.key_releaseDate, ITunesSpec.key_releaseYear]
     
     // BUG TODO: Find out why ITunesNormalization tag is not being ignored in MP3 file
-    private let ignoredKeys: Set<String> = [ITunesSpec.key_normalization, ITunesSpec.key_soundCheck]
+//    private let ignoredKeys: Set<String> = [ITunesSpec.key_normalization, ITunesSpec.key_soundCheck]
     
     func getDuration(_ meta: AVFMetadata) -> Double? {
         

@@ -9,7 +9,7 @@ class FFMpegReader {
     private let genericMetadata_ignoreKeys: [String] = ["title", "artist", "duration", "disc", "track", "album", "genre"]
     
     let commonFFMpegParser = CommonFFMpegMetadataParser()
-    let id3Parser = ID3Parser.instance
+    let id3Parser = ID3FFmpegParser.instance
     let wmParser = WMParser()
     let vorbisParser = VorbisCommentParser()
     let apeParser = ApeV2Parser()
@@ -19,12 +19,25 @@ class FFMpegReader {
     private var vorbisFileParsers: [FFMpegMetadataParser] = []
     private var apeFileParsers: [FFMpegMetadataParser] = []
     
+    private var parsersByExt: [String: [FFMpegMetadataParser]] = [:]
+    
     init() {
         
         allParsers = [commonFFMpegParser, id3Parser, vorbisParser, apeParser, wmParser, defaultParser]
         wmFileParsers = [commonFFMpegParser, wmParser, id3Parser, vorbisParser, apeParser, defaultParser]
         vorbisFileParsers = [commonFFMpegParser, vorbisParser, apeParser, id3Parser, wmParser, defaultParser]
         apeFileParsers = [commonFFMpegParser, apeParser, vorbisParser, id3Parser, wmParser, defaultParser]
+        
+        parsersByExt =
+        [
+            "wma": wmFileParsers,
+            "flac": vorbisFileParsers,
+            "dsf": vorbisFileParsers,
+            "ogg": vorbisFileParsers,
+            "opus": vorbisFileParsers,
+            "ape": apeFileParsers,
+            "mpc": apeFileParsers
+        ]
     }
     
     private func nilIfEmpty(_ string: String?) -> String? {
@@ -38,17 +51,10 @@ class FFMpegReader {
             let fctx = try FFmpegFileContext(for: track.file)
             let context = FFmpegMetadataReaderContext(for: fctx)
             
-            let st = CFAbsoluteTimeGetCurrent()
-            let allParsers = parsersForTrack(context)
-            let e1 = CFAbsoluteTimeGetCurrent()
-            
+            let allParsers = parsersByExt[context.fileType] ?? self.allParsers
             allParsers.forEach {$0.mapTrack(context)}
             
-            let s2 = CFAbsoluteTimeGetCurrent()
             let relevantParsers = allParsers.filter {$0.hasMetadataForTrack(context)}
-            let e2 = CFAbsoluteTimeGetCurrent()
-            
-            print("\nTime to determine parsers: \((e1 - st) * 1000) \((e2 - s2) * 1000)")
             
             track.title = nilIfEmpty(relevantParsers.firstNonNilMappedValue {$0.getTitle(context)})
             track.artist = nilIfEmpty(relevantParsers.firstNonNilMappedValue {$0.getArtist(context)})
@@ -77,6 +83,9 @@ class FFMpegReader {
             track.totalDiscs = discNumberAndTotal?.total
             
             track.duration = context.fileCtx.duration
+            if track.duration == 0, let durationFromMetadata = relevantParsers.firstNonNilMappedValue({$0.getDuration(context)}) {
+                track.duration = durationFromMetadata
+            }
             
             if let imageStream = context.imageStream,
                 let imageData = imageStream.attachedPic.data,
@@ -89,30 +98,6 @@ class FFMpegReader {
             NSLog("Track.init(): Couldn't init FFmpeg file context for '\(track.file.lastPathComponent)': \(err.description)")
         } catch {
             NSLog("Track.init(): Couldn't init FFmpeg file context for '\(track.file.lastPathComponent)': \(error)")
-        }
-    }
-    
-    private func parsersForTrack(_ context: FFmpegMetadataReaderContext) -> [FFMpegMetadataParser] {
-        
-        // TODO: Store these in a Dictionary for quick lookup
-        
-        switch context.fileType {
-            
-        case "wma":
-            
-            return wmFileParsers
-            
-        case "flac", "ogg", "opus":
-            
-            return vorbisFileParsers
-            
-        case "ape", "mpc":
-            
-            return apeFileParsers
-            
-        default:
-            
-            return allParsers
         }
     }
 }

@@ -26,6 +26,8 @@ protocol FFMpegMetadataParser {
     
     func getYear(_ meta: FFmpegMetadataReaderContext) -> Int?
     
+    func getDuration(_ meta: FFmpegMetadataReaderContext) -> Double?
+    
 //    func getGenericMetadata(_ meta: FFmpegMetadataReaderContext) -> [String: String]
 }
 
@@ -66,7 +68,10 @@ extension FFMpegMetadataParser {
     func getTotalTracks(_ meta: FFmpegMetadataReaderContext) -> Int? {
         return nil
     }
-    
+ 
+    func getDuration(_ meta: FFmpegMetadataReaderContext) -> Double? {
+        return nil
+    }
 }
 
 class FFmpegMetadataReaderContext {

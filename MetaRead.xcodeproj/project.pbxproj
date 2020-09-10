@@ -46,7 +46,6 @@
 		3EDE5569250A5541002AE4D6 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDE5564250A5541002AE4D6 /* Track.swift */; };
 		3EDE556A250A5541002AE4D6 /* Playlist.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EDE5565250A5541002AE4D6 /* Playlist.xib */; };
 		3EDE556B250A5541002AE4D6 /* PlaylistVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDE5566250A5541002AE4D6 /* PlaylistVC.swift */; };
-		3EDE556F250A5554002AE4D6 /* ffmpeg in Resources */ = {isa = PBXBuildFile; fileRef = 3EDE556C250A5554002AE4D6 /* ffmpeg */; };
 		3EDE5570250A5554002AE4D6 /* ffmpeg.c in Sources */ = {isa = PBXBuildFile; fileRef = 3EDE556D250A5554002AE4D6 /* ffmpeg.c */; };
 		3EDE5577250A5655002AE4D6 /* libavformat.58.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EDE5573250A5655002AE4D6 /* libavformat.58.dylib */; };
 		3EDE5578250A5655002AE4D6 /* libavformat.58.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 3EDE5573250A5655002AE4D6 /* libavformat.58.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -60,6 +59,7 @@
 		3EDE5584250A5696002AE4D6 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EDE5582250A5696002AE4D6 /* MainMenu.xib */; };
 		3EDE5586250A569E002AE4D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EDE5585250A569E002AE4D6 /* Assets.xcassets */; };
 		3EDE5589250A56BB002AE4D6 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3EDE5587250A56BB002AE4D6 /* Info.plist */; };
+		3EF19AD0250A5CA500CB3336 /* ID3FFmpegParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF19ACF250A5CA500CB3336 /* ID3FFmpegParser.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -133,6 +133,7 @@
 		3EDE5585250A569E002AE4D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3EDE5587250A56BB002AE4D6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3EDE5588250A56BB002AE4D6 /* MetaRead.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = MetaRead.entitlements; sourceTree = "<group>"; };
+		3EF19ACF250A5CA500CB3336 /* ID3FFmpegParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ID3FFmpegParser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,23 +190,12 @@
 		3EDE5518250A54ED002AE4D6 /* Metadata */ = {
 			isa = PBXGroup;
 			children = (
-				3EDE5549250A552B002AE4D6 /* ApeV2Parser.swift */,
-				3EDE554F250A552C002AE4D6 /* AVAssetParser.swift */,
-				3EDE5546250A552B002AE4D6 /* AVFReader.swift */,
-				3EDE5544250A552B002AE4D6 /* CommonFFMpegMetadataParser.swift */,
-				3EDE5540250A552B002AE4D6 /* CommonParser.swift */,
-				3EDE554A250A552B002AE4D6 /* DefaultFFMpegMetadataParser.swift */,
-				3EDE554C250A552C002AE4D6 /* FFMpegParser.swift */,
-				3EDE5543250A552B002AE4D6 /* FFmpegReader.swift */,
+				3EF19AD1250A602000CB3336 /* AVF */,
+				3EF19AD2250A602700CB3336 /* FFmpeg */,
 				3EDE5542250A552B002AE4D6 /* GenreMap.swift */,
-				3EDE554B250A552C002AE4D6 /* ID3Parser.swift */,
 				3EDE5547250A552B002AE4D6 /* ID3Spec.swift */,
-				3EDE554E250A552C002AE4D6 /* ITunesParser.swift */,
-				3EDE5541250A552B002AE4D6 /* ITunesSpec.swift */,
 				3EDE554D250A552C002AE4D6 /* ParserUtils.swift */,
 				3EDE5548250A552B002AE4D6 /* StringUtils.swift */,
-				3EDE553F250A552B002AE4D6 /* VorbisCommentParser.swift */,
-				3EDE5545250A552B002AE4D6 /* WMParser.swift */,
 			);
 			path = Metadata;
 			sourceTree = "<group>";
@@ -255,6 +245,34 @@
 				3EDE5576250A5655002AE4D6 /* libswresample.3.dylib */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3EF19AD1250A602000CB3336 /* AVF */ = {
+			isa = PBXGroup;
+			children = (
+				3EDE5546250A552B002AE4D6 /* AVFReader.swift */,
+				3EDE554F250A552C002AE4D6 /* AVAssetParser.swift */,
+				3EDE5540250A552B002AE4D6 /* CommonParser.swift */,
+				3EDE554B250A552C002AE4D6 /* ID3Parser.swift */,
+				3EDE554E250A552C002AE4D6 /* ITunesParser.swift */,
+				3EDE5541250A552B002AE4D6 /* ITunesSpec.swift */,
+			);
+			path = AVF;
+			sourceTree = "<group>";
+		};
+		3EF19AD2250A602700CB3336 /* FFmpeg */ = {
+			isa = PBXGroup;
+			children = (
+				3EDE5543250A552B002AE4D6 /* FFmpegReader.swift */,
+				3EDE554C250A552C002AE4D6 /* FFMpegParser.swift */,
+				3EDE5544250A552B002AE4D6 /* CommonFFMpegMetadataParser.swift */,
+				3EF19ACF250A5CA500CB3336 /* ID3FFmpegParser.swift */,
+				3EDE553F250A552B002AE4D6 /* VorbisCommentParser.swift */,
+				3EDE5549250A552B002AE4D6 /* ApeV2Parser.swift */,
+				3EDE5545250A552B002AE4D6 /* WMParser.swift */,
+				3EDE554A250A552B002AE4D6 /* DefaultFFMpegMetadataParser.swift */,
+			);
+			path = FFmpeg;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -318,7 +336,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3EDE556A250A5541002AE4D6 /* Playlist.xib in Resources */,
-				3EDE556F250A5554002AE4D6 /* ffmpeg in Resources */,
 				3EDE5586250A569E002AE4D6 /* Assets.xcassets in Resources */,
 				3EDE5589250A56BB002AE4D6 /* Info.plist in Resources */,
 				3EDE5584250A5696002AE4D6 /* MainMenu.xib in Resources */,
@@ -360,6 +377,7 @@
 				3EDE5569250A5541002AE4D6 /* Track.swift in Sources */,
 				3EDE5560250A552C002AE4D6 /* ITunesParser.swift in Sources */,
 				3EDE553B250A551A002AE4D6 /* FFmpegAudioCodec.swift in Sources */,
+				3EF19AD0250A5CA500CB3336 /* ID3FFmpegParser.swift in Sources */,
 				3EDE555D250A552C002AE4D6 /* ID3Parser.swift in Sources */,
 				3EDE555A250A552C002AE4D6 /* StringUtils.swift in Sources */,
 				3EDE5570250A5554002AE4D6 /* ffmpeg.c in Sources */,
