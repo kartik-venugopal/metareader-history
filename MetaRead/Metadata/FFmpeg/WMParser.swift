@@ -19,6 +19,7 @@ fileprivate let key_composer = "composer"
 fileprivate let key_conductor = "conductor"
 
 fileprivate let key_lyricist = "originallyricist"
+fileprivate let key_writer = "writer"
 
 fileprivate let key_duration = "duration"
 fileprivate let key_totalDuration = "totalduration"
@@ -46,7 +47,7 @@ class WMParser: FFMpegMetadataParser {
     
     private let keyPrefix = "wm/"
     
-    private let essentialKeys: Set<String> = Set([key_title, key_album, key_originalAlbum, key_genre, key_genreId,
+    private let essentialKeys: Set<String> = Set([key_title, key_album, key_originalAlbum, key_composer, key_conductor, key_lyricist, key_writer, key_genre, key_genreId,
         key_disc, key_discTotal, key_track, key_track_zeroBased, key_trackTotal, key_year, key_originalYear, key_lyrics]).union(keys_artist)
     
     private let ignoredKeys: Set<String> = ["wmfsdkneeded"]
@@ -100,8 +101,12 @@ class WMParser: FFMpegMetadataParser {
         meta.wmMetadata.essentialFields[key_composer]
     }
     
+    func getConductor(_ meta: FFmpegMetadataReaderContext) -> String? {
+        meta.wmMetadata.essentialFields[key_conductor]
+    }
+    
     func getLyricist(_ meta: FFmpegMetadataReaderContext) -> String? {
-        meta.wmMetadata.essentialFields[key_lyricist]
+        meta.wmMetadata.essentialFields[key_lyricist] ?? meta.wmMetadata.essentialFields[key_writer]
     }
     
     func getGenre(_ meta: FFmpegMetadataReaderContext) -> String? {
@@ -266,8 +271,6 @@ class WMParser: FFMpegMetadataParser {
         map["initialkey"] = "Key"
         
         map["language"] = "Language"
-        
-        map["writer"] = "Writer"
         
         map["lyricsurl"] = "Lyrics Site Url"
         

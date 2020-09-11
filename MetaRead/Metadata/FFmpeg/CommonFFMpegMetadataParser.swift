@@ -24,11 +24,10 @@ fileprivate let key_date = "date"
 
 class CommonFFMpegMetadataParser: FFMpegMetadataParser {
     
-    private let essentialKeys: Set<String> = [key_title, key_artist, key_albumArtist, key_album, key_composer, key_genre, key_disc, key_track, key_date, key_lyrics]
+    private let essentialKeys: Set<String> = [key_title, key_artist, key_albumArtist, key_album, key_composer, key_performer, key_genre, key_disc, key_track, key_date, key_lyrics]
     
     private let genericKeys: [String: String] = [
         
-        key_performer: "Performer",
         key_publisher: "Publisher",
         key_copyright: "Copyright",
         key_encodedBy: "Encoded By",
@@ -78,6 +77,10 @@ class CommonFFMpegMetadataParser: FFMpegMetadataParser {
     
     func getComposer(_ meta: FFmpegMetadataReaderContext) -> String? {
         meta.commonMetadata.essentialFields[key_composer]
+    }
+    
+    func getPerformer(_ meta: FFmpegMetadataReaderContext) -> String? {
+        meta.commonMetadata.essentialFields[key_performer]
     }
     
     func getGenre(_ meta: FFmpegMetadataReaderContext) -> String? {

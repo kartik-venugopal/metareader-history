@@ -12,8 +12,9 @@ class ITunesParser: AVAssetParser {
     
     private let keys_artist: [String] = [ITunesSpec.key_artist, ITunesSpec.key_originalArtist, ITunesSpec.key_originalArtist2]
     private let keys_album: [String] = [ITunesSpec.key_album, ITunesSpec.key_originalAlbum]
-    private let keys_genre: [String] = [ITunesSpec.key_genre, ITunesSpec.key_predefGenre]
+    private let keys_conductor: [String] = [ITunesSpec.key_conductor, ITunesSpec.key_conductor2]
     private let keys_lyricist: [String] = [ITunesSpec.key_lyricist, ITunesSpec.key_originalLyricist]
+    private let keys_genre: [String] = [ITunesSpec.key_genre, ITunesSpec.key_predefGenre]
     
     private let keys_discNum: [String] = [ITunesSpec.key_discNumber, ITunesSpec.key_discNumber2]
     
@@ -49,6 +50,14 @@ class ITunesParser: AVAssetParser {
     
     func getComposer(_ meta: AVFMetadata) -> String? {
         meta.iTunes[ITunesSpec.key_composer]?.stringValue
+    }
+    
+    func getConductor(_ meta: AVFMetadata) -> String? {
+        (keys_conductor.firstNonNilMappedValue {meta.iTunes[$0]})?.stringValue
+    }
+    
+    func getPerformer(_ meta: AVFMetadata) -> String? {
+        meta.iTunes[ITunesSpec.key_performer]?.stringValue
     }
     
     func getLyricist(_ meta: AVFMetadata) -> String? {

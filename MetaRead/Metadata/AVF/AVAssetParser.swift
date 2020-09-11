@@ -17,6 +17,10 @@ protocol AVAssetParser {
     
     func getComposer(_ meta: AVFMetadata) -> String?
     
+    func getConductor(_ meta: AVFMetadata) -> String?
+    
+    func getPerformer(_ meta: AVFMetadata) -> String?
+    
     func getLyricist(_ meta: AVFMetadata) -> String?
     
     func getGenre(_ meta: AVFMetadata) -> String?
@@ -53,6 +57,10 @@ extension AVAssetParser {
     func getYear(_ meta: AVFMetadata) -> Int? {nil}
     
     func getComposer(_ meta: AVFMetadata) -> String? {nil}
+    
+    func getConductor(_ meta: AVFMetadata) -> String? {nil}
+    
+    func getPerformer(_ meta: AVFMetadata) -> String? {nil}
     
     func getLyricist(_ meta: AVFMetadata) -> String? {nil}
 }

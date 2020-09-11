@@ -16,6 +16,10 @@ protocol FFMpegMetadataParser {
     
     func getComposer(_ meta: FFmpegMetadataReaderContext) -> String?
     
+    func getConductor(_ meta: FFmpegMetadataReaderContext) -> String?
+    
+    func getPerformer(_ meta: FFmpegMetadataReaderContext) -> String?
+    
     func getLyricist(_ meta: FFmpegMetadataReaderContext) -> String?
     
     func getGenre(_ meta: FFmpegMetadataReaderContext) -> String?
@@ -48,6 +52,10 @@ extension FFMpegMetadataParser {
     func getAlbum(_ meta: FFmpegMetadataReaderContext) -> String? {nil}
     
     func getComposer(_ meta: FFmpegMetadataReaderContext) -> String? {nil}
+    
+    func getConductor(_ meta: FFmpegMetadataReaderContext) -> String? {nil}
+    
+    func getPerformer(_ meta: FFmpegMetadataReaderContext) -> String? {nil}
     
     func getLyricist(_ meta: FFmpegMetadataReaderContext) -> String? {nil}
     

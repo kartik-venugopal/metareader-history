@@ -109,6 +109,18 @@ class PlaylistVC: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
                 return createTextCell(tableView, "composer", composer)
             }
             
+        case "conductor":
+
+            if let conductor = track.conductor {
+                return createTextCell(tableView, "conductor", conductor)
+            }
+            
+        case "performer":
+            
+            if let performer = track.performer {
+                return createTextCell(tableView, "performer", performer)
+            }
+            
         case "lyricist":
 
             if let lyricist = track.lyricist {

@@ -92,6 +92,14 @@ class VorbisCommentParser: FFMpegMetadataParser {
         meta.vorbisMetadata.essentialFields[key_composer]
     }
     
+    func getConductor(_ meta: FFmpegMetadataReaderContext) -> String? {
+        meta.vorbisMetadata.essentialFields[key_conductor]
+    }
+    
+    func getPerformer(_ meta: FFmpegMetadataReaderContext) -> String? {
+        meta.vorbisMetadata.essentialFields[key_performer]
+    }
+    
     func getLyricist(_ meta: FFmpegMetadataReaderContext) -> String? {
         meta.vorbisMetadata.essentialFields[key_lyricist] ?? meta.vorbisMetadata.essentialFields[key_originalLyricist]
     }
