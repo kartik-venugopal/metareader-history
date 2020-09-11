@@ -122,11 +122,13 @@ class ParserUtils {
             
         }
     }
+    
+    static let validYearRange: ClosedRange<Int> = 1000...3000
+    static let centuryYearRange: ClosedRange<Int> = 0...99
 
-    // TODO: Also handle strings like "mm-dd-yy"
     static func parseYear(_ item: AVMetadataItem) -> Int? {
         
-        if let number = item.numberValue, number.intValue >= 1000, number.intValue <= 3000 {
+        if let number = item.numberValue, validYearRange.contains(number.intValue) {
             return number.intValue
         }
         
@@ -146,18 +148,66 @@ class ParserUtils {
                 
             default:
                 
-                let year = Int(vals[0])
-                return year >= 1000 && year <= 3000 ? year : nil
+                let year: Int = Int(vals[0])
+                return validYearRange.contains(year) ? year : nil
             }
         }
         
         return nil
     }
     
+    static let mmddyyRegex: String = "[0-9]+-[0-9]+-[0-9]+"
+    
     static func parseYear(_ yearString: String) -> Int? {
         
-        if let year = Int(yearString) {
-            return year >= 1000 && year <= 3000 ? year : nil
+        if let year = Int(yearString), validYearRange.contains(year) {
+            return year
+        }
+        
+        if yearString.matches(mmddyyRegex) {
+            
+            let tokens = yearString.split(separator: "-")
+            if tokens.count == 3, let year = Int(tokens[2]) {
+                
+                switch year {
+                    
+                case validYearRange:
+                    
+                    return year
+                    
+                case centuryYearRange:
+                    
+                    let currentCenturyYear = Calendar.current.component(.year, from: Date()) % 100
+                    return year < currentCenturyYear ? (2000 + year) : (1900 + year)
+                    
+                default:
+                    
+                    return nil
+                }
+            }
+        }
+        
+        return nil
+    }
+    
+    static let hmsRegex = "[0-9]+:[0-9]+:[0-9]+[\\.]?[0-9]*"
+    
+    static func parseDuration(_ durString: String) -> Double? {
+        
+        if let durationMsecs = Int64(durString) {
+            return Double(durationMsecs) / 1000.0
+        }
+        
+        if let durationSecs = Double(durString) {
+            return durationSecs
+        }
+        
+        if durString.matches(hmsRegex) {
+            
+            let tokens = durString.split(separator: ":")
+            if tokens.count == 3, let hours = Double(tokens[0]), let mins = Double(tokens[1]), let secs = Double(tokens[2]) {
+                return (hours * 3600) + (mins * 60) + secs
+            }
         }
         
         return nil
@@ -208,4 +258,11 @@ class ParserUtils {
 //        
 //        return nil
 //    }
+}
+
+extension String {
+    
+    func matches(_ regex: String) -> Bool {
+        return self.range(of: regex, options: .regularExpression, range: nil, locale: nil) != nil
+    }
 }

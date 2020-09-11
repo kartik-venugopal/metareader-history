@@ -85,8 +85,32 @@ class FFMpegReader {
             track.totalDiscs = discNumberAndTotal?.total
             
             track.duration = context.fileCtx.duration
-            if track.duration == 0, let durationFromMetadata = relevantParsers.firstNonNilMappedValue({$0.getDuration(context)}) {
-                track.duration = durationFromMetadata
+            if track.duration == 0 || context.fileCtx.isRawAudioFile {
+              
+                if let durationFromMetadata = relevantParsers.firstNonNilMappedValue({$0.getDuration(context)}), durationFromMetadata > 0 {
+                    track.duration = durationFromMetadata
+                    
+                } else {
+                    
+                    // Use brute force to compute duration
+                    
+                    NSLog("Computing brute force duration for track: \(track.defaultDisplayName)")
+                    
+                    DispatchQueue.global(qos: .userInitiated).async {
+                        
+                        if let duration = FFmpegPacketTable(for: context.fileCtx)?.duration {
+                            
+                            NSLog("FINISHED computing brute force duration for track: \(track.defaultDisplayName) ... duration = \(duration)")
+                            
+                            track.duration = duration
+                            
+                            var notif = Notification(name: Notification.Name("trackUpdated"))
+                            notif.userInfo = ["track": track]
+                            
+                            NotificationCenter.default.post(notif)
+                        }
+                    }
+                }
             }
             
             if let imageStream = context.imageStream,

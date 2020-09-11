@@ -151,8 +151,8 @@ class VorbisCommentParser: FFMpegMetadataParser {
     
     func getDuration(_ meta: FFmpegMetadataReaderContext) -> Double? {
         
-        if let durationStr = meta.vorbisMetadata.essentialFields[key_duration], let durationMsecs = Double(durationStr) {
-            return durationMsecs / 1000
+        if let durationStr = meta.vorbisMetadata.essentialFields[key_duration] {
+            return ParserUtils.parseDuration(durationStr)
         }
         
         return nil

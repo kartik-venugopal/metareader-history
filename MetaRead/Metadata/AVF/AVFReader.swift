@@ -37,6 +37,28 @@ class AVFReader {
         
         track.duration = meta.asset.duration.seconds
         
+        if track.fileExt == "aac" {
+            
+            // Use brute force to compute duration
+            DispatchQueue.global(qos: .userInitiated).async {
+                
+                do {
+                    
+                    let afile = try AVAudioFile(forReading: track.file)
+                    track.duration = Double(afile.length) / afile.processingFormat.sampleRate
+                    
+                    var notif = Notification(name: Notification.Name("trackUpdated"))
+                    notif.userInfo = ["track": track]
+                    
+                    NotificationCenter.default.post(notif)
+                    
+                } catch {
+                    NSLog("\nProblem: \(error)")
+                }
+            }
+            
+        }
+        
         track.art = parsers.firstNonNilMappedValue {$0.getArt(meta)}
     }
 }

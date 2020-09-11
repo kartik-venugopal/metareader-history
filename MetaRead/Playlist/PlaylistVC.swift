@@ -21,6 +21,16 @@ class PlaylistVC: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
             }
         })
         
+        NotificationCenter.default.addObserver(forName: Notification.Name("trackUpdated"), object: nil, queue: nil, using: {notif in
+            
+            if let track = notif.userInfo?["track"] as? Track {
+                
+                DispatchQueue.main.async {
+                    self.updateTrack(track)
+                }
+            }
+        })
+        
         Self.instance = self
     }
     
@@ -29,6 +39,13 @@ class PlaylistVC: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
         self.table.noteNumberOfRowsChanged()
         self.lblTracksSummary.stringValue = "\(self.playlist.size) track(s)"
         self.lblDurationSummary.stringValue = "\(secsToHMS(Int(round(self.playlist.duration))))"
+    }
+    
+    func updateTrack(_ track: Track) {
+        
+        if let row = playlist.indexOfTrack(track) {
+            table.reloadData(forRowIndexes: [row], columnIndexes: IndexSet(0..<table.numberOfColumns))
+        }
     }
     
     func numberOfRows(in tableView: NSTableView) -> Int {

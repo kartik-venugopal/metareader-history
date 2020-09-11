@@ -125,8 +125,8 @@ class ID3FFmpegParser: FFMpegMetadataParser {
     
     func getDuration(_ meta: FFmpegMetadataReaderContext) -> Double? {
         
-        if let durationStr = keys_duration.firstNonNilMappedValue({meta.id3Metadata.essentialFields[$0]}), let durationMsecs = Double(durationStr) {
-            return durationMsecs / 1000
+        if let durationStr = keys_duration.firstNonNilMappedValue({meta.id3Metadata.essentialFields[$0]}) {
+            return ParserUtils.parseDuration(durationStr)
         }
         
         return nil

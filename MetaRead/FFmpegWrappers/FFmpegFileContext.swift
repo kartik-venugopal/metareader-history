@@ -207,11 +207,10 @@ class FFmpegFileContext {
         
         // Compute the duration of the audio stream, trying various methods. See documentation of **duration**
         // for a detailed description.
-//        self.isRawAudioFile = AppConstants.SupportedTypes.rawAudioFileExtensions.contains(file.pathExtension.lowercased())
-        self.isRawAudioFile = false
+        self.isRawAudioFile = ["dts", "ac3", "aac"].contains(file.pathExtension.lowercased())
         self.bitRate = pointer.pointee.bit_rate
         
-        self.duration = (isRawAudioFile ? bruteForceDuration : bestAudioStream?.duration ?? estimatedDuration) ?? 0
+        self.duration = bestAudioStream?.duration ?? estimatedDuration ?? 0
         if self.bitRate == 0 {self.bitRate = duration == 0 ? 0 : Int64(round(Double(fileSize) / duration))}
     }
     

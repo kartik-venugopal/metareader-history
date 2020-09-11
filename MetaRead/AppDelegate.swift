@@ -59,21 +59,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
-        freopen(URL(fileURLWithPath: "/Volumes/MyData/Music/Aural-Test/metaRead.log").path.cString(using: String.Encoding.ascii)!, "a+", stderr)
+//        let regex = "[0-9]+:[0-9]+:[0-9]+[\\.]?[0-9]*"
+//        print("\nMatches?: \("12:45:23.345345".matches(regex))")
+//        print("\nMatches?: \("12:45:23".matches(regex))")
+//        print("\nMatches?: \("09-12-1983".matches("[0-9]+-[0-9]+-[0-9]+"))")
+//        print("\nDuration: \(ParserUtils.parseDuration("02:05:29.73838383") ?? -1)")
+        
+//        freopen(URL(fileURLWithPath: "/Volumes/MyData/Music/Aural-Test/metaRead.log").path.cString(using: String.Encoding.ascii)!, "a+", stderr)
         
         window.contentView?.addSubview(playlistVC.view)
-        
-//        let arr: [String] = ["sf2", "ghi", "75", "sdfsdf", "66"]
-//        let firstInt: Int? = arr.lazy.compactMap {
-//
-//            print("Trying \($0)\n")
-//            return Int($0)
-//
-//        }.first
-//
-//        print("--------")
-//
-//        print("\nResult: \(firstInt)")
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
