@@ -100,6 +100,10 @@ class WMParser: FFMpegMetadataParser {
         meta.wmMetadata.essentialFields[key_composer]
     }
     
+    func getLyricist(_ meta: FFmpegMetadataReaderContext) -> String? {
+        meta.wmMetadata.essentialFields[key_lyricist]
+    }
+    
     func getGenre(_ meta: FFmpegMetadataReaderContext) -> String? {
         
         if let genre = meta.wmMetadata.essentialFields[key_genre] {

@@ -135,9 +135,6 @@ class ITunesSpec {
         // @aut
         map[AVMetadataKey.iTunesMetadataKeyAuthor.rawValue] = "Author"
         
-        // @lyr
-        map[AVMetadataKey.iTunesMetadataKeyLyrics.rawValue] = "Lyrics"
-        
         // @cak
         map[AVMetadataKey.iTunesMetadataKeyAcknowledgement.rawValue] = "Acknowledgement"
         

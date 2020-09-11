@@ -80,6 +80,10 @@ class ApeV2Parser: FFMpegMetadataParser {
         meta.apeMetadata.essentialFields[key_composer]
     }
     
+    func getLyricist(_ meta: FFmpegMetadataReaderContext) -> String? {
+        meta.apeMetadata.essentialFields[key_lyricist] ?? meta.apeMetadata.essentialFields[key_originalLyricist]
+    }
+    
     func getGenre(_ meta: FFmpegMetadataReaderContext) -> String? {
         meta.apeMetadata.essentialFields[key_genre]
     }

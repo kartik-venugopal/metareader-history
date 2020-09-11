@@ -62,7 +62,8 @@ class FFMpegReader {
             track.album = nilIfEmpty(relevantParsers.firstNonNilMappedValue {$0.getAlbum(context)})
             track.genre = nilIfEmpty(relevantParsers.firstNonNilMappedValue {$0.getGenre(context)})
             track.year = relevantParsers.firstNonNilMappedValue {$0.getYear(context)}
-            track.composer = relevantParsers.firstNonNilMappedValue {$0.getComposer(context)}
+            track.composer = nilIfEmpty(relevantParsers.firstNonNilMappedValue {$0.getComposer(context)})
+            track.lyricist = nilIfEmpty(relevantParsers.firstNonNilMappedValue {$0.getLyricist(context)})
             
             var trackNumberAndTotal = relevantParsers.firstNonNilMappedValue {$0.getTrackNumber(context)}
             if let trackNum = trackNumberAndTotal?.number, trackNumberAndTotal?.total == nil,
@@ -93,14 +94,9 @@ class FFMpegReader {
                 } else {
                     
                     // Use brute force to compute duration
-                    
-                    NSLog("Computing brute force duration for track: \(track.defaultDisplayName)")
-                    
                     DispatchQueue.global(qos: .userInitiated).async {
                         
                         if let duration = FFmpegPacketTable(for: context.fileCtx)?.duration {
-                            
-                            NSLog("FINISHED computing brute force duration for track: \(track.defaultDisplayName) ... duration = \(duration)")
                             
                             track.duration = duration
                             

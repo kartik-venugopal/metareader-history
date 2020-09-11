@@ -34,6 +34,7 @@ class Track: Hashable {
     var genre: String?
     
     var composer: String?
+    var lyricist: String?
     
     var art: NSImage?
     
