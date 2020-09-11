@@ -46,7 +46,8 @@ class VorbisCommentParser: FFMpegMetadataParser {
     private let key_language = "language"
     private let key_compilation = "compilation"
     
-    private let essentialKeys: Set<String> = Set([key_title, key_artist, key_artists, key_album, key_genre, key_disc, key_totalDiscs, key_discTotal, key_track, key_trackTotal, key_totalTracks, key_lyrics]).union(keys_year)
+    private let essentialKeys: Set<String> = Set([key_title, key_album, key_originalAlbum, key_genre, key_composer, key_conductor, key_performer,
+    key_lyricist, key_originalLyricist, key_disc, key_totalDiscs, key_discTotal, key_track, key_trackTotal, key_totalTracks, key_lyrics]).union(keys_artist).union(keys_year)
     
     func mapTrack(_ meta: FFmpegMetadataReaderContext) {
         
@@ -77,6 +78,10 @@ class VorbisCommentParser: FFMpegMetadataParser {
     
     func getArtist(_ meta: FFmpegMetadataReaderContext) -> String? {
         keys_artist.firstNonNilMappedValue({meta.vorbisMetadata.essentialFields[$0]})
+    }
+    
+    func getAlbumArtist(_ meta: FFmpegMetadataReaderContext) -> String? {
+        meta.vorbisMetadata.essentialFields[key_albumArtist] ?? meta.vorbisMetadata.essentialFields[key_albumArtist2]
     }
     
     func getAlbum(_ meta: FFmpegMetadataReaderContext) -> String? {

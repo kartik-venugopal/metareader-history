@@ -92,10 +92,7 @@ class StringUtils {
     }
     
     static func cleanUpString(_ string: String) -> String {
-        
-        var cleanStr = string.removingPercentEncoding ?? string
-        cleanStr = cleanStr.replacingOccurrences(of: "\0", with: "")    // Remove null characters
-        return cleanStr
+        (string.removingPercentEncoding ?? string).replacingOccurrences(of: "\0", with: "")    // Remove null characters
     }
     
     // For a given piece of text rendered in a certain font, and a given line width, calculates the number of lines the text will occupy (e.g. in a multi-line label)

@@ -122,7 +122,8 @@ class ParserUtils {
             
         }
     }
-    
+
+    // TODO: Also handle strings like "mm-dd-yy"
     static func parseYear(_ item: AVMetadataItem) -> Int? {
         
         if let number = item.numberValue, number.intValue >= 1000, number.intValue <= 3000 {

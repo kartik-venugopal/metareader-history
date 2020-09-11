@@ -10,6 +10,7 @@ class ID3FFmpegParser: FFMpegMetadataParser {
     private let keys_title: [String] = [ID3_V24Spec.key_title, ID3_V22Spec.key_title, ID3_V1Spec.key_title].map {$0.lowercased()}
     
     private let keys_artist: [String] = [ID3_V24Spec.key_artist, ID3_V22Spec.key_artist, ID3_V1Spec.key_artist, ID3_V24Spec.key_originalArtist, ID3_V22Spec.key_originalArtist].map {$0.lowercased()}
+    private let keys_albumArtist: [String] = [ID3_V24Spec.key_albumArtist, ID3_V22Spec.key_albumArtist].map {$0.lowercased()}
     private let keys_album: [String] = [ID3_V24Spec.key_album, ID3_V22Spec.key_album, ID3_V1Spec.key_album, ID3_V24Spec.key_originalAlbum, ID3_V22Spec.key_originalAlbum].map {$0.lowercased()}
     private let keys_genre: [String] = [ID3_V24Spec.key_genre, ID3_V22Spec.key_genre, ID3_V1Spec.key_genre].map {$0.lowercased()}
     private let keys_composer: [String] = [ID3_V24Spec.key_composer, ID3_V22Spec.key_composer].map {$0.lowercased()}
@@ -73,6 +74,10 @@ class ID3FFmpegParser: FFMpegMetadataParser {
  
     func getArtist(_ meta: FFmpegMetadataReaderContext) -> String? {
         keys_artist.firstNonNilMappedValue {meta.id3Metadata.essentialFields[$0]}
+    }
+    
+    func getAlbumArtist(_ meta: FFmpegMetadataReaderContext) -> String? {
+        keys_albumArtist.firstNonNilMappedValue {meta.id3Metadata.essentialFields[$0]}
     }
     
     func getAlbum(_ meta: FFmpegMetadataReaderContext) -> String? {

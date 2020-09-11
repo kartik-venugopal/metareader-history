@@ -6,9 +6,10 @@ fileprivate let key_title = "title"
 fileprivate let key_artist = "artist"
 fileprivate let key_artists = "artists"
 fileprivate let key_albumArtist = "albumartist"
+fileprivate let key_albumArtist2 = "album_artist"
 fileprivate let key_originalArtist = "original artist"
 
-fileprivate let keys_artist: [String] = [key_artist, key_albumArtist, key_originalArtist, key_artists]
+fileprivate let keys_artist: [String] = [key_artist, key_albumArtist, key_albumArtist2, key_originalArtist, key_artists]
 
 fileprivate let key_album = "album"
 fileprivate let key_originalAlbum = "original album"
@@ -29,7 +30,9 @@ fileprivate let keys_year: [String] = ["year", "originaldate", "originalyear", "
 
 class ApeV2Parser: FFMpegMetadataParser {
 
-    private let essentialKeys: Set<String> = Set([key_title, key_artist, key_artists, key_album, key_genre, key_disc, key_track, key_lyrics]).union(keys_year)
+    private let essentialKeys: Set<String> = Set([key_title, key_album, key_originalAlbum, key_genre, key_composer, key_conductor, key_performer,
+                                                  key_lyricist, key_originalLyricist, key_disc, key_track, key_lyrics])
+                                                    .union(keys_artist).union(keys_year)
 
     private let key_language = "language"
     private let key_compilation = "compilation"
@@ -63,6 +66,10 @@ class ApeV2Parser: FFMpegMetadataParser {
     
     func getArtist(_ meta: FFmpegMetadataReaderContext) -> String? {
         keys_artist.firstNonNilMappedValue({meta.apeMetadata.essentialFields[$0]})
+    }
+    
+    func getAlbumArtist(_ meta: FFmpegMetadataReaderContext) -> String? {
+        meta.apeMetadata.essentialFields[key_albumArtist] ?? meta.apeMetadata.essentialFields[key_albumArtist2]
     }
     
     func getAlbum(_ meta: FFmpegMetadataReaderContext) -> String? {

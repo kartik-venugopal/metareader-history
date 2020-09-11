@@ -11,6 +11,8 @@ protocol AVAssetParser {
     
     func getArtist(_ meta: AVFMetadata) -> String?
     
+    func getAlbumArtist(_ meta: AVFMetadata) -> String?
+    
     func getAlbum(_ meta: AVFMetadata) -> String?
     
     func getComposer(_ meta: AVFMetadata) -> String?
@@ -35,6 +37,8 @@ protocol AVAssetParser {
 }
 
 extension AVAssetParser {
+    
+    func getAlbumArtist(_ meta: AVFMetadata) -> String? {nil}
     
     func getDuration(_ meta: AVFMetadata) -> Double? {nil}
     
@@ -83,13 +87,13 @@ class AVFMetadata {
                     iTunes[key] = item
                     
                 case .common:
-                
+                    
                     common[key] = item
                     
                 default:
                     
                     // iTunes long format
-                    if keySpace.rawValue.lowercased() == "itlk" {
+                    if keySpace.rawValue.lowercased() == ITunesSpec.longForm_keySpaceID {
                         iTunes[key] = item
                     }
                 }
@@ -104,7 +108,7 @@ class AVFMetadata {
         
         switch fileExt {
             
-        case "m4a":
+        case "m4a", "m4b", "aac", "alac":
             
             keySpaces.append(.iTunes)
             

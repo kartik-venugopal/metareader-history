@@ -68,6 +68,10 @@ class CommonFFMpegMetadataParser: FFMpegMetadataParser {
         meta.commonMetadata.essentialFields[key_artist] ?? meta.commonMetadata.essentialFields[key_albumArtist]
     }
     
+    func getAlbumArtist(_ meta: FFmpegMetadataReaderContext) -> String? {
+        meta.commonMetadata.essentialFields[key_albumArtist]
+    }
+    
     func getAlbum(_ meta: FFmpegMetadataReaderContext) -> String? {
         meta.commonMetadata.essentialFields[key_album]
     }

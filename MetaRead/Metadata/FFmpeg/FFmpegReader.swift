@@ -58,6 +58,7 @@ class FFMpegReader {
             
             track.title = nilIfEmpty(relevantParsers.firstNonNilMappedValue {$0.getTitle(context)})
             track.artist = nilIfEmpty(relevantParsers.firstNonNilMappedValue {$0.getArtist(context)})
+            track.albumArtist = nilIfEmpty(relevantParsers.firstNonNilMappedValue {$0.getAlbumArtist(context)})
             track.album = nilIfEmpty(relevantParsers.firstNonNilMappedValue {$0.getAlbum(context)})
             track.genre = nilIfEmpty(relevantParsers.firstNonNilMappedValue {$0.getGenre(context)})
             track.year = relevantParsers.firstNonNilMappedValue {$0.getYear(context)}

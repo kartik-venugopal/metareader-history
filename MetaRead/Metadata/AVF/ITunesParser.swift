@@ -38,6 +38,10 @@ class ITunesParser: AVAssetParser {
         (keys_artist.firstNonNilMappedValue {meta.iTunes[$0]})?.stringValue
     }
     
+    func getAlbumArtist(_ meta: AVFMetadata) -> String? {
+        meta.iTunes[ITunesSpec.key_albumArtist]?.stringValue
+    }
+    
     func getAlbum(_ meta: AVFMetadata) -> String? {
         (keys_album.firstNonNilMappedValue {meta.iTunes[$0]})?.stringValue
     }

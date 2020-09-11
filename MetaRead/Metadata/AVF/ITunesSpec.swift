@@ -4,6 +4,8 @@ class ITunesSpec {
     
     static let keySpace: String = AVMetadataKeySpace.iTunes.rawValue
     static let longForm_keySpaceID: String = "itlk"
+    
+    // TODO: Should there be a dot at the end of this prefix ???
     private static let iTunesPrefix: String = "com.apple.itunes"
     
     static let key_title = AVMetadataKey.iTunesMetadataKeySongName.rawValue
@@ -222,6 +224,8 @@ class ITunesSpec {
         map["encoding"] = "Encoder Settings"
         
         map["encodingparams"] = "Encoding Parameters"
+        
+        map["encoding params"] = "Encoding Parameters"
         
         map["encodingtime"] = "Encoding Time"
         

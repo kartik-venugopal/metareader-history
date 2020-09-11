@@ -42,27 +42,12 @@ fileprivate let key_isCompilation = "iscompilation"
 
 fileprivate let key_language = "language"
 
-// Used for parsing "Encoding time" field
-//fileprivate let fileTime_baseTime: Date = {
-//
-//    var calendar = Calendar(identifier: .gregorian)
-//    let components = DateComponents(year: 1601, month: 1, day: 1, hour: 0, minute: 0, second: 0)
-//    return calendar.date(from: components)!
-//}()
-
-//fileprivate let dateFormatter: DateFormatter = {
-//   
-//    let formatter = DateFormatter()
-//    formatter.dateFormat = "MMMM dd, yyyy  'at'  hh:mm:ss a"
-//    return formatter
-//}()
-
 class WMParser: FFMpegMetadataParser {
     
     private let keyPrefix = "wm/"
     
-    private let essentialKeys: Set<String> = [key_title, key_artist, key_originalArtist, key_albumArtist, key_album, key_originalAlbum, key_genre, key_genreId,
-                                              key_disc, key_discTotal, key_track, key_track_zeroBased, key_trackTotal, key_year, key_originalYear, key_lyrics]
+    private let essentialKeys: Set<String> = Set([key_title, key_album, key_originalAlbum, key_genre, key_genreId,
+        key_disc, key_discTotal, key_track, key_track_zeroBased, key_trackTotal, key_year, key_originalYear, key_lyrics]).union(keys_artist)
     
     private let ignoredKeys: Set<String> = ["wmfsdkneeded"]
     
@@ -101,6 +86,10 @@ class WMParser: FFMpegMetadataParser {
     
     func getArtist(_ meta: FFmpegMetadataReaderContext) -> String? {
         keys_artist.firstNonNilMappedValue({meta.wmMetadata.essentialFields[$0]})
+    }
+    
+    func getAlbumArtist(_ meta: FFmpegMetadataReaderContext) -> String? {
+        meta.wmMetadata.essentialFields[key_albumArtist]
     }
     
     func getAlbum(_ meta: FFmpegMetadataReaderContext) -> String? {
@@ -359,3 +348,18 @@ class WMParser: FFMpegMetadataParser {
         return nil
     }
 }
+
+// Used for parsing "Encoding time" field
+//fileprivate let fileTime_baseTime: Date = {
+//
+//    var calendar = Calendar(identifier: .gregorian)
+//    let components = DateComponents(year: 1601, month: 1, day: 1, hour: 0, minute: 0, second: 0)
+//    return calendar.date(from: components)!
+//}()
+
+//fileprivate let dateFormatter: DateFormatter = {
+//
+//    let formatter = DateFormatter()
+//    formatter.dateFormat = "MMMM dd, yyyy  'at'  hh:mm:ss a"
+//    return formatter
+//}()

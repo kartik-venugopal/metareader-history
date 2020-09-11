@@ -35,7 +35,7 @@ struct ID3_V22Spec {
     
     static let key_artist = "TP1"
     static let key_originalArtist = "TOA"
-    static let key_band = "TP2"
+    static let key_albumArtist = "TP2"
     static let key_album = "TAL"
     static let key_originalAlbum = "TOT"
     static let key_composer = "TCM"
@@ -64,7 +64,7 @@ struct ID3_V22Spec {
     static let key_UFI: String = "UFI"
     static let key_mediaType: String = "TMT"
     
-    static let essentialFieldKeys: [String] = [key_duration, key_title, key_artist, key_originalArtist, key_album, key_originalAlbum, key_genre, key_composer, key_conductor, key_lyricist, key_originalLyricist, key_discNumber, key_trackNumber, key_year, key_originalReleaseYear, key_date, key_art]
+    static let essentialFieldKeys: [String] = [key_duration, key_title, key_artist, key_originalArtist, key_albumArtist, key_album, key_originalAlbum, key_genre, key_composer, key_conductor, key_lyricist, key_originalLyricist, key_discNumber, key_trackNumber, key_year, key_originalReleaseYear, key_date, key_art]
     
     static let genericFields: [String: String] = {
         
@@ -152,6 +152,9 @@ struct ID3_V24Spec {
     // TPE1
     static let key_artist = AVMetadataKey.id3MetadataKeyLeadPerformer.rawValue
     
+    // TPE2
+    static let key_albumArtist = AVMetadataKey.id3MetadataKeyBand.rawValue
+    
     // TOPE
     static let key_originalArtist = AVMetadataKey.id3MetadataKeyOriginalArtist.rawValue
     
@@ -218,7 +221,7 @@ struct ID3_V24Spec {
     
     static let key_mediaType: String = "TMED"
     
-    static let essentialFieldKeys: [String] = [key_duration, key_title, key_artist, key_originalArtist, key_album, key_originalAlbum, key_genre, key_composer, key_conductor, key_lyricist, key_originalLyricist, key_discNumber, key_trackNumber, key_year, key_originalReleaseYear, key_date, key_art]
+    static let essentialFieldKeys: [String] = [key_duration, key_title, key_artist, key_originalArtist, key_albumArtist, key_album, key_originalAlbum, key_genre, key_composer, key_conductor, key_lyricist, key_originalLyricist, key_discNumber, key_trackNumber, key_year, key_originalReleaseYear, key_date, key_art]
     
     static let genericFields: [String: String] = {
         
@@ -271,9 +274,6 @@ struct ID3_V24Spec {
         
         // PCNT
         map[AVMetadataKey.id3MetadataKeyPlayCounter.rawValue] = "Play Counter"
-        
-        // TPE2
-        map[AVMetadataKey.id3MetadataKeyBand.rawValue] = "Band"
         
         // POPM
         map[AVMetadataKey.id3MetadataKeyPopularimeter.rawValue] = "Popularimeter"

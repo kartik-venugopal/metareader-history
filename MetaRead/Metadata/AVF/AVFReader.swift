@@ -21,6 +21,7 @@ class AVFReader {
         
         track.title = parsers.firstNonNilMappedValue {$0.getTitle(meta)}
         track.artist = parsers.firstNonNilMappedValue {$0.getArtist(meta)}
+        track.albumArtist = parsers.firstNonNilMappedValue {$0.getAlbumArtist(meta)}
         track.album = parsers.firstNonNilMappedValue {$0.getAlbum(meta)}
         track.genre = parsers.firstNonNilMappedValue {$0.getGenre(meta)}
         track.year = parsers.firstNonNilMappedValue {$0.getYear(meta)}

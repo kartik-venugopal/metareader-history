@@ -10,6 +10,8 @@ class ID3Parser: AVAssetParser {
     private let keys_title: [String] = [ID3_V24Spec.key_title, ID3_V22Spec.key_title, ID3_V1Spec.key_title]
     
     private let keys_artist: [String] = [ID3_V24Spec.key_artist, ID3_V22Spec.key_artist, ID3_V1Spec.key_artist, ID3_V24Spec.key_originalArtist, ID3_V22Spec.key_originalArtist]
+    private let keys_albumArtist: [String] = [ID3_V24Spec.key_albumArtist, ID3_V22Spec.key_albumArtist]
+    
     private let keys_album: [String] = [ID3_V24Spec.key_album, ID3_V22Spec.key_album, ID3_V1Spec.key_album, ID3_V24Spec.key_originalAlbum, ID3_V22Spec.key_originalAlbum]
     private let keys_genre: [String] = [ID3_V24Spec.key_genre, ID3_V22Spec.key_genre, ID3_V1Spec.key_genre]
     private let keys_composer: [String] = [ID3_V24Spec.key_composer, ID3_V22Spec.key_composer]
@@ -43,6 +45,10 @@ class ID3Parser: AVAssetParser {
     
     func getArtist(_ meta: AVFMetadata) -> String? {
         (keys_artist.firstNonNilMappedValue {meta.id3[$0]})?.stringValue
+    }
+    
+    func getAlbumArtist(_ meta: AVFMetadata) -> String? {
+        (keys_albumArtist.firstNonNilMappedValue {meta.id3[$0]})?.stringValue
     }
     
     func getAlbum(_ meta: AVFMetadata) -> String? {

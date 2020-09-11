@@ -28,6 +28,8 @@ class Track: Hashable {
         return title
     }
     
+    var albumArtist: String?
+    
     var album: String?
     var genre: String?
     
@@ -106,17 +108,19 @@ extension AVMetadataItem {
     
     var keyAsString: String? {
         
-        // TODO: Revisit this
-        
         if let key = self.key as? String {
-            return StringUtils.cleanUpString(key).trim()
+            return key
         }
         
         if let id = self.identifier {
             
+            // This is required for .iTunes keyspace items ("itsk").
+            
             let tokens = id.rawValue.split(separator: "/")
             if tokens.count == 2 {
-                return StringUtils.cleanUpString(String(tokens[1].trim().replacingOccurrences(of: "%A9", with: "@"))).trim()
+                
+                let key = (tokens[1].replacingOccurrences(of: "%A9", with: "@").trim())
+                return key.removingPercentEncoding ?? key
             }
         }
         
