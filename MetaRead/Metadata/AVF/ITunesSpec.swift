@@ -72,6 +72,8 @@ class ITunesSpec {
     
     static let key_normalization = "itunnorm"
     static let key_soundCheck = "itunsmpb"
+    
+    // tmpo
     static let key_bpm = AVMetadataKey.iTunesMetadataKeyBeatsPerMin.rawValue
     
     static let key_duration = "length"
@@ -122,9 +124,6 @@ class ITunesSpec {
         
         // rtng
         map[AVMetadataKey.iTunesMetadataKeyContentRating.rawValue] = "Content Rating"
-        
-        // tmpo
-        map[AVMetadataKey.iTunesMetadataKeyBeatsPerMin.rawValue] = "BPM (Beats Per Minute)"
         
         // @ard
         map[AVMetadataKey.iTunesMetadataKeyArtDirector.rawValue] = "Art Director"

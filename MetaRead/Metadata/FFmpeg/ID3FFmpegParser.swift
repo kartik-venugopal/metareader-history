@@ -22,6 +22,8 @@ class ID3FFmpegParser: FFMpegMetadataParser {
     
     private let keys_year: [String] = [ID3_V24Spec.key_year, ID3_V22Spec.key_year, ID3_V24Spec.key_originalReleaseYear, ID3_V22Spec.key_originalReleaseYear, ID3_V24Spec.key_date, ID3_V22Spec.key_date].map {$0.lowercased()}
     
+    private let keys_bpm: [String] = [ID3_V24Spec.key_bpm, ID3_V22Spec.key_bpm].map {$0.lowercased()}
+    
     private let keys_lyrics: [String] = [ID3_V24Spec.key_lyrics, ID3_V22Spec.key_lyrics, ID3_V24Spec.key_syncLyrics, ID3_V22Spec.key_syncLyrics].map {$0.lowercased()}
     private let keys_art: [String] = [ID3_V24Spec.key_art, ID3_V22Spec.key_art].map {$0.lowercased()}
     
@@ -128,6 +130,15 @@ class ID3FFmpegParser: FFMpegMetadataParser {
         
         if let yearString = keys_year.firstNonNilMappedValue({meta.id3Metadata.essentialFields[$0]}) {
             return ParserUtils.parseYear(yearString)
+        }
+        
+        return nil
+    }
+    
+    func getBPM(_ meta: FFmpegMetadataReaderContext) -> Int? {
+        
+        if let bpmString = keys_bpm.firstNonNilMappedValue({meta.id3Metadata.essentialFields[$0]}) {
+            return ParserUtils.parseBPM(bpmString)
         }
         
         return nil

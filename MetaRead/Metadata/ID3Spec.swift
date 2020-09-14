@@ -51,6 +51,8 @@ struct ID3_V22Spec {
     static let key_originalReleaseYear = "TOR"
     static let key_date = "TDA"
     
+    static let key_bpm = "TBP"
+    
     static let key_lyrics = "ULT"
     static let key_syncLyrics = "SLT"
     
@@ -64,7 +66,7 @@ struct ID3_V22Spec {
     static let key_UFI: String = "UFI"
     static let key_mediaType: String = "TMT"
     
-    static let essentialFieldKeys: [String] = [key_duration, key_title, key_artist, key_originalArtist, key_albumArtist, key_album, key_originalAlbum, key_genre, key_composer, key_conductor, key_lyricist, key_originalLyricist, key_discNumber, key_trackNumber, key_year, key_originalReleaseYear, key_date, key_art]
+    static let essentialFieldKeys: [String] = [key_duration, key_title, key_artist, key_originalArtist, key_albumArtist, key_album, key_originalAlbum, key_genre, key_composer, key_conductor, key_lyricist, key_originalLyricist, key_discNumber, key_trackNumber, key_year, key_originalReleaseYear, key_date, key_bpm, key_art]
     
     static let genericFields: [String: String] = {
         
@@ -94,7 +96,6 @@ struct ID3_V22Spec {
         map["RVA"] = "Relative Volume Adjustment"
         map["REV"] = "Reverb"
         map["STC"] = "Synchronized Tempo Codes"
-        map["TBP"] = "BPM (Beats Per Minute)"
         map["TCP"] = "Part of a Compilation?"
         map["TCR"] = "Copyright"
         map["TDY"] = "Playlist Delay"
@@ -188,6 +189,9 @@ struct ID3_V24Spec {
     // TYER
     static let key_year = AVMetadataKey.id3MetadataKeyYear.rawValue
     
+    // TBPM
+    static let key_bpm = AVMetadataKey.id3MetadataKeyBeatsPerMinute.rawValue
+    
     // TORY
     static let key_originalReleaseYear = AVMetadataKey.id3MetadataKeyOriginalReleaseYear.rawValue
     
@@ -221,7 +225,7 @@ struct ID3_V24Spec {
     
     static let key_mediaType: String = "TMED"
     
-    static let essentialFieldKeys: [String] = [key_duration, key_title, key_artist, key_originalArtist, key_albumArtist, key_album, key_originalAlbum, key_genre, key_composer, key_conductor, key_lyricist, key_originalLyricist, key_discNumber, key_trackNumber, key_year, key_originalReleaseYear, key_date, key_art]
+    static let essentialFieldKeys: [String] = [key_duration, key_title, key_artist, key_originalArtist, key_albumArtist, key_album, key_originalAlbum, key_genre, key_composer, key_conductor, key_lyricist, key_originalLyricist, key_discNumber, key_trackNumber, key_year, key_originalReleaseYear, key_date, key_bpm, key_art]
     
     static let genericFields: [String: String] = {
         
@@ -301,9 +305,6 @@ struct ID3_V24Spec {
         
         // SYTC
         map[AVMetadataKey.id3MetadataKeySynchronizedTempoCodes.rawValue] = "Synchronized Tempo Codes"
-        
-        // TBPM
-        map[AVMetadataKey.id3MetadataKeyBeatsPerMinute.rawValue] = "BPM (Beats Per Minute)"
         
         // TCOP
         map[AVMetadataKey.id3MetadataKeyCopyright.rawValue] = "Copyright"

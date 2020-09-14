@@ -40,11 +40,16 @@ class FFMpegReader {
         ]
     }
     
-    private func nilIfEmpty(_ string: String?) -> String? {
-        return StringUtils.isStringEmpty(string) ? nil : string
+    private func cleanUp(_ string: String?) -> String? {
+        
+        if let theTrimmedString = string?.trim() {
+            return theTrimmedString.isEmpty ? nil : theTrimmedString
+        }
+        
+        return nil
     }
     
-    func loadMetadata(for track: Track) {
+    func loadEssentialMetadata(for track: Track) {
         
         do {
             
@@ -62,16 +67,17 @@ class FFMpegReader {
             
             let relevantParsers = allParsers.filter {$0.hasMetadataForTrack(meta)}
             
-            track.title = nilIfEmpty(relevantParsers.firstNonNilMappedValue {$0.getTitle(meta)})
-            track.artist = nilIfEmpty(relevantParsers.firstNonNilMappedValue {$0.getArtist(meta)})
-            track.albumArtist = nilIfEmpty(relevantParsers.firstNonNilMappedValue {$0.getAlbumArtist(meta)})
-            track.album = nilIfEmpty(relevantParsers.firstNonNilMappedValue {$0.getAlbum(meta)})
-            track.genre = nilIfEmpty(relevantParsers.firstNonNilMappedValue {$0.getGenre(meta)})
+            track.title = cleanUp(relevantParsers.firstNonNilMappedValue {$0.getTitle(meta)})
+            track.artist = cleanUp(relevantParsers.firstNonNilMappedValue {$0.getArtist(meta)})
+            track.albumArtist = cleanUp(relevantParsers.firstNonNilMappedValue {$0.getAlbumArtist(meta)})
+            track.album = cleanUp(relevantParsers.firstNonNilMappedValue {$0.getAlbum(meta)})
+            track.genre = cleanUp(relevantParsers.firstNonNilMappedValue {$0.getGenre(meta)})
             track.year = relevantParsers.firstNonNilMappedValue {$0.getYear(meta)}
-            track.composer = nilIfEmpty(relevantParsers.firstNonNilMappedValue {$0.getComposer(meta)})
-            track.conductor = nilIfEmpty(relevantParsers.firstNonNilMappedValue {$0.getConductor(meta)})
-            track.performer = nilIfEmpty(relevantParsers.firstNonNilMappedValue {$0.getPerformer(meta)})
-            track.lyricist = nilIfEmpty(relevantParsers.firstNonNilMappedValue {$0.getLyricist(meta)})
+            track.bpm = relevantParsers.firstNonNilMappedValue {$0.getBPM(meta)}
+            track.composer = cleanUp(relevantParsers.firstNonNilMappedValue {$0.getComposer(meta)})
+            track.conductor = cleanUp(relevantParsers.firstNonNilMappedValue {$0.getConductor(meta)})
+            track.performer = cleanUp(relevantParsers.firstNonNilMappedValue {$0.getPerformer(meta)})
+            track.lyricist = cleanUp(relevantParsers.firstNonNilMappedValue {$0.getLyricist(meta)})
             
             track.isDRMProtected = relevantParsers.firstNonNilMappedValue {$0.isDRMProtected(meta)} ?? false
             
@@ -133,5 +139,15 @@ class FFMpegReader {
         } catch {
             NSLog("Track.init(): Couldn't init FFmpeg file context for '\(track.file.lastPathComponent)': \(error)")
         }
+    }
+    
+    func loadPlaybackMetadata(for track: Track) {
+        
+        
+    }
+    
+    func loadSecondaryMetadata(for track: Track) {
+        
+        
     }
 }

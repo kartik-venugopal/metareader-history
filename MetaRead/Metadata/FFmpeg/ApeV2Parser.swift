@@ -28,6 +28,8 @@ fileprivate let key_lyrics = "lyrics"
 
 fileprivate let keys_year: [String] = ["year", "originaldate", "originalyear", "original year", "originalreleasedate", "original_year"]
 
+fileprivate let key_bpm: String = "bpm"
+
 class ApeV2Parser: FFMpegMetadataParser {
 
     private let essentialKeys: Set<String> = Set([key_title, key_album, key_originalAlbum, key_genre, key_composer, key_conductor, key_performer,
@@ -123,6 +125,15 @@ class ApeV2Parser: FFMpegMetadataParser {
         return nil
     }
     
+    func getBPM(_ meta: FFmpegMetadataReaderContext) -> Int? {
+        
+        if let bpmString = meta.apeMetadata.essentialFields[key_bpm] {
+            return ParserUtils.parseBPM(bpmString)
+        }
+        
+        return nil
+    }
+    
     func getLyrics(_ meta: FFmpegMetadataReaderContext) -> String? {
         
         if let lyrics = meta.apeMetadata.essentialFields[key_lyrics] {
@@ -185,7 +196,6 @@ class ApeV2Parser: FFMpegMetadataParser {
         map["grouping"] = "Grouping"
         map["discsubtitle"] = "Disc Subtitle"
         map["compilation"] = "Part of a Compilation?"
-        map["bpm"] = "BPM"
         map["mood"] = "Mood"
         map["catalognumber"] = "Catalog Number"
         map["releasecountry"] = "Release Country"

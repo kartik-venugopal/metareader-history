@@ -35,6 +35,8 @@ protocol AVAssetParser {
     
     func getYear(_ meta: AVFMetadata) -> Int?
     
+    func getBPM(_ meta: AVFMetadata) -> Int?
+    
 //    func getGenericMetadata(_ meta: AVFMetadata) -> [String: String]
     
     // ----------- Chapter-related functions
@@ -54,8 +56,6 @@ extension AVAssetParser {
     
     func getLyrics(_ meta: AVFMetadata) -> String? {nil}
     
-    func getYear(_ meta: AVFMetadata) -> Int? {nil}
-    
     func getComposer(_ meta: AVFMetadata) -> String? {nil}
     
     func getConductor(_ meta: AVFMetadata) -> String? {nil}
@@ -63,6 +63,10 @@ extension AVAssetParser {
     func getPerformer(_ meta: AVFMetadata) -> String? {nil}
     
     func getLyricist(_ meta: AVFMetadata) -> String? {nil}
+    
+    func getYear(_ meta: AVFMetadata) -> Int? {nil}
+    
+    func getBPM(_ meta: AVFMetadata) -> Int? {nil}
 }
 
 class AVFMetadata {
@@ -77,6 +81,8 @@ class AVFMetadata {
     var iTunes: [String: AVMetadataItem] = [:]
     
     var keySpaces: [AVMetadataKeySpace] = []
+    
+    var genericMetadata: OrderedMetadataMap = OrderedMetadataMap()
     
     init(file: URL) {
         

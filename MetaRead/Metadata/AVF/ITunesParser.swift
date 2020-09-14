@@ -147,4 +147,13 @@ class ITunesParser: AVAssetParser {
         
         return nil
     }
+    
+    func getBPM(_ meta: AVFMetadata) -> Int? {
+        
+        if let item = meta.iTunes[ITunesSpec.key_bpm] {
+            return ParserUtils.parseBPM(item)
+        }
+        
+        return nil
+    }
 }

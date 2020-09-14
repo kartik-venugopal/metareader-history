@@ -38,6 +38,8 @@ protocol FFMpegMetadataParser {
     
     func getDuration(_ meta: FFmpegMetadataReaderContext) -> Double?
     
+    func getBPM(_ meta: FFmpegMetadataReaderContext) -> Int?
+    
     func isDRMProtected(_ meta: FFmpegMetadataReaderContext) -> Bool?
     
 //    func getGenericMetadata(_ meta: FFmpegMetadataReaderContext) -> [String: String]
@@ -66,6 +68,8 @@ extension FFMpegMetadataParser {
     func getLyrics(_ meta: FFmpegMetadataReaderContext) -> String? {nil}
     
     func getYear(_ meta: FFmpegMetadataReaderContext) -> Int? {nil}
+    
+    func getBPM(_ meta: FFmpegMetadataReaderContext) -> Int? {nil}
     
     func getDiscNumber(_ meta: FFmpegMetadataReaderContext) -> (number: Int?, total: Int?)? {nil}
     

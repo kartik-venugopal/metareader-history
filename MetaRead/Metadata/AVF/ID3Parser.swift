@@ -22,6 +22,8 @@ class ID3Parser: AVAssetParser {
     
     private let keys_year: [String] = [ID3_V24Spec.key_year, ID3_V22Spec.key_year, ID3_V24Spec.key_originalReleaseYear, ID3_V22Spec.key_originalReleaseYear, ID3_V24Spec.key_date, ID3_V22Spec.key_date]
     
+    private let keys_bpm: [String] = [ID3_V24Spec.key_bpm, ID3_V22Spec.key_bpm]
+    
     private let keys_lyrics: [String] = [ID3_V24Spec.key_lyrics, ID3_V22Spec.key_lyrics, ID3_V24Spec.key_syncLyrics, ID3_V22Spec.key_syncLyrics]
     private let keys_art: [String] = [ID3_V24Spec.key_art, ID3_V22Spec.key_art]
     
@@ -114,6 +116,15 @@ class ID3Parser: AVAssetParser {
         
         if let item = keys_year.firstNonNilMappedValue({meta.id3[$0]}) {
             return ParserUtils.parseYear(item)
+        }
+        
+        return nil
+    }
+    
+    func getBPM(_ meta: AVFMetadata) -> Int? {
+        
+        if let item = keys_bpm.firstNonNilMappedValue({meta.id3[$0]}) {
+            return ParserUtils.parseBPM(item)
         }
         
         return nil

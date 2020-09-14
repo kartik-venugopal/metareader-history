@@ -87,10 +87,12 @@ class Track: Hashable {
     
     var year: Int?
     
+    var bpm: Int?
+    
     var lyrics: String?
     
     // Generic metadata
-    var genericMetadata: [String: String] = [:]
+    var genericMetadata: OrderedMetadataMap = OrderedMetadataMap()
     
     init(_ file: URL) {
         

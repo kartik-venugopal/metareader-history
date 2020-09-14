@@ -34,6 +34,8 @@ fileprivate let key_trackTotal = "tracktotal"
 fileprivate let key_year = "year"
 fileprivate let key_originalYear = "originalreleaseyear"
 
+fileprivate let key_bpm = "beatsperminute"
+
 fileprivate let key_lyrics = "lyrics"
 fileprivate let key_syncLyrics = "lyrics_synchronised"
 
@@ -180,6 +182,15 @@ class WMParser: FFMpegMetadataParser {
         return nil
     }
     
+    func getBPM(_ meta: FFmpegMetadataReaderContext) -> Int? {
+        
+        if let bpmString = meta.wmMetadata.essentialFields[key_bpm] {
+            return ParserUtils.parseBPM(bpmString)
+        }
+        
+        return nil
+    }
+    
     func getLyrics(_ meta: FFmpegMetadataReaderContext) -> String? {
         
         for key in [key_lyrics, key_syncLyrics] {
@@ -247,8 +258,6 @@ class WMParser: FFMpegMetadataParser {
         map["authorurl"] = "Official Artist Site Url"
         
         map["barcode"] = "Barcode"
-        
-        map["beatsperminute"] = "BPM (Beats Per Minute)"
         
         map["catalogno"] = "Catalog Number"
         

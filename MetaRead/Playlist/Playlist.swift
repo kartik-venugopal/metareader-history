@@ -98,7 +98,7 @@ class Playlist {
             
             BlockOperation {
                 
-                track.isNativelySupported ? AVFReader.instance.loadMetadata(for: track) : FFMpegReader.instance.loadMetadata(for: track)
+                track.isNativelySupported ? AVFReader.instance.loadEssentialMetadata(for: track) : FFMpegReader.instance.loadEssentialMetadata(for: track)
             }
             
         }, waitUntilFinished: true)

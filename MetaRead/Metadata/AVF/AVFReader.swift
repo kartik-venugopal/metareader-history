@@ -92,7 +92,16 @@ class AVFReader {
         return nil
     }
     
-    func loadMetadata(for track: Track) {
+    private func cleanUp(_ string: String?) -> String? {
+        
+        if let theTrimmedString = string?.trim() {
+            return theTrimmedString.isEmpty ? nil : theTrimmedString
+        }
+        
+        return nil
+    }
+    
+    func loadEssentialMetadata(for track: Track) {
         
         if let kindOfFile = Self.kindOfFile(path: track.file.path, fileExt: track.fileExt) {
             track.fileType = kindOfFile
@@ -106,16 +115,19 @@ class AVFReader {
         
         let parsers = meta.keySpaces.compactMap {parsersMap[$0]}
 
-        track.title = parsers.firstNonNilMappedValue {$0.getTitle(meta)}
-        track.artist = parsers.firstNonNilMappedValue {$0.getArtist(meta)}
-        track.albumArtist = parsers.firstNonNilMappedValue {$0.getAlbumArtist(meta)}
-        track.album = parsers.firstNonNilMappedValue {$0.getAlbum(meta)}
-        track.genre = parsers.firstNonNilMappedValue {$0.getGenre(meta)}
+        track.title = cleanUp(parsers.firstNonNilMappedValue {$0.getTitle(meta)})
+        track.artist = cleanUp(parsers.firstNonNilMappedValue {$0.getArtist(meta)})
+        track.albumArtist = cleanUp(parsers.firstNonNilMappedValue {$0.getAlbumArtist(meta)})
+        track.album = cleanUp(parsers.firstNonNilMappedValue {$0.getAlbum(meta)})
+        track.genre = cleanUp(parsers.firstNonNilMappedValue {$0.getGenre(meta)})
+        
+        track.composer = cleanUp(parsers.firstNonNilMappedValue {$0.getComposer(meta)})
+        track.conductor = cleanUp(parsers.firstNonNilMappedValue {$0.getConductor(meta)})
+        track.performer = cleanUp(parsers.firstNonNilMappedValue{$0.getPerformer(meta)})
+        track.lyricist = cleanUp(parsers.firstNonNilMappedValue {$0.getLyricist(meta)})
+        
         track.year = parsers.firstNonNilMappedValue {$0.getYear(meta)}
-        track.composer = parsers.firstNonNilMappedValue {$0.getComposer(meta)}
-        track.conductor = parsers.firstNonNilMappedValue {$0.getConductor(meta)}
-        track.performer = parsers.firstNonNilMappedValue{$0.getPerformer(meta)}
-        track.lyricist = parsers.firstNonNilMappedValue {$0.getLyricist(meta)}
+        track.bpm = parsers.firstNonNilMappedValue {$0.getBPM(meta)}
         
         let trackNum: (number: Int?, total: Int?)? = parsers.firstNonNilMappedValue {$0.getTrackNumber(meta)}
         track.trackNumber = trackNum?.number
@@ -148,6 +160,33 @@ class AVFReader {
                 }
             }
         }
+    }
+    
+    // Chapters
+    func loadPlaybackMetadata(for track: Track) {
+        
+        
+    }
+    
+    // Lyrics + generic KV pairs
+    func loadSecondaryMetadata(for track: Track) {
+        
+        let meta = AVFMetadata(file: track.file)
+        let parsers = meta.keySpaces.compactMap {parsersMap[$0]}
+        
+        if let lyrics = meta.asset.lyrics {
+            track.lyrics = lyrics
+        } else {
+            track.lyrics = parsers.firstNonNilMappedValue {$0.getLyrics(meta)}
+        }
+        
+//        for parser in parsers {
+//            
+//            let map = parser.getGenericMetadata(meta)
+//            for (key, value) in map {
+//                track.genericMetadata[key] = value
+//            }
+//        }
     }
 }
 

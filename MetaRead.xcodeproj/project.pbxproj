@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3ED656E9250F4B72007C7C97 /* OrderedMetadataMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED656E8250F4B72007C7C97 /* OrderedMetadataMap.swift */; };
 		3EDE552D250A551A002AE4D6 /* FFmpegMetadataDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDE551C250A5519002AE4D6 /* FFmpegMetadataDictionary.swift */; };
 		3EDE552E250A551A002AE4D6 /* FFmpegFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDE551D250A5519002AE4D6 /* FFmpegFrame.swift */; };
 		3EDE552F250A551A002AE4D6 /* FFmpegPacketTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDE551E250A5519002AE4D6 /* FFmpegPacketTable.swift */; };
@@ -80,6 +81,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3ED656E8250F4B72007C7C97 /* OrderedMetadataMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedMetadataMap.swift; sourceTree = "<group>"; };
 		3EDE54EB250A544E002AE4D6 /* MetaRead.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MetaRead.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EDE551C250A5519002AE4D6 /* FFmpegMetadataDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FFmpegMetadataDictionary.swift; sourceTree = "<group>"; };
 		3EDE551D250A5519002AE4D6 /* FFmpegFrame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FFmpegFrame.swift; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 				3EDE5547250A552B002AE4D6 /* ID3Spec.swift */,
 				3EDE554D250A552C002AE4D6 /* ParserUtils.swift */,
 				3EDE5548250A552B002AE4D6 /* StringUtils.swift */,
+				3ED656E8250F4B72007C7C97 /* OrderedMetadataMap.swift */,
 			);
 			path = Metadata;
 			sourceTree = "<group>";
@@ -376,6 +379,7 @@
 				3EDE552F250A551A002AE4D6 /* FFmpegPacketTable.swift in Sources */,
 				3EDE5569250A5541002AE4D6 /* Track.swift in Sources */,
 				3EDE5560250A552C002AE4D6 /* ITunesParser.swift in Sources */,
+				3ED656E9250F4B72007C7C97 /* OrderedMetadataMap.swift in Sources */,
 				3EDE553B250A551A002AE4D6 /* FFmpegAudioCodec.swift in Sources */,
 				3EF19AD0250A5CA500CB3336 /* ID3FFmpegParser.swift in Sources */,
 				3EDE555D250A552C002AE4D6 /* ID3Parser.swift in Sources */,

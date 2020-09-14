@@ -38,6 +38,8 @@ fileprivate let key_lyrics = "lyrics"
 
 fileprivate let keys_year: [String] = ["year", "date", "originaldate", "originalyear", "original year", "originalreleasedate", "original_year"]
 
+fileprivate let key_bpm: String = "bpm"
+
 fileprivate let key_duration: String = "length"
 
 class VorbisCommentParser: FFMpegMetadataParser {
@@ -152,6 +154,15 @@ class VorbisCommentParser: FFMpegMetadataParser {
         
         if let yearString = keys_year.firstNonNilMappedValue({meta.vorbisMetadata.essentialFields[$0]}) {
             return ParserUtils.parseYear(yearString)
+        }
+        
+        return nil
+    }
+    
+    func getBPM(_ meta: FFmpegMetadataReaderContext) -> Int? {
+        
+        if let bpmString = meta.vorbisMetadata.essentialFields[key_bpm] {
+            return ParserUtils.parseBPM(bpmString)
         }
         
         return nil
@@ -273,7 +284,6 @@ class VorbisCommentParser: FFMpegMetadataParser {
         
         map["mood"] = "Mood"
         map["style"] = "Style"
-        map["bpm"] = "BPM (Beats Per Minute)"
         
         map["music_cd_identifier"] = "Music CD Identifier"
         

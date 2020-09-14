@@ -190,6 +190,45 @@ class ParserUtils {
         return nil
     }
     
+    static func parseBPM(_ item: AVMetadataItem) -> Int? {
+        
+        if let number = item.numberValue, number.intValue > 0 {
+            return number.intValue
+        }
+        
+        if let stringValue = item.stringValue?.trim() {
+            
+            return parseBPM(stringValue)
+
+        } else if let dataValue = item.dataValue {
+            
+            let vals = dataValue.filter {$0 > 0}
+            
+            switch vals.count {
+                
+            case 0:
+                
+                return nil
+                
+            default:
+                
+                let bpm: Int = Int(vals[0])
+                return bpm > 0 ? bpm : nil
+            }
+        }
+        
+        return nil
+    }
+    
+    static func parseBPM(_ bpmString: String) -> Int? {
+        
+        if let bpm = Int(bpmString), bpm > 0 {
+            return bpm
+        }
+        
+        return nil
+    }
+    
     static let hmsRegex = "[0-9]+:[0-9]+:[0-9]+[\\.]?[0-9]*"
     
     static func parseDuration(_ durString: String) -> Double? {

@@ -154,6 +154,12 @@ class PlaylistVC: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
                 return createTextCell(tableView, "discNum", discNum)
             }
             
+        case "bpm":
+
+            if let bpm = track.bpm {
+                return createTextCell(tableView, "bpm", "\(bpm)")
+            }
+            
         case "year":
 
             if let year = track.year {

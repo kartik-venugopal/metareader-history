@@ -84,11 +84,11 @@ class StringUtils {
     // Checks if the string 1 - is non-null, 2 - has characters, 3 - not all characters are whitespace
     static func isStringEmpty(_ string: String?) -> Bool {
         
-        if (string == nil) {
-            return true
+        if let theString = string {
+            return theString.trim().isEmpty
         }
-        
-        return string!.trim().isEmpty
+
+        return true
     }
     
     static func cleanUpString(_ string: String) -> String {
