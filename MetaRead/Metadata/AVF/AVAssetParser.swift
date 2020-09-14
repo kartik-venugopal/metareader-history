@@ -138,3 +138,76 @@ class AVFMetadata {
         }
     }
 }
+
+extension AVMetadataItem {
+    
+    var commonKeyAsString: String? {
+        return commonKey?.rawValue
+    }
+    
+    var keyAsString: String? {
+        
+        if let key = self.key as? String {
+            return key
+        }
+        
+        if let id = self.identifier {
+            
+            // This is required for .iTunes keyspace items ("itsk").
+            
+            let tokens = id.rawValue.split(separator: "/")
+            if tokens.count == 2 {
+                
+                let key = (tokens[1].replacingOccurrences(of: "%A9", with: "@").trim())
+                return key.removingPercentEncoding ?? key
+            }
+        }
+        
+        return nil
+    }
+    
+    var valueAsString: String? {
+
+        if !StringUtils.isStringEmpty(self.stringValue) {
+            return self.stringValue
+        }
+        
+        if let number = self.numberValue {
+            return String(describing: number)
+        }
+        
+        if let data = self.dataValue {
+            return String(data: data, encoding: .utf8)
+        }
+        
+        if let date = self.dateValue {
+            return String(describing: date)
+        }
+        
+        return nil
+    }
+    
+    var valueAsNumericalString: String {
+        
+        if !StringUtils.isStringEmpty(self.stringValue), let num = Int(self.stringValue!) {
+            return String(describing: num)
+        }
+        
+        if let number = self.numberValue {
+            return String(describing: number)
+        }
+        
+        if let data = self.dataValue, let num = Int(data.hexEncodedString(), radix: 16) {
+            return String(describing: num)
+        }
+        
+        return "0"
+    }
+}
+
+extension Data {
+    
+    func hexEncodedString() -> String {
+        return map { String(format: "%02hhx", $0) }.joined()
+    }
+}

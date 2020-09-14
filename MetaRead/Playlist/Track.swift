@@ -1,8 +1,10 @@
 import Cocoa
 import AVFoundation
 
-let nativeAudioExtensions: Set<String> = ["aac", "adts", "aif", "aiff", "aifc", "caf", "mp3", "m4a", "m4b", "m4r", "snd", "au", "sd2", "wav"]
-let nonNativeAudioExtensions: Set<String> = ["flac", "oga", "opus", "wma", "dsf", "dsd", "dff", "mpc", "mp2", "ape", "wv", "dts", "mka", "ogg", "ac3", "amr", "aa3"]
+let nativeAudioExtensions: Set<String> = ["aac", "adts", "aif", "aiff", "aifc", "caf", "mp3", "m4a", "m4b", "m4r", "snd", "au", "sd2", "wav", "mp2"]
+
+let nonNativeAudioExtensions: Set<String> = ["8svx", "paf", "flac", "oga", "opus", "wma", "dsf", "dsd", "dff", "mpc", "ape", "wv", "dts", "mka", "ogg", "ac3", "amr", "aa3", "spx"]
+
 let allAudioExtensions: Set<String> = {nativeAudioExtensions.union(nonNativeAudioExtensions)}()
 
 class Track: Hashable {
@@ -28,6 +30,9 @@ class Track: Hashable {
         return title
     }
     
+    var fileType: String
+    var audioFormat: String!
+    
     var albumArtist: String?
     
     var album: String?
@@ -42,6 +47,8 @@ class Track: Hashable {
     
     var trackNumber: Int?
     var totalTracks: Int?
+    
+    var isDRMProtected: Bool = false
     
     var displayedTrackNum: String? {
         
@@ -89,6 +96,8 @@ class Track: Hashable {
         
         self.file = file
         self.fileExt = file.pathExtension.lowercased()
+        self.fileType = file.pathExtension.uppercased()
+        
         self.defaultDisplayName = file.deletingPathExtension().lastPathComponent
         
         self.isNativelySupported = nativeAudioExtensions.contains(fileExt)
@@ -100,78 +109,5 @@ class Track: Hashable {
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(file.path)
-    }
-}
-
-extension AVMetadataItem {
-    
-    var commonKeyAsString: String? {
-        return commonKey?.rawValue
-    }
-    
-    var keyAsString: String? {
-        
-        if let key = self.key as? String {
-            return key
-        }
-        
-        if let id = self.identifier {
-            
-            // This is required for .iTunes keyspace items ("itsk").
-            
-            let tokens = id.rawValue.split(separator: "/")
-            if tokens.count == 2 {
-                
-                let key = (tokens[1].replacingOccurrences(of: "%A9", with: "@").trim())
-                return key.removingPercentEncoding ?? key
-            }
-        }
-        
-        return nil
-    }
-    
-    var valueAsString: String? {
-
-        if !StringUtils.isStringEmpty(self.stringValue) {
-            return self.stringValue
-        }
-        
-        if let number = self.numberValue {
-            return String(describing: number)
-        }
-        
-        if let data = self.dataValue {
-            return String(data: data, encoding: .utf8)
-        }
-        
-        if let date = self.dateValue {
-            return String(describing: date)
-        }
-        
-        return nil
-    }
-    
-    var valueAsNumericalString: String {
-        
-        if !StringUtils.isStringEmpty(self.stringValue), let num = Int(self.stringValue!) {
-            return String(describing: num)
-        }
-        
-        if let number = self.numberValue {
-            return String(describing: number)
-        }
-        
-        if let data = self.dataValue, let num = Int(data.hexEncodedString(), radix: 16) {
-            return String(describing: num)
-        }
-        
-        return "0"
-    }
-}
-
-extension Data {
-    
-    func hexEncodedString() -> String {
-        return map { String(format: "%02hhx", $0) }.joined()
     }
 }

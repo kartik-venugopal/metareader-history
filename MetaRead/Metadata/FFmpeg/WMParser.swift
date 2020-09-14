@@ -43,12 +43,14 @@ fileprivate let key_isCompilation = "iscompilation"
 
 fileprivate let key_language = "language"
 
+fileprivate let key_asfProtectionType = "asf_protection_type"
+
 class WMParser: FFMpegMetadataParser {
     
     private let keyPrefix = "wm/"
     
     private let essentialKeys: Set<String> = Set([key_title, key_album, key_originalAlbum, key_composer, key_conductor, key_lyricist, key_writer, key_genre, key_genreId,
-        key_disc, key_discTotal, key_track, key_track_zeroBased, key_trackTotal, key_year, key_originalYear, key_lyrics]).union(keys_artist)
+        key_disc, key_discTotal, key_track, key_track_zeroBased, key_trackTotal, key_year, key_originalYear, key_lyrics, key_asfProtectionType]).union(keys_artist)
     
     private let ignoredKeys: Set<String> = ["wmfsdkneeded"]
     
@@ -188,6 +190,10 @@ class WMParser: FFMpegMetadataParser {
         }
         
         return nil
+    }
+    
+    func isDRMProtected(_ meta: FFmpegMetadataReaderContext) -> Bool? {
+        meta.wmMetadata.essentialFields[key_asfProtectionType] != nil
     }
     
     private let genericKeys: [String: String] = {

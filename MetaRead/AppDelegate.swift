@@ -65,7 +65,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 //        print("\nMatches?: \("09-12-1983".matches("[0-9]+-[0-9]+-[0-9]+"))")
 //        print("\nDuration: \(ParserUtils.parseDuration("02:05:29.73838383") ?? -1)")
         
-//        freopen(URL(fileURLWithPath: "/Volumes/MyData/Music/Aural-Test/metaRead.log").path.cString(using: String.Encoding.ascii)!, "a+", stderr)
+        freopen(URL(fileURLWithPath: "/Volumes/MyData/Music/Aural-Test/metaRead.log").path.cString(using: String.Encoding.ascii)!, "a+", stderr)
         
         window.contentView?.addSubview(playlistVC.view)
     }

@@ -173,9 +173,9 @@
 			children = (
 				3EDE5580250A5691002AE4D6 /* AppDelegate.swift */,
 				3EDE5582250A5696002AE4D6 /* MainMenu.xib */,
-				3EDE551A250A54FA002AE4D6 /* FFmpegWrappers */,
 				3EDE5519250A54F3002AE4D6 /* Playlist */,
 				3EDE5518250A54ED002AE4D6 /* Metadata */,
+				3EDE551A250A54FA002AE4D6 /* FFmpegWrappers */,
 				3EDE556C250A5554002AE4D6 /* ffmpeg */,
 				3EDE556D250A5554002AE4D6 /* ffmpeg.c */,
 				3EDE556E250A5554002AE4D6 /* ffmpeg.h */,

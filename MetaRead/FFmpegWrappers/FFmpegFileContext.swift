@@ -30,6 +30,23 @@ class FFmpegFileContext {
     ///
     var pointer: UnsafeMutablePointer<AVFormatContext>!
     
+    var formatName: String {
+        String(cString: avContext.iformat.pointee.name)
+    }
+    
+    var formatLongName: String {
+        String(cString: avContext.iformat.pointee.long_name)
+    }
+    
+    var formatExtensions: String {
+        
+        if let extensions = avContext.iformat.pointee.extensions {
+            return String(cString: extensions)
+        }
+        
+        return ""
+    }
+    
     let avStreamPointers: [UnsafeMutablePointer<AVStream>]
     
     var streamCount: Int {Int(avContext.nb_streams)}
@@ -118,7 +135,7 @@ class FFmpegFileContext {
     ///
     /// This is an expensive and potentially lengthy computation.
     ///
-    private lazy var bruteForceDuration: Double? = packetTable?.duration
+    lazy var bruteForceDuration: Double? = packetTable?.duration
     
     ///
     /// A packet table that contains position and timestamp information
@@ -207,7 +224,7 @@ class FFmpegFileContext {
         
         // Compute the duration of the audio stream, trying various methods. See documentation of **duration**
         // for a detailed description.
-        self.isRawAudioFile = ["dts", "ac3", "aac"].contains(file.pathExtension.lowercased())
+        self.isRawAudioFile = ["dts", "ac3"].contains(file.pathExtension.lowercased())
         self.bitRate = pointer.pointee.bit_rate
         
         self.duration = bestAudioStream?.duration ?? estimatedDuration ?? 0

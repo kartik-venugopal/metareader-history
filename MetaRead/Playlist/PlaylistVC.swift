@@ -70,8 +70,17 @@ class PlaylistVC: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
             
         case "index":
             
-            // Otherwise, create a text cell with the track index
-            return createTextCell(tableView, "index", String(describing: row + 1))
+            return createTextCell(tableView, "index", "\(row + 1)")
+            
+        case "fileType":
+            
+            return createTextCell(tableView, "fileType", track.fileType)
+            
+        case "audioFormat":
+            
+            if let fmt = track.audioFormat {
+                return createTextCell(tableView, "audioFormat", fmt)
+            }
             
         case "art":
             

@@ -20,6 +20,18 @@ class FFmpegAudioStream: FFmpegStreamProtocol {
     
     var codecParams: AVCodecParameters {avStream.codecpar.pointee}
     
+    lazy var codecLongName: String? = {
+        
+        let codecID = codecParams.codec_id
+        let pointer = avcodec_find_decoder(codecID)
+        
+        if let name = pointer?.pointee.long_name {
+            return String(cString: name)
+        }
+        
+        return nil
+    }()
+    
     ///
     /// The media type of data contained within this stream (e.g. audio, video, etc)
     ///
