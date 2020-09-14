@@ -28,7 +28,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         dialog.resolvesAliases = true;
         
-        dialog.directoryURL = URL(fileURLWithPath: NSHomeDirectory() + "/Music/Aural-Test")
+        dialog.directoryURL = URL(fileURLWithPath: NSHomeDirectory() + "/Music")
         
         return dialog
     }()

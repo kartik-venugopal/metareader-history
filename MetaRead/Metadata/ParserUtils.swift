@@ -75,7 +75,12 @@ class ParserUtils {
     static func parseDiscOrTrackNumber(_ item: AVMetadataItem) -> (number: Int?, total: Int?)? {
         
         if let number = item.numberValue {
-            return (number.intValue, nil)
+            
+            if number.intValue > 0 {
+                return (number.intValue, nil)
+            } else {
+                return (nil, nil)
+            }
         }
         
         if let stringValue = item.stringValue?.trim() {
@@ -86,16 +91,23 @@ class ParserUtils {
 
         } else if let dataValue = item.dataValue {
             
-            let vals = dataValue.filter({num -> Bool in num > 0})
+            let bytes = dataValue.filter {$0 > 0}
             
-            switch vals.count {
+            switch bytes.count {
                 
             case 0: return (nil, nil)
                 
-            case 1: return (Int(vals[0]), nil)
+            case 1:
                 
-            default: return (Int(vals[0]), Int(vals[1]))
+                let trackNum = Int(bytes[0])
+                return trackNum > 0 ? (trackNum, nil) : (nil, nil)
                 
+            default:
+                
+                let trackNum = Int(bytes[0])
+                let discNum = Int(bytes[1])
+                
+                return (trackNum > 0 ? trackNum : nil, discNum > 0 ? discNum : nil)
             }
         }
         
@@ -116,10 +128,17 @@ class ParserUtils {
             
         case 0: return (nil, nil)
             
-        case 1: return (Int(tokens[0].trim()), nil)
+        case 1:
             
-        default:    return (Int(tokens[0].trim()), Int(tokens[1].trim()))
+            let trackNum = Int(tokens[0].trim())
+            return trackNum != nil && trackNum! > 0 ? (trackNum, nil) : (nil, nil)
             
+        default:
+            
+            let trackNum = Int(tokens[0].trim())
+            let discNum = Int(tokens[1].trim())
+            
+            return (trackNum != nil && trackNum! > 0 ? trackNum : nil, discNum != nil && discNum! > 0 ? discNum : nil)
         }
     }
     
@@ -128,8 +147,8 @@ class ParserUtils {
 
     static func parseYear(_ item: AVMetadataItem) -> Int? {
         
-        if let number = item.numberValue, validYearRange.contains(number.intValue) {
-            return number.intValue
+        if let number = item.numberValue {
+            return validYearRange.contains(number.intValue) ? number.intValue : nil
         }
         
         if let stringValue = item.stringValue?.trim() {
@@ -160,8 +179,8 @@ class ParserUtils {
     
     static func parseYear(_ yearString: String) -> Int? {
         
-        if let year = Int(yearString), validYearRange.contains(year) {
-            return year
+        if let year = Int(yearString) {
+            return validYearRange.contains(year) ? year : nil
         }
         
         if yearString.matches(mmddyyRegex) {
@@ -192,8 +211,8 @@ class ParserUtils {
     
     static func parseBPM(_ item: AVMetadataItem) -> Int? {
         
-        if let number = item.numberValue, number.intValue > 0 {
-            return number.intValue
+        if let number = item.numberValue {
+            return number.intValue > 0 ? number.intValue : nil
         }
         
         if let stringValue = item.stringValue?.trim() {
@@ -234,18 +253,20 @@ class ParserUtils {
     static func parseDuration(_ durString: String) -> Double? {
         
         if let durationMsecs = Int64(durString) {
-            return Double(durationMsecs) / 1000.0
+            return durationMsecs > 0 ? Double(durationMsecs) / 1000.0 : nil
         }
         
         if let durationSecs = Double(durString) {
-            return durationSecs
+            return durationSecs > 0 ? durationSecs : nil
         }
         
         if durString.matches(hmsRegex) {
             
             let tokens = durString.split(separator: ":")
             if tokens.count == 3, let hours = Double(tokens[0]), let mins = Double(tokens[1]), let secs = Double(tokens[2]) {
-                return (hours * 3600) + (mins * 60) + secs
+                
+                let duration = (hours * 3600) + (mins * 60) + secs
+                return duration > 0 ? duration : 0
             }
         }
         
