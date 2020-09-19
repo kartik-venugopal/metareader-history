@@ -59,9 +59,16 @@ class FFMpegReader {
             
             if let audioStream = fctx.bestAudioStream {
                 track.audioFormat = audioStream.codecLongName
+                track.hasAudioStream = true
             }
             
-            let meta = FFmpegMetadataReaderContext(for: fctx)
+            if let vid = fctx.bestImageStream, !vid.hasPic {
+                track.hasVideo = true
+            } else if fctx.countStreams(ofType: AVMEDIA_TYPE_VIDEO) > 1 {
+                track.hasVideo = true
+            }
+            
+            let meta = FFmpegMappedMetadata(for: fctx)
             let allParsers = parsersByExt[meta.fileType] ?? self.allParsers
             allParsers.forEach {$0.mapTrack(meta)}
             
@@ -103,6 +110,10 @@ class FFMpegReader {
             
             track.duration = meta.fileCtx.duration
             
+            let accurate: Bool = track.duration > 0 && meta.fileCtx.estimatedDurationIsAccurate
+//            print("\nEst. duration for \(track.defaultDisplayName) \(accurate ? "is" : "is not") accurate")
+            track.durationIsAccurate = accurate
+            
             if let imageStream = meta.imageStream,
                 let imageData = imageStream.attachedPic.data,
                 let image = NSImage(data: imageData) {
@@ -115,6 +126,7 @@ class FFMpegReader {
                 if let durationFromMetadata = relevantParsers.firstNonNilMappedValue({$0.getDuration(meta)}), durationFromMetadata > 0 {
                     
                     track.duration = durationFromMetadata
+                    track.durationIsAccurate = false
                     
                 } else {
                     
@@ -124,6 +136,7 @@ class FFMpegReader {
                         if let duration = meta.fileCtx.bruteForceDuration {
                             
                             track.duration = duration
+                            track.durationIsAccurate = true
                             
                             var notif = Notification(name: Notification.Name("trackUpdated"))
                             notif.userInfo = ["track": track]
@@ -139,6 +152,32 @@ class FFMpegReader {
         } catch {
             NSLog("Track.init(): Couldn't init FFmpeg file context for '\(track.file.lastPathComponent)': \(error)")
         }
+    }
+    
+    func computeDuration(for track: Track) {
+        
+//        var time: Double = 0
+        
+        do {
+            
+//            let st = CFAbsoluteTimeGetCurrent()
+            
+            let computedDuration = try FFmpegFileContext.computePreciseDuration(for: track.file)
+            if computedDuration > 0 {
+                
+//                let oldDuration = track.duration
+                track.duration = computedDuration
+                
+//                let end = CFAbsoluteTimeGetCurrent()
+//                time = (end - st) * 1000
+                
+//                print("\nPrecise duration for \(track.file.lastPathComponent) is \(computedDuration) VS \(oldDuration)")
+            }
+            
+        } catch {
+        }
+        
+//        print("\nFFMPEG - Time to compute duration for \(track.defaultDisplayName): \(time) msec")
     }
     
     func loadPlaybackMetadata(for track: Track) {

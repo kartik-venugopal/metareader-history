@@ -2,89 +2,89 @@ import Foundation
 
 protocol FFMpegMetadataParser {
     
-    func mapTrack(_ meta: FFmpegMetadataReaderContext)
+    func mapTrack(_ meta: FFmpegMappedMetadata)
     
-    func hasMetadataForTrack(_ meta: FFmpegMetadataReaderContext) -> Bool
+    func hasMetadataForTrack(_ meta: FFmpegMappedMetadata) -> Bool
     
-    func getTitle(_ meta: FFmpegMetadataReaderContext) -> String?
+    func getTitle(_ meta: FFmpegMappedMetadata) -> String?
     
-    func getArtist(_ meta: FFmpegMetadataReaderContext) -> String?
+    func getArtist(_ meta: FFmpegMappedMetadata) -> String?
     
-    func getAlbumArtist(_ meta: FFmpegMetadataReaderContext) -> String?
+    func getAlbumArtist(_ meta: FFmpegMappedMetadata) -> String?
     
-    func getAlbum(_ meta: FFmpegMetadataReaderContext) -> String?
+    func getAlbum(_ meta: FFmpegMappedMetadata) -> String?
     
-    func getComposer(_ meta: FFmpegMetadataReaderContext) -> String?
+    func getComposer(_ meta: FFmpegMappedMetadata) -> String?
     
-    func getConductor(_ meta: FFmpegMetadataReaderContext) -> String?
+    func getConductor(_ meta: FFmpegMappedMetadata) -> String?
     
-    func getPerformer(_ meta: FFmpegMetadataReaderContext) -> String?
+    func getPerformer(_ meta: FFmpegMappedMetadata) -> String?
     
-    func getLyricist(_ meta: FFmpegMetadataReaderContext) -> String?
+    func getLyricist(_ meta: FFmpegMappedMetadata) -> String?
     
-    func getGenre(_ meta: FFmpegMetadataReaderContext) -> String?
+    func getGenre(_ meta: FFmpegMappedMetadata) -> String?
     
-    func getLyrics(_ meta: FFmpegMetadataReaderContext) -> String?
+    func getLyrics(_ meta: FFmpegMappedMetadata) -> String?
     
-    func getDiscNumber(_ meta: FFmpegMetadataReaderContext) -> (number: Int?, total: Int?)?
+    func getDiscNumber(_ meta: FFmpegMappedMetadata) -> (number: Int?, total: Int?)?
     
-    func getTotalDiscs(_ meta: FFmpegMetadataReaderContext) -> Int?
+    func getTotalDiscs(_ meta: FFmpegMappedMetadata) -> Int?
     
-    func getTrackNumber(_ meta: FFmpegMetadataReaderContext) -> (number: Int?, total: Int?)?
+    func getTrackNumber(_ meta: FFmpegMappedMetadata) -> (number: Int?, total: Int?)?
     
-    func getTotalTracks(_ meta: FFmpegMetadataReaderContext) -> Int?
+    func getTotalTracks(_ meta: FFmpegMappedMetadata) -> Int?
     
-    func getYear(_ meta: FFmpegMetadataReaderContext) -> Int?
+    func getYear(_ meta: FFmpegMappedMetadata) -> Int?
     
-    func getDuration(_ meta: FFmpegMetadataReaderContext) -> Double?
+    func getDuration(_ meta: FFmpegMappedMetadata) -> Double?
     
-    func getBPM(_ meta: FFmpegMetadataReaderContext) -> Int?
+    func getBPM(_ meta: FFmpegMappedMetadata) -> Int?
     
-    func isDRMProtected(_ meta: FFmpegMetadataReaderContext) -> Bool?
+    func isDRMProtected(_ meta: FFmpegMappedMetadata) -> Bool?
     
 //    func getGenericMetadata(_ meta: FFmpegMetadataReaderContext) -> [String: String]
 }
 
 extension FFMpegMetadataParser {
     
-    func getTitle(_ meta: FFmpegMetadataReaderContext) -> String? {nil}
+    func getTitle(_ meta: FFmpegMappedMetadata) -> String? {nil}
     
-    func getArtist(_ meta: FFmpegMetadataReaderContext) -> String? {nil}
+    func getArtist(_ meta: FFmpegMappedMetadata) -> String? {nil}
     
-    func getAlbumArtist(_ meta: FFmpegMetadataReaderContext) -> String? {nil}
+    func getAlbumArtist(_ meta: FFmpegMappedMetadata) -> String? {nil}
     
-    func getAlbum(_ meta: FFmpegMetadataReaderContext) -> String? {nil}
+    func getAlbum(_ meta: FFmpegMappedMetadata) -> String? {nil}
     
-    func getComposer(_ meta: FFmpegMetadataReaderContext) -> String? {nil}
+    func getComposer(_ meta: FFmpegMappedMetadata) -> String? {nil}
     
-    func getConductor(_ meta: FFmpegMetadataReaderContext) -> String? {nil}
+    func getConductor(_ meta: FFmpegMappedMetadata) -> String? {nil}
     
-    func getPerformer(_ meta: FFmpegMetadataReaderContext) -> String? {nil}
+    func getPerformer(_ meta: FFmpegMappedMetadata) -> String? {nil}
     
-    func getLyricist(_ meta: FFmpegMetadataReaderContext) -> String? {nil}
+    func getLyricist(_ meta: FFmpegMappedMetadata) -> String? {nil}
     
-    func getGenre(_ meta: FFmpegMetadataReaderContext) -> String? {nil}
+    func getGenre(_ meta: FFmpegMappedMetadata) -> String? {nil}
     
-    func getLyrics(_ meta: FFmpegMetadataReaderContext) -> String? {nil}
+    func getLyrics(_ meta: FFmpegMappedMetadata) -> String? {nil}
     
-    func getYear(_ meta: FFmpegMetadataReaderContext) -> Int? {nil}
+    func getYear(_ meta: FFmpegMappedMetadata) -> Int? {nil}
     
-    func getBPM(_ meta: FFmpegMetadataReaderContext) -> Int? {nil}
+    func getBPM(_ meta: FFmpegMappedMetadata) -> Int? {nil}
     
-    func getDiscNumber(_ meta: FFmpegMetadataReaderContext) -> (number: Int?, total: Int?)? {nil}
+    func getDiscNumber(_ meta: FFmpegMappedMetadata) -> (number: Int?, total: Int?)? {nil}
     
-    func getTotalDiscs(_ meta: FFmpegMetadataReaderContext) -> Int? {nil}
+    func getTotalDiscs(_ meta: FFmpegMappedMetadata) -> Int? {nil}
     
-    func getTrackNumber(_ meta: FFmpegMetadataReaderContext) -> (number: Int?, total: Int?)? {nil}
+    func getTrackNumber(_ meta: FFmpegMappedMetadata) -> (number: Int?, total: Int?)? {nil}
     
-    func getTotalTracks(_ meta: FFmpegMetadataReaderContext) -> Int? {nil}
+    func getTotalTracks(_ meta: FFmpegMappedMetadata) -> Int? {nil}
  
-    func getDuration(_ meta: FFmpegMetadataReaderContext) -> Double? {nil}
+    func getDuration(_ meta: FFmpegMappedMetadata) -> Double? {nil}
     
-    func isDRMProtected(_ meta: FFmpegMetadataReaderContext) -> Bool? {nil}
+    func isDRMProtected(_ meta: FFmpegMappedMetadata) -> Bool? {nil}
 }
 
-class FFmpegMetadataReaderContext {
+class FFmpegMappedMetadata {
     
     let fileCtx: FFmpegFileContext
     let fileType: String

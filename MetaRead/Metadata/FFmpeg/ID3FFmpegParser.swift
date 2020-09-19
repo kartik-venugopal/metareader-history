@@ -43,7 +43,7 @@ class ID3FFmpegParser: FFMpegMetadataParser {
         return map
     }()
     
-    func mapTrack(_ meta: FFmpegMetadataReaderContext) {
+    func mapTrack(_ meta: FFmpegMappedMetadata) {
         
         let metadata = meta.id3Metadata
         
@@ -68,43 +68,43 @@ class ID3FFmpegParser: FFMpegMetadataParser {
         }
     }
     
-    func hasMetadataForTrack(_ meta: FFmpegMetadataReaderContext) -> Bool {
+    func hasMetadataForTrack(_ meta: FFmpegMappedMetadata) -> Bool {
         !meta.id3Metadata.essentialFields.isEmpty
     }
    
-    func getTitle(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getTitle(_ meta: FFmpegMappedMetadata) -> String? {
         keys_title.firstNonNilMappedValue {meta.id3Metadata.essentialFields[$0]}
     }
  
-    func getArtist(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getArtist(_ meta: FFmpegMappedMetadata) -> String? {
         keys_artist.firstNonNilMappedValue {meta.id3Metadata.essentialFields[$0]}
     }
     
-    func getAlbumArtist(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getAlbumArtist(_ meta: FFmpegMappedMetadata) -> String? {
         keys_albumArtist.firstNonNilMappedValue {meta.id3Metadata.essentialFields[$0]}
     }
     
-    func getAlbum(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getAlbum(_ meta: FFmpegMappedMetadata) -> String? {
         keys_album.firstNonNilMappedValue {meta.id3Metadata.essentialFields[$0]}
     }
     
-    func getComposer(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getComposer(_ meta: FFmpegMappedMetadata) -> String? {
         keys_composer.firstNonNilMappedValue {meta.id3Metadata.essentialFields[$0]}
     }
     
-    func getConductor(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getConductor(_ meta: FFmpegMappedMetadata) -> String? {
         keys_conductor.firstNonNilMappedValue {meta.id3Metadata.essentialFields[$0]}
     }
     
-    func getLyricist(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getLyricist(_ meta: FFmpegMappedMetadata) -> String? {
         keys_lyricist.firstNonNilMappedValue {meta.id3Metadata.essentialFields[$0]}
     }
     
-    func getGenre(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getGenre(_ meta: FFmpegMappedMetadata) -> String? {
         keys_genre.firstNonNilMappedValue {meta.id3Metadata.essentialFields[$0]}
     }
     
-    func getDiscNumber(_ meta: FFmpegMetadataReaderContext) -> (number: Int?, total: Int?)? {
+    func getDiscNumber(_ meta: FFmpegMappedMetadata) -> (number: Int?, total: Int?)? {
         
         if let discNumStr = keys_discNumber.firstNonNilMappedValue({meta.id3Metadata.essentialFields[$0]}) {
             return ParserUtils.parseDiscOrTrackNumberString(discNumStr)
@@ -113,7 +113,7 @@ class ID3FFmpegParser: FFMpegMetadataParser {
         return nil
     }
     
-    func getTrackNumber(_ meta: FFmpegMetadataReaderContext) -> (number: Int?, total: Int?)? {
+    func getTrackNumber(_ meta: FFmpegMappedMetadata) -> (number: Int?, total: Int?)? {
         
         if let trackNumStr = keys_trackNumber.firstNonNilMappedValue({meta.id3Metadata.essentialFields[$0]}) {
             return ParserUtils.parseDiscOrTrackNumberString(trackNumStr)
@@ -122,11 +122,11 @@ class ID3FFmpegParser: FFMpegMetadataParser {
         return nil
     }
     
-    func getLyrics(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getLyrics(_ meta: FFmpegMappedMetadata) -> String? {
         keys_lyrics.firstNonNilMappedValue {meta.id3Metadata.essentialFields[$0]}
     }
     
-    func getYear(_ meta: FFmpegMetadataReaderContext) -> Int? {
+    func getYear(_ meta: FFmpegMappedMetadata) -> Int? {
         
         if let yearString = keys_year.firstNonNilMappedValue({meta.id3Metadata.essentialFields[$0]}) {
             return ParserUtils.parseYear(yearString)
@@ -135,7 +135,7 @@ class ID3FFmpegParser: FFMpegMetadataParser {
         return nil
     }
     
-    func getBPM(_ meta: FFmpegMetadataReaderContext) -> Int? {
+    func getBPM(_ meta: FFmpegMappedMetadata) -> Int? {
         
         if let bpmString = keys_bpm.firstNonNilMappedValue({meta.id3Metadata.essentialFields[$0]}) {
             return ParserUtils.parseBPM(bpmString)
@@ -144,7 +144,7 @@ class ID3FFmpegParser: FFMpegMetadataParser {
         return nil
     }
     
-    func getDuration(_ meta: FFmpegMetadataReaderContext) -> Double? {
+    func getDuration(_ meta: FFmpegMappedMetadata) -> Double? {
         
         if let durationStr = keys_duration.firstNonNilMappedValue({meta.id3Metadata.essentialFields[$0]}) {
             return ParserUtils.parseDuration(durationStr)

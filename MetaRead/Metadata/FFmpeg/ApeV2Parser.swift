@@ -39,7 +39,7 @@ class ApeV2Parser: FFMpegMetadataParser {
     private let key_language = "language"
     private let key_compilation = "compilation"
     
-    func mapTrack(_ meta: FFmpegMetadataReaderContext) {
+    func mapTrack(_ meta: FFmpegMappedMetadata) {
         
         let metadata = meta.apeMetadata
         
@@ -58,47 +58,47 @@ class ApeV2Parser: FFMpegMetadataParser {
         }
     }
     
-    func hasMetadataForTrack(_ meta: FFmpegMetadataReaderContext) -> Bool {
+    func hasMetadataForTrack(_ meta: FFmpegMappedMetadata) -> Bool {
         !meta.apeMetadata.essentialFields.isEmpty
     }
     
-    func getTitle(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getTitle(_ meta: FFmpegMappedMetadata) -> String? {
         meta.apeMetadata.essentialFields[key_title]
     }
     
-    func getArtist(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getArtist(_ meta: FFmpegMappedMetadata) -> String? {
         keys_artist.firstNonNilMappedValue({meta.apeMetadata.essentialFields[$0]})
     }
     
-    func getAlbumArtist(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getAlbumArtist(_ meta: FFmpegMappedMetadata) -> String? {
         meta.apeMetadata.essentialFields[key_albumArtist] ?? meta.apeMetadata.essentialFields[key_albumArtist2]
     }
     
-    func getAlbum(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getAlbum(_ meta: FFmpegMappedMetadata) -> String? {
         meta.apeMetadata.essentialFields[key_album] ?? meta.apeMetadata.essentialFields[key_originalAlbum]
     }
     
-    func getComposer(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getComposer(_ meta: FFmpegMappedMetadata) -> String? {
         meta.apeMetadata.essentialFields[key_composer]
     }
     
-    func getConductor(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getConductor(_ meta: FFmpegMappedMetadata) -> String? {
         meta.apeMetadata.essentialFields[key_conductor]
     }
     
-    func getPerformer(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getPerformer(_ meta: FFmpegMappedMetadata) -> String? {
         meta.apeMetadata.essentialFields[key_performer]
     }
     
-    func getLyricist(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getLyricist(_ meta: FFmpegMappedMetadata) -> String? {
         meta.apeMetadata.essentialFields[key_lyricist] ?? meta.apeMetadata.essentialFields[key_originalLyricist]
     }
     
-    func getGenre(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getGenre(_ meta: FFmpegMappedMetadata) -> String? {
         meta.apeMetadata.essentialFields[key_genre]
     }
     
-    func getDiscNumber(_ meta: FFmpegMetadataReaderContext) -> (number: Int?, total: Int?)? {
+    func getDiscNumber(_ meta: FFmpegMappedMetadata) -> (number: Int?, total: Int?)? {
         
         if let discNumStr = meta.apeMetadata.essentialFields[key_disc] {
             return ParserUtils.parseDiscOrTrackNumberString(discNumStr)
@@ -107,7 +107,7 @@ class ApeV2Parser: FFMpegMetadataParser {
         return nil
     }
     
-    func getTrackNumber(_ meta: FFmpegMetadataReaderContext) -> (number: Int?, total: Int?)? {
+    func getTrackNumber(_ meta: FFmpegMappedMetadata) -> (number: Int?, total: Int?)? {
         
         if let trackNumStr = meta.apeMetadata.essentialFields[key_track] {
             return ParserUtils.parseDiscOrTrackNumberString(trackNumStr)
@@ -116,7 +116,7 @@ class ApeV2Parser: FFMpegMetadataParser {
         return nil
     }
     
-    func getYear(_ meta: FFmpegMetadataReaderContext) -> Int? {
+    func getYear(_ meta: FFmpegMappedMetadata) -> Int? {
         
         if let yearString = keys_year.firstNonNilMappedValue({meta.apeMetadata.essentialFields[$0]}) {
             return ParserUtils.parseYear(yearString)
@@ -125,7 +125,7 @@ class ApeV2Parser: FFMpegMetadataParser {
         return nil
     }
     
-    func getBPM(_ meta: FFmpegMetadataReaderContext) -> Int? {
+    func getBPM(_ meta: FFmpegMappedMetadata) -> Int? {
         
         if let bpmString = meta.apeMetadata.essentialFields[key_bpm] {
             return ParserUtils.parseBPM(bpmString)
@@ -134,7 +134,7 @@ class ApeV2Parser: FFMpegMetadataParser {
         return nil
     }
     
-    func getLyrics(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getLyrics(_ meta: FFmpegMappedMetadata) -> String? {
         
         if let lyrics = meta.apeMetadata.essentialFields[key_lyrics] {
             return lyrics

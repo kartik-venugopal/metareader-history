@@ -3,7 +3,7 @@ import AVFoundation
 
 let nativeAudioExtensions: Set<String> = ["aac", "adts", "aif", "aiff", "aifc", "caf", "mp3", "m4a", "m4b", "m4r", "snd", "au", "sd2", "wav", "mp2"]
 
-let nonNativeAudioExtensions: Set<String> = ["8svx", "paf", "flac", "oga", "opus", "wma", "dsf", "dsd", "dff", "mpc", "ape", "wv", "dts", "mka", "ogg", "ac3", "amr", "aa3", "spx"]
+let nonNativeAudioExtensions: Set<String> = ["8svx", "paf", "flac", "oga", "opus", "wma", "dsf", "dsd", "dff", "mpc", "ape", "wv", "dts", "mka", "ogg", "ac3", "amr", "aa3", "spx", "str", "acm", "adp", "dtk", "ads", "ss2", "adx", "aea", "afc", "aix", "al", "mac", "aptx", "aptxhd"]
 
 let allAudioExtensions: Set<String> = {nativeAudioExtensions.union(nonNativeAudioExtensions)}()
 
@@ -17,6 +17,7 @@ class Track: Hashable {
     var defaultDisplayName: String
     
     var duration: Double = 0
+    var durationIsAccurate: Bool = false
 
     var title: String?
     var artist: String?
@@ -32,6 +33,9 @@ class Track: Hashable {
     
     var fileType: String
     var audioFormat: String!
+    
+    var hasAudioStream: Bool = false
+    var hasVideo: Bool = false
     
     var albumArtist: String?
     

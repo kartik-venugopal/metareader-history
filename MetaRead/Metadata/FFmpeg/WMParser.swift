@@ -56,7 +56,7 @@ class WMParser: FFMpegMetadataParser {
     
     private let ignoredKeys: Set<String> = ["wmfsdkneeded"]
     
-    func mapTrack(_ meta: FFmpegMetadataReaderContext) {
+    func mapTrack(_ meta: FFmpegMappedMetadata) {
         
         let metadata = meta.wmMetadata
         
@@ -81,39 +81,39 @@ class WMParser: FFMpegMetadataParser {
         }
     }
     
-    func hasMetadataForTrack(_ meta: FFmpegMetadataReaderContext) -> Bool {
+    func hasMetadataForTrack(_ meta: FFmpegMappedMetadata) -> Bool {
         !meta.wmMetadata.essentialFields.isEmpty
     }
     
-    func getTitle(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getTitle(_ meta: FFmpegMappedMetadata) -> String? {
         meta.wmMetadata.essentialFields[key_title]
     }
     
-    func getArtist(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getArtist(_ meta: FFmpegMappedMetadata) -> String? {
         keys_artist.firstNonNilMappedValue({meta.wmMetadata.essentialFields[$0]})
     }
     
-    func getAlbumArtist(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getAlbumArtist(_ meta: FFmpegMappedMetadata) -> String? {
         meta.wmMetadata.essentialFields[key_albumArtist]
     }
     
-    func getAlbum(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getAlbum(_ meta: FFmpegMappedMetadata) -> String? {
         meta.wmMetadata.essentialFields[key_album] ?? meta.wmMetadata.essentialFields[key_originalAlbum]
     }
     
-    func getComposer(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getComposer(_ meta: FFmpegMappedMetadata) -> String? {
         meta.wmMetadata.essentialFields[key_composer]
     }
     
-    func getConductor(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getConductor(_ meta: FFmpegMappedMetadata) -> String? {
         meta.wmMetadata.essentialFields[key_conductor]
     }
     
-    func getLyricist(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getLyricist(_ meta: FFmpegMappedMetadata) -> String? {
         meta.wmMetadata.essentialFields[key_lyricist] ?? meta.wmMetadata.essentialFields[key_writer]
     }
     
-    func getGenre(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getGenre(_ meta: FFmpegMappedMetadata) -> String? {
         
         if let genre = meta.wmMetadata.essentialFields[key_genre] {
             return genre
@@ -126,7 +126,7 @@ class WMParser: FFMpegMetadataParser {
         return nil
     }
     
-    func getDiscNumber(_ meta: FFmpegMetadataReaderContext) -> (number: Int?, total: Int?)? {
+    func getDiscNumber(_ meta: FFmpegMappedMetadata) -> (number: Int?, total: Int?)? {
         
         if let discNumStr = meta.wmMetadata.essentialFields[key_disc] {
             return ParserUtils.parseDiscOrTrackNumberString(discNumStr)
@@ -135,7 +135,7 @@ class WMParser: FFMpegMetadataParser {
         return nil
     }
     
-    func getTotalDiscs(_ meta: FFmpegMetadataReaderContext) -> Int? {
+    func getTotalDiscs(_ meta: FFmpegMappedMetadata) -> Int? {
         
         if let totalDiscsStr = meta.wmMetadata.essentialFields[key_discTotal]?.trim(), let totalDiscs = Int(totalDiscsStr) {
             return totalDiscs
@@ -144,7 +144,7 @@ class WMParser: FFMpegMetadataParser {
         return nil
     }
     
-    func getTrackNumber(_ meta: FFmpegMetadataReaderContext) -> (number: Int?, total: Int?)? {
+    func getTrackNumber(_ meta: FFmpegMappedMetadata) -> (number: Int?, total: Int?)? {
         
         if let trackNumStr = meta.wmMetadata.essentialFields[key_track] {
             return ParserUtils.parseDiscOrTrackNumberString(trackNumStr)
@@ -164,7 +164,7 @@ class WMParser: FFMpegMetadataParser {
         return nil
     }
     
-    func getTotalTracks(_ meta: FFmpegMetadataReaderContext) -> Int? {
+    func getTotalTracks(_ meta: FFmpegMappedMetadata) -> Int? {
         
         if let totalTracksStr = meta.wmMetadata.essentialFields[key_trackTotal]?.trim(), let totalTracks = Int(totalTracksStr) {
             return totalTracks
@@ -173,7 +173,7 @@ class WMParser: FFMpegMetadataParser {
         return nil
     }
     
-    func getYear(_ meta: FFmpegMetadataReaderContext) -> Int? {
+    func getYear(_ meta: FFmpegMappedMetadata) -> Int? {
         
         if let yearString = meta.wmMetadata.essentialFields[key_year] {
             return ParserUtils.parseYear(yearString)
@@ -182,7 +182,7 @@ class WMParser: FFMpegMetadataParser {
         return nil
     }
     
-    func getBPM(_ meta: FFmpegMetadataReaderContext) -> Int? {
+    func getBPM(_ meta: FFmpegMappedMetadata) -> Int? {
         
         if let bpmString = meta.wmMetadata.essentialFields[key_bpm] {
             return ParserUtils.parseBPM(bpmString)
@@ -191,7 +191,7 @@ class WMParser: FFMpegMetadataParser {
         return nil
     }
     
-    func getLyrics(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getLyrics(_ meta: FFmpegMappedMetadata) -> String? {
         
         for key in [key_lyrics, key_syncLyrics] {
         
@@ -203,7 +203,7 @@ class WMParser: FFMpegMetadataParser {
         return nil
     }
     
-    func isDRMProtected(_ meta: FFmpegMetadataReaderContext) -> Bool? {
+    func isDRMProtected(_ meta: FFmpegMappedMetadata) -> Bool? {
         meta.wmMetadata.essentialFields[key_asfProtectionType] != nil
     }
     

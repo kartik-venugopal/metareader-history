@@ -67,6 +67,8 @@ class FFmpegFileContext {
     ///
     lazy var bestImageStream: FFmpegImageStream? = findBestStream(ofType: AVMEDIA_TYPE_VIDEO) as? FFmpegImageStream
     
+    
+    
     lazy var metadata: [String: String] = FFmpegMetadataDictionary(readingFrom: avContext.metadata).dictionary
     
     ///
@@ -126,6 +128,12 @@ class FFmpegFileContext {
     /// Specified in seconds.
     ///
     private lazy var estimatedDuration: Double? = avContext.duration > 0 ? (Double(avContext.duration) / Double(AV_TIME_BASE)) : nil
+    
+    var estimatedDurationIsAccurate: Bool {
+        
+//        if avContext.duration_estimation_method == AVFMT_DURATION_FROM_STREAM {print("\nDUR from stream")}
+        return avContext.duration_estimation_method != AVFMT_DURATION_FROM_BITRATE
+    }
     
     ///
     /// A duration computed with brute force, by building a packet table.
@@ -229,6 +237,7 @@ class FFmpegFileContext {
         
         self.duration = bestAudioStream?.duration ?? estimatedDuration ?? 0
         if self.bitRate == 0 {self.bitRate = duration == 0 ? 0 : Int64(round(Double(fileSize) / duration))}
+        
     }
     
     ///
@@ -300,6 +309,21 @@ class FFmpegFileContext {
         default: return nil
             
         }
+    }
+    
+    func countStreams(ofType mediaType: AVMediaType) -> Int {
+        
+        var ctr: Int = 0
+        
+        for index in 0..<streamCount {
+            
+            let avStream = avStreamPointers[index].pointee
+            if avStream.codecpar.pointee.codec_type == mediaType {
+                ctr += 1
+            }
+        }
+        
+        return ctr
     }
     
     func findStream(at index: Int, ofType mediaType: AVMediaType) -> FFmpegStreamProtocol? {
@@ -428,5 +452,74 @@ class FFmpegFileContext {
     /// When this object is deinitialized, make sure that its allocated memory space is deallocated.
     deinit {
         destroy()
+    }
+    
+    static func computePreciseDuration(for file: URL) throws -> Double {
+        
+        var pointer = avformat_alloc_context()
+        
+        guard pointer != nil else {
+            throw FormatContextInitializationError(description: "Unable to allocate memory for format context.")
+        }
+        
+        // Try to open the audio file so that it can be read.
+        var resultCode: ResultCode = avformat_open_input(&pointer, file.path, nil, nil)
+        
+        // If the file open failed, log a message and return nil.
+        guard resultCode.isNonNegative, pointer?.pointee != nil else {
+            throw FormatContextInitializationError(description: "Unable to open file. Error: \(resultCode.errorDescription)")
+        }
+        
+        // MARK: Read the streams ----------------------------------------------------------------------------------
+        
+        // Try to read information about the streams contained in this file.
+        resultCode = avformat_find_stream_info(pointer, nil)
+        
+        // If the read failed, log a message and return nil.
+        guard resultCode.isNonNegative, let avStreamsArrayPointer = pointer?.pointee.streams else {
+            throw FormatContextInitializationError(description: "Unable to find stream info for file '\(file.path)'. Error: \(resultCode.errorDescription)")
+        }
+        
+        let streamIndex = av_find_best_stream(pointer, AVMEDIA_TYPE_AUDIO, -1, -1, nil, 0)
+        guard streamIndex.isNonNegative else {return 0}
+        
+        if let audioStream = avStreamsArrayPointer.advanced(by: Int(streamIndex)).pointee {
+            
+            let timeBase: AVRational = audioStream.pointee.time_base
+            var lastPacket: FFmpegPacket!
+            
+            do {
+                
+                // Keep reading packets till EOF is encountered.
+                
+                while true {
+                    
+                    let packet = try FFmpegPacket(readingFromFormat: pointer)
+                    
+                    if packet.streamIndex == streamIndex {
+                        
+                        // Store a reference to this packet as the last packet encountered so far.
+                        lastPacket = packet
+                    }
+                }
+                
+            } catch {
+                
+                // If we've reached EOF, we can now compute the stream's duration by converting
+                // from stream time units to seconds as follows:
+                
+                if (error as? PacketReadError)?.isEOF ?? false, let theLastPacket = lastPacket {
+                    
+                    return Double(theLastPacket.pts + theLastPacket.duration) * timeBase.ratio
+                    
+                } else {
+                    
+                    // This indicates a real error. Packet table is incomplete.
+                    return 0
+                }
+            }
+        }
+        
+        return 0
     }
 }

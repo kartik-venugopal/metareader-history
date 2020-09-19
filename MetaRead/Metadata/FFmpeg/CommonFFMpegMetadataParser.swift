@@ -36,7 +36,7 @@ class CommonFFMpegMetadataParser: FFMpegMetadataParser {
         key_comment: "Comment"
     ]
     
-    func mapTrack(_ meta: FFmpegMetadataReaderContext) {
+    func mapTrack(_ meta: FFmpegMappedMetadata) {
         
         let metadata = meta.commonMetadata
         
@@ -55,43 +55,43 @@ class CommonFFMpegMetadataParser: FFMpegMetadataParser {
         }
     }
     
-    func hasMetadataForTrack(_ meta: FFmpegMetadataReaderContext) -> Bool {
+    func hasMetadataForTrack(_ meta: FFmpegMappedMetadata) -> Bool {
         !meta.commonMetadata.essentialFields.isEmpty
     }
     
-    func getTitle(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getTitle(_ meta: FFmpegMappedMetadata) -> String? {
         meta.commonMetadata.essentialFields[key_title]
     }
     
-    func getArtist(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getArtist(_ meta: FFmpegMappedMetadata) -> String? {
         meta.commonMetadata.essentialFields[key_artist] ?? meta.commonMetadata.essentialFields[key_albumArtist]
     }
     
-    func getAlbumArtist(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getAlbumArtist(_ meta: FFmpegMappedMetadata) -> String? {
         meta.commonMetadata.essentialFields[key_albumArtist]
     }
     
-    func getAlbum(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getAlbum(_ meta: FFmpegMappedMetadata) -> String? {
         meta.commonMetadata.essentialFields[key_album]
     }
     
-    func getComposer(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getComposer(_ meta: FFmpegMappedMetadata) -> String? {
         meta.commonMetadata.essentialFields[key_composer]
     }
     
-    func getPerformer(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getPerformer(_ meta: FFmpegMappedMetadata) -> String? {
         meta.commonMetadata.essentialFields[key_performer]
     }
     
-    func getGenre(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getGenre(_ meta: FFmpegMappedMetadata) -> String? {
         meta.commonMetadata.essentialFields[key_genre]
     }
     
-    func getLyrics(_ meta: FFmpegMetadataReaderContext) -> String? {
+    func getLyrics(_ meta: FFmpegMappedMetadata) -> String? {
         meta.commonMetadata.essentialFields[key_lyrics]
     }
     
-    func getDiscNumber(_ meta: FFmpegMetadataReaderContext) -> (number: Int?, total: Int?)? {
+    func getDiscNumber(_ meta: FFmpegMappedMetadata) -> (number: Int?, total: Int?)? {
         
         if let discNumStr = meta.commonMetadata.essentialFields[key_disc] {
             return ParserUtils.parseDiscOrTrackNumberString(discNumStr)
@@ -100,7 +100,7 @@ class CommonFFMpegMetadataParser: FFMpegMetadataParser {
         return nil
     }
     
-    func getTrackNumber(_ meta: FFmpegMetadataReaderContext) -> (number: Int?, total: Int?)? {
+    func getTrackNumber(_ meta: FFmpegMappedMetadata) -> (number: Int?, total: Int?)? {
         
         if let trackNumStr = meta.commonMetadata.essentialFields[key_track] {
             return ParserUtils.parseDiscOrTrackNumberString(trackNumStr)
@@ -109,7 +109,7 @@ class CommonFFMpegMetadataParser: FFMpegMetadataParser {
         return nil
     }
     
-    func getYear(_ meta: FFmpegMetadataReaderContext) -> Int? {
+    func getYear(_ meta: FFmpegMappedMetadata) -> Int? {
         
         if let yearString = meta.commonMetadata.essentialFields[key_date] {
             return ParserUtils.parseYear(yearString)

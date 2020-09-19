@@ -38,6 +38,10 @@ class FFmpegImageStream: FFmpegStreamProtocol {
         return FFmpegPacket(encapsulating: &attachedPicPacket)
     }()
     
+    var hasPic: Bool {
+        avStream.disposition & AV_DISPOSITION_ATTACHED_PIC != 0
+    }
+    
     ///
     /// All metadata key / value pairs available for this stream.
     ///

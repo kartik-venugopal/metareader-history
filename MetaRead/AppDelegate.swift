@@ -64,9 +64,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 //        print("\nMatches?: \("12:45:23".matches(regex))")
 //        print("\nMatches?: \("09-12-1983".matches("[0-9]+-[0-9]+-[0-9]+"))")
 //        print("\nDuration: \(ParserUtils.parseDuration("02:05:29.73838383") ?? -1)")
+        openFilesLimit = 10000
         
         freopen(URL(fileURLWithPath: "/Volumes/MyData/Music/Aural-Test/metaRead.log").path.cString(using: String.Encoding.ascii)!, "a+", stderr)
-        
+
         window.contentView?.addSubview(playlistVC.view)
     }
 
@@ -78,3 +79,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 }
 
+var openFilesLimit: UInt64 {
+    
+    get {
+        var rl: rlimit = rlimit()
+        getrlimit(RLIMIT_NOFILE, &rl)
+        return rl.rlim_cur
+    }
+    
+    set {
+        var rl: rlimit = rlimit()
+        rl.rlim_cur = newValue
+        rl.rlim_max = newValue
+        setrlimit(RLIMIT_NOFILE, &rl)
+    }
+}

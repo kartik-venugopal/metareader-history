@@ -36,6 +36,8 @@ class Playlist {
     }
     
     var batch: [URL] = []
+    var addedTracks: [Track] = []
+    
     let trackAddQueue: OperationQueue = {
         
         let trackAddQueue = OperationQueue()
@@ -50,6 +52,7 @@ class Playlist {
         
         DispatchQueue.global(qos: .userInteractive).async {
             
+            self.addedTracks.removeAll()
             NSLog("Started adding ...\n")
             self.doAddFiles(files)
             
@@ -58,8 +61,19 @@ class Playlist {
             }
             
             NotificationCenter.default.post(name: Notification.Name("tracksAdded"), object: self)
-            
             NSLog("Finished adding \(self.tracks.count) tracks ...\n")
+
+            self.trackAddQueue.addOperations(self.addedTracks.compactMap {track in
+                
+                track.durationIsAccurate ? nil :
+                
+                BlockOperation {
+                    track.isNativelySupported ? AVFReader.instance.computeDuration(for: track) : FFMpegReader.instance.computeDuration(for: track)
+                }
+                
+            }, waitUntilFinished: true)
+            
+            NSLog("Finished computing duration for \(self.tracks.count) tracks ...\n")
         }
     }
     
@@ -92,6 +106,7 @@ class Playlist {
         
         let trks = batch.map {file in Track(file)}
         self.tracks.append(contentsOf: trks)
+        self.addedTracks.append(contentsOf: trks)
         addCount += trks.count
         
         self.trackAddQueue.addOperations(trks.map {track in

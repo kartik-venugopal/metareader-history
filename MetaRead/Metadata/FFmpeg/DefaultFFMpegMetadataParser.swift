@@ -4,7 +4,7 @@ class DefaultFFMpegMetadataParser: FFMpegMetadataParser {
     
     private let ignoredKeys: [String] = ["priv.www.amazon.com"]
     
-    func mapTrack(_ meta: FFmpegMetadataReaderContext) {
+    func mapTrack(_ meta: FFmpegMappedMetadata) {
         
         let metadata = meta.otherMetadata
         
@@ -21,7 +21,7 @@ class DefaultFFMpegMetadataParser: FFMpegMetadataParser {
         }
     }
     
-    func hasMetadataForTrack(_ meta: FFmpegMetadataReaderContext) -> Bool {
+    func hasMetadataForTrack(_ meta: FFmpegMappedMetadata) -> Bool {
         !meta.otherMetadata.genericFields.isEmpty
     }
 
