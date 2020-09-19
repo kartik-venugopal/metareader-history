@@ -103,9 +103,9 @@ class SKView: SCNView {
         
         cameraNode.camera = camera
         cameraNode.position = SCNVector3(x: px, y: py, z: pz)
-        cameraNode.rotation = SCNVector4(x: 0, y: 1, z: 0, w: 10 * piOver180)
+        cameraNode.rotation = SCNVector4(x: 0, y: 1, z: 0, w: 4 * piOver180)
         
-        cameraNode.position = SCNVector3(x: 3, y: 2, z: 4)
+        cameraNode.position = SCNVector3(x: 2.5, y: 1, z: 3.5)
         
 //        pxVal.floatValue = Float(px * 10)
 //        pyVal.floatValue = Float(py * 10)
@@ -182,8 +182,9 @@ class SKView: SCNView {
         
         floorNode = SCNNode(geometry: floor)
         scene!.rootNode.addChildNode(floorNode)
-        
+
         SCNTransaction.begin()
+        
         barNode.position = SCNVector3(0, -1, 0)
         barNode.pivot = SCNMatrix4MakeTranslation(0, -(bar.height / 2), 0) // new height
         SCNTransaction.commit()
@@ -227,7 +228,8 @@ class SKView: SCNView {
         topMaterial2.diffuse.contents = endColor2
         
         SCNTransaction.begin()
-        SCNTransaction.animationDuration = 0.2
+        
+        SCNTransaction.animationDuration = 1
         
         for i in 0..<10 {
             
