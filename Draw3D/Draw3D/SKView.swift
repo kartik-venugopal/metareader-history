@@ -14,6 +14,9 @@ class SKView: SCNView {
     var bar: SCNBox!
     var barNode: SCNNode!
     
+    var bars: [SCNBox] = []
+    var barNodes: [SCNNode] = []
+    
     var cameraNode: SCNNode!
     var camera: SCNCamera!
     
@@ -100,10 +103,9 @@ class SKView: SCNView {
         
         cameraNode.camera = camera
         cameraNode.position = SCNVector3(x: px, y: py, z: pz)
-//        cameraNode.eulerAngles = SCNVector3(x: ax * piOver180, y: ay * piOver180, z: az * piOver180)
-        cameraNode.rotation = SCNVector4(x: 0, y: 1, z: 0, w: 15 * piOver180)
+        cameraNode.rotation = SCNVector4(x: 0, y: 1, z: 0, w: 10 * piOver180)
         
-        cameraNode.position = SCNVector3(x: 3.5, y: 1.7, z: 3)
+        cameraNode.position = SCNVector3(x: 3, y: 2, z: 4)
         
 //        pxVal.floatValue = Float(px * 10)
 //        pyVal.floatValue = Float(py * 10)
@@ -124,20 +126,55 @@ class SKView: SCNView {
         scene!.rootNode.addChildNode(cameraNode)
         
         // MARK: Bar ---------------------------------------
-
+        
         self.bar = SCNBox(width: 0.15, height: 2, length: 0.15, chamferRadius: 0.02)
         self.barNode = SCNNode(geometry: bar)
         
+        print("\nBar POS = \(barNode.position)")
+        
+        let endColor = NSColor.green.interpolate(NSColor.red, 0.5).cgColor
+        let endColor2 = NSColor.green.interpolate(NSColor.red, 1).cgColor
+        
         let gradientLayer: CAGradientLayer = CAGradientLayer()
-        gradientLayer.colors = [NSColor.green.cgColor, NSColor.green.interpolate(NSColor.red, bar.height / 4).cgColor]
+        gradientLayer.colors = [NSColor.green.cgColor, endColor]
         gradientLayer.frame = NSRect(x: 0, y: 0, width: 20, height: 100)
         
-        bar.firstMaterial?.diffuse.contents = gradientLayer
+        let gradientLayer2: CAGradientLayer = CAGradientLayer()
+        gradientLayer2.colors = [NSColor.green.cgColor, endColor2]
+        gradientLayer2.frame = NSRect(x: 0, y: 0, width: 20, height: 100)
         
-        scene!.rootNode.addChildNode(barNode)
+        let sideMaterial: SCNMaterial = SCNMaterial()
+        sideMaterial.diffuse.contents = gradientLayer
         
-        // MARK: Floor ---------------------------------------
+        let sideMaterial2: SCNMaterial = SCNMaterial()
+        sideMaterial2.diffuse.contents = gradientLayer2
+        
+        let topMaterial: SCNMaterial = SCNMaterial()
+        topMaterial.diffuse.contents = endColor
+        
+        let topMaterial2: SCNMaterial = SCNMaterial()
+        topMaterial2.diffuse.contents = endColor2
+        
+        for i in 0..<10 {
+            
+            let ht: CGFloat = i % 2 == 0 ? 2 : 4
+            
+            let bar = SCNBox(width: 0.15, height: ht, length: 0.15, chamferRadius: 0.02)
+            let barNode = SCNNode(geometry: bar)
+            barNode.position = SCNVector3(CGFloat(i * 3) * 0.15, 0, 0)
+            
+            bars.append(bar)
+            barNodes.append(barNode)
+            
+            let sm = ht == 2 ? sideMaterial : sideMaterial2
+            let tm = ht == 2 ? topMaterial : topMaterial2
+            bar.materials = [sm, sm, sm, sm, tm, tm]
+            
+            scene!.rootNode.addChildNode(barNode)
+        }
 
+        // MARK: Floor ---------------------------------------
+        
         floor = SCNFloor()
         floor.reflectionCategoryBitMask = 4
         floor.firstMaterial?.diffuse.contents = NSColor.black
@@ -166,23 +203,52 @@ class SKView: SCNView {
         
         expand.toggle()
         
+        let endColor = NSColor.green.interpolate(NSColor.red, 0.5).cgColor
+        let endColor2 = NSColor.green.interpolate(NSColor.red, 1).cgColor
+        
+        let gradientLayer: CAGradientLayer = CAGradientLayer()
+        gradientLayer.colors = [NSColor.green.cgColor, endColor]
+        gradientLayer.frame = NSRect(x: 0, y: 0, width: 20, height: 100)
+        
+        let gradientLayer2: CAGradientLayer = CAGradientLayer()
+        gradientLayer2.colors = [NSColor.green.cgColor, endColor2]
+        gradientLayer2.frame = NSRect(x: 0, y: 0, width: 20, height: 100)
+        
+        let sideMaterial: SCNMaterial = SCNMaterial()
+        sideMaterial.diffuse.contents = gradientLayer
+        
+        let sideMaterial2: SCNMaterial = SCNMaterial()
+        sideMaterial2.diffuse.contents = gradientLayer2
+        
+        let topMaterial: SCNMaterial = SCNMaterial()
+        topMaterial.diffuse.contents = endColor
+        
+        let topMaterial2: SCNMaterial = SCNMaterial()
+        topMaterial2.diffuse.contents = endColor2
+        
         SCNTransaction.begin()
         SCNTransaction.animationDuration = 0.2
         
-        if expand {
-            bar.height = bar.height * 2
-        } else {
-            bar.height = bar.height / 2
+        for i in 0..<10 {
+            
+            var ht: CGFloat
+        
+            if expand {
+                ht = i % 2 == 0 ? 2 : 1
+            } else {
+                ht = i % 2 == 0 ? 1 : 2
+            }
+            
+            let bar = bars[i]
+            let barNode = barNodes[i]
+            
+            bar.height = ht
+            barNode.pivot = SCNMatrix4MakeTranslation(0, -(bar.height / 2), 0) // new height
+            
+            let sm = ht == 1 ? sideMaterial : sideMaterial2
+            let tm = ht == 1 ? topMaterial : topMaterial2
+            bar.materials = [sm, sm, sm, sm, tm, tm]
         }
-        
-        barNode.pivot = SCNMatrix4MakeTranslation(0, -(bar.height / 2), 0) // new height
-        
-        let gradientLayer: CAGradientLayer = CAGradientLayer()
-                gradientLayer.colors = [NSColor.green.cgColor, NSColor.green.interpolate(NSColor.red, bar.height / 4).cgColor]
-                gradientLayer.frame = NSRect(x: 0, y: 0, width: 20, height: 100)
-                
-        //        bar.firstMaterial?.diffuse.contents  = NSColor(red: 30.0 / 255.0, green: 180.0 / 255.0, blue: 30.0 / 255.0, alpha: 1)
-                bar.firstMaterial?.diffuse.contents = gradientLayer
             
         SCNTransaction.commit()
         
