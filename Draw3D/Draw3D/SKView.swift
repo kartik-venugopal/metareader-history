@@ -105,7 +105,7 @@ class SKView: SCNView {
         cameraNode.position = SCNVector3(x: px, y: py, z: pz)
         cameraNode.rotation = SCNVector4(x: 0, y: 1, z: 0, w: 4 * piOver180)
         
-        cameraNode.position = SCNVector3(x: 2.5, y: 1, z: 3.5)
+        cameraNode.position = SCNVector3(x: 2.5, y: 1.3, z: 3.5)
         
 //        pxVal.floatValue = Float(px * 10)
 //        pyVal.floatValue = Float(py * 10)

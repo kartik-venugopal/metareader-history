@@ -11,9 +11,6 @@
 		3E410B632516160E00BCBF57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E410B622516160E00BCBF57 /* Assets.xcassets */; };
 		3E410B662516160E00BCBF57 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3E410B642516160E00BCBF57 /* MainMenu.xib */; };
 		3E410B6F2516166C00BCBF57 /* SKView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E410B6E2516166C00BCBF57 /* SKView.swift */; };
-		3E410B78251616E600BCBF57 /* Rack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E410B72251616E600BCBF57 /* Rack.swift */; };
-		3E410B79251616E600BCBF57 /* Balls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E410B73251616E600BCBF57 /* Balls.swift */; };
-		3E410B7B251616E600BCBF57 /* Ball.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E410B75251616E600BCBF57 /* Ball.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,9 +21,6 @@
 		3E410B672516160E00BCBF57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3E410B682516160E00BCBF57 /* Draw3D.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Draw3D.entitlements; sourceTree = "<group>"; };
 		3E410B6E2516166C00BCBF57 /* SKView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKView.swift; sourceTree = "<group>"; };
-		3E410B72251616E600BCBF57 /* Rack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rack.swift; sourceTree = "<group>"; };
-		3E410B73251616E600BCBF57 /* Balls.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Balls.swift; sourceTree = "<group>"; };
-		3E410B75251616E600BCBF57 /* Ball.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ball.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,9 +56,6 @@
 				3E410B642516160E00BCBF57 /* MainMenu.xib */,
 				3E410B602516160D00BCBF57 /* AppDelegate.swift */,
 				3E410B6E2516166C00BCBF57 /* SKView.swift */,
-				3E410B75251616E600BCBF57 /* Ball.swift */,
-				3E410B73251616E600BCBF57 /* Balls.swift */,
-				3E410B72251616E600BCBF57 /* Rack.swift */,
 				3E410B622516160E00BCBF57 /* Assets.xcassets */,
 				3E410B672516160E00BCBF57 /* Info.plist */,
 				3E410B682516160E00BCBF57 /* Draw3D.entitlements */,
@@ -142,11 +133,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E410B7B251616E600BCBF57 /* Ball.swift in Sources */,
 				3E410B6F2516166C00BCBF57 /* SKView.swift in Sources */,
-				3E410B79251616E600BCBF57 /* Balls.swift in Sources */,
 				3E410B612516160D00BCBF57 /* AppDelegate.swift in Sources */,
-				3E410B78251616E600BCBF57 /* Rack.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
