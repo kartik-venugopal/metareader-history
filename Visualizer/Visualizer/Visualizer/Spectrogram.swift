@@ -1,5 +1,34 @@
 import Cocoa
 
+class GrImgView: NSView {
+    
+    override func draw(_ dirtyRect: NSRect) {
+        
+        let startColor = NSColor.red
+        let endColor = NSColor.green
+        
+        let context: CGContext! = NSGraphicsContext.current?.cgContext
+        context.saveGState()
+        
+        let myColorspace: CGColorSpace = CGColorSpaceCreateDeviceRGB();
+        let locations: [CGFloat] = [1.0, 0.0]
+        let components: [CGFloat] = [startColor.redComponent, startColor.greenComponent, startColor.blueComponent, startColor.alphaComponent,   endColor.redComponent, endColor.greenComponent, endColor.blueComponent, endColor.alphaComponent]
+        
+        let clippath: CGPath = NSBezierPath(roundedRect: dirtyRect, xRadius: 0, yRadius: 0).CGPath
+        context.addPath(clippath);
+        context.closePath();
+        
+        let myGradient: CGGradient = CGGradient(colorSpace: myColorspace, colorComponents: components, locations: locations, count: locations.count)!
+        
+        (context).clip()
+        
+        let myStartPoint = CGPoint(x: 0,y:0), myEndPoint = CGPoint(x: dirtyRect.minY,y: dirtyRect.maxY)
+        
+        context.drawLinearGradient (myGradient, start: myStartPoint, end: myEndPoint, options: CGGradientDrawingOptions(rawValue: 0))
+        context.restoreGState()
+    }
+}
+
 class Spectrogram: NSView, VisualizerViewProtocol {
     
     static var instance: Spectrogram?
@@ -61,7 +90,8 @@ class Spectrogram: NSView, VisualizerViewProtocol {
 //                                let magn = data!.magnitudes[i * interval + 1]
 //                                let magn = max(minI: i * interval, maxI: ((i + 1) * interval) - 1)
 //                                let magn = avg(minI: i * interval, maxI: ((i + 1) * interval) - 1)
-                let magn = data!.magnitudes[i]
+//                let magn = data!.magnitudes[i]
+                let magn = Float(2)
                 
                 let height = min(Float(maxBarHeight), magn * multiplier * Float(maxBarHeight))
                 let barRect = NSRect(x: x, y: CGFloat(y), width: CGFloat(barWidth), height: CGFloat(height))

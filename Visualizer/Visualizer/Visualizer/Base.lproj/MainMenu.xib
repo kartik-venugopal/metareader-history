@@ -15,7 +15,7 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Visualizer" customModuleProvider="target">
             <connections>
-                <outlet property="sp" destination="Sfh-Kk-8vT" id="drI-Sx-CvB"/>
+                <outlet property="sp" destination="zOw-rT-vFu" id="FPi-8k-Qrj"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -685,19 +685,37 @@
         <window title="Visualizer" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="480" height="360"/>
+            <rect key="contentRect" x="335" y="390" width="653" height="360"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <value key="minSize" type="size" width="653" height="360"/>
+            <value key="maxSize" type="size" width="653" height="360"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
+                <rect key="frame" x="0.0" y="0.0" width="653" height="360"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sfh-Kk-8vT" customClass="Spectrogram" customModule="Visualizer" customModuleProvider="target">
+                    <customView id="zOw-rT-vFu" customClass="SKVizView" customModule="Visualizer" customModuleProvider="target">
                         <rect key="frame" x="20" y="20" width="440" height="320"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <connections>
+                            <outlet property="cropPreview" destination="8uG-eu-9T3" id="nuh-Ml-MTa"/>
+                        </connections>
+                    </customView>
+                    <customView hidden="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sfh-Kk-8vT" customClass="Spectrogram" customModule="Visualizer" customModuleProvider="target">
+                        <rect key="frame" x="20" y="20" width="440" height="320"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    </customView>
+                    <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8uG-eu-9T3">
+                        <rect key="frame" x="514" y="0.0" width="60" height="360"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="bottom" imageScaling="proportionallyDown" id="RSu-HO-EPu"/>
+                    </imageView>
+                    <customView hidden="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZNy-j7-ZEF" customClass="GrImgView" customModule="Visualizer" customModuleProvider="target">
+                        <rect key="frame" x="590" y="35" width="50" height="300"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="140" y="-120"/>
+            <point key="canvasLocation" x="226.5" y="-120"/>
         </window>
     </objects>
 </document>
