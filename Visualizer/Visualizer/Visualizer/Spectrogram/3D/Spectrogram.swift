@@ -79,7 +79,7 @@ class Spectrogram: NSView, VisualizerViewProtocol {
             
             //            barCount = (data?.magnitudes.count)!
             barCount = 10
-            let interval = data!.magnitudes.count / barCount
+//            let interval = data!.magnitudes.count / barCount
             
             NSColor.black.set()
             NSBezierPath.fill(viewRect)
@@ -192,7 +192,7 @@ class Spectrogram: NSView, VisualizerViewProtocol {
 
 public extension NSBezierPath {
     
-    public var CGPath: CGPath {
+    var CGPath: CGPath {
         
         let path = CGMutablePath()
         var points = [CGPoint](repeating: .zero, count: 3)

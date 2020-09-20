@@ -1,6 +1,6 @@
 import SceneKit
 
-class SKVizView: SCNView, VisualizerViewProtocol {
+class SCNVizView: SCNView, VisualizerViewProtocol {
     
     var data: FrequencyData!
     let magnitudeRange: ClosedRange<Float> = 0...1
