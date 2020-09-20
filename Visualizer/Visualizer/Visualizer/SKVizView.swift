@@ -1,17 +1,24 @@
 import SceneKit
+import SpriteKit
 
 class SKVizView: SCNView, VisualizerViewProtocol {
     
     @IBOutlet weak var cropPreview: NSImageView!
     
     var data: FrequencyData!
+    let magnitudeRange: ClosedRange<Float> = 0...1
     
     func update(with data: FrequencyData) {
         
         self.data = data
+        data.magnitudes = data.magnitudes.map {(mag: Float) -> Float in mag.clamp(to: magnitudeRange)}
+        
+        if AppDelegate.play {
         
         DispatchQueue.main.async {
             self.update()
+        }
+            
         }
     }
     
@@ -34,6 +41,8 @@ class SKVizView: SCNView, VisualizerViewProtocol {
     lazy var imgHt: CGFloat = spImage.size.height
     
     override func awakeFromNib() {
+        
+        AppDelegate.play = true
         
         scene = SCNScene()
         scene?.background.contents = NSColor(calibratedWhite: 0.05, alpha: 1)
@@ -60,7 +69,8 @@ class SKVizView: SCNView, VisualizerViewProtocol {
             let ht: CGFloat = CGFloat(i + 1) * maxBarHt / 10
             
             let bar = SCNBox(width: barThickness, height: ht, length: barThickness, chamferRadius: 0.05)
-            bar.materials = materialsForBar(bar, bar.height / maxBarHt)
+            bar.materials = [SCNMaterial(), SCNMaterial(), SCNMaterial(), SCNMaterial(), SCNMaterial(), bottomMaterial]
+            materialsForBar(bar, ht / maxBarHt)
             
             // --------------
             
@@ -103,26 +113,20 @@ class SKVizView: SCNView, VisualizerViewProtocol {
         return matl
     }()
     
-    func materialsForBar(_ bar: SCNBox, _ magn: CGFloat) -> [SCNMaterial] {
-        
-        let sideMat: SCNMaterial = SCNMaterial()
+    func materialsForBar(_ bar: SCNBox, _ magn: CGFloat) {
         
         let crop = NSImage(size: NSSize(width: imgWd, height: magn == 0 ? 1 : imgHt * magn))
         crop.lockFocus()
-        
         let drawRect = NSRect(origin: NSPoint.zero, size: crop.size)
         spImage.draw(in: drawRect, from: drawRect, operation: .copy, fraction: 1)
         crop.unlockFocus()
         
-        sideMat.diffuse.contents = crop
+        for index in 0...3 {
+            bar.materials[index].diffuse.contents = crop
+        }
         
-        let topMat: SCNMaterial = SCNMaterial()
-        topMat.diffuse.contents = NSColor.green.interpolate(NSColor.red, magn).cgColor
-        
-        return [sideMat, sideMat, sideMat, sideMat, topMat, bottomMaterial]
+        bar.materials[4].diffuse.contents = NSColor.green.interpolate(NSColor.red, magn).cgColor
     }
-    
-    let magnitudeRange: ClosedRange<CGFloat> = 0...1
     
     func update() {
         
@@ -131,15 +135,15 @@ class SKVizView: SCNView, VisualizerViewProtocol {
         
         for i in 0..<10 {
             
-            let magn = CGFloat(data.magnitudes[i]).clamp(to: magnitudeRange)
-            let height: CGFloat = min(CGFloat(maxBarHt), magn * maxBarHt)
+            let magn = CGFloat(data.magnitudes[i])
+            let height: CGFloat = min(maxBarHt, magn * maxBarHt)
             
             let bar = bars[i]
             let barNode = barNodes[i]
             
             bar.height = height
             barNode.pivot = SCNMatrix4MakeTranslation(0, -(bar.height / 2), 0) // new height
-            bar.materials = materialsForBar(bar, magn)
+            materialsForBar(bar, magn)
         }
             
         SCNTransaction.commit()
@@ -169,9 +173,9 @@ extension NSColor{
     }
 }
 
-extension CGFloat {
+extension FloatingPoint {
     
-    func clamp(to range: ClosedRange<CGFloat>) -> CGFloat {
+    func clamp(to range: ClosedRange<Self>) -> Self {
         
         if self < range.lowerBound {
             return range.lowerBound

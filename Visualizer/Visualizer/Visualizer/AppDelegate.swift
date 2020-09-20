@@ -3,6 +3,8 @@ import AVFoundation
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
+    
+    static var play: Bool = false
 
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var sp: SKVizView!
@@ -17,10 +19,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
+        if Self.play {
+        
         player.outputRenderObserver = viz
         
         player.play(file: file)
         player.seekToTime(seconds: 40)
+            
+        }
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {

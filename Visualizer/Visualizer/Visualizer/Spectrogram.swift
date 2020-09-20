@@ -1,5 +1,6 @@
 import Cocoa
 
+// For testing purposes only (to generate a gradient image)
 class GrImgView: NSView {
     
     override func draw(_ dirtyRect: NSRect) {
