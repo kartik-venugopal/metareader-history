@@ -12,7 +12,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var file: URL = URL(fileURLWithPath: "/Volumes/MyData/Music/01-06- Jacqueline (Chill Mix).mp3")
 //    private var file: URL = URL(fileURLWithPath: "/Volumes/MyData/Music/Album/Billie Jean.mp3")
 //    private var file: URL = URL(fileURLWithPath: "/Volumes/MyData/Music/0Music for inner stillness/Karitas.mp3")
-//    private var file: URL = URL(fileURLWithPath: "/Volumes/MyData/Music/goingToSanFran.mp3")
+//    private var file: URL = URL(fileURLWithPath: "/Volumes/MyData/Music/VTA2/4-06 The Theme.mp3")
     
     private let player = Player()
     lazy var viz: Visualizer = Visualizer(sp: sp)

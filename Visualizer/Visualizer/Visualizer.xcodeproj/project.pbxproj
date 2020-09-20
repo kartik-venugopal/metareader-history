@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		3E410B7F25167F0800BCBF57 /* SKVizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E410B7E25167F0800BCBF57 /* SKVizView.swift */; };
 		3E82035C2516050400A1C6E1 /* Visualizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E82035B2516050400A1C6E1 /* Visualizer.swift */; };
-		3EB9F0A32517777F006364A8 /* gr.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB9F0A22517777F006364A8 /* gr.png */; };
 		3EF18434217C78C400D24F39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF18433217C78C400D24F39 /* AppDelegate.swift */; };
 		3EF18436217C78C500D24F39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EF18435217C78C500D24F39 /* Assets.xcassets */; };
 		3EF18439217C78C500D24F39 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EF18437217C78C500D24F39 /* MainMenu.xib */; };
@@ -41,7 +40,6 @@
 /* Begin PBXFileReference section */
 		3E410B7E25167F0800BCBF57 /* SKVizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKVizView.swift; sourceTree = "<group>"; };
 		3E82035B2516050400A1C6E1 /* Visualizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visualizer.swift; sourceTree = "<group>"; };
-		3EB9F0A22517777F006364A8 /* gr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gr.png; path = "Assets.xcassets/Sp-Gradient.imageset/gr.png"; sourceTree = "<group>"; };
 		3EF18430217C78C400D24F39 /* Visualizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Visualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EF18433217C78C400D24F39 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3EF18435217C78C500D24F39 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -85,6 +83,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3E26E7B72517B0E0007A9757 /* Spectrogram */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Spectrogram;
+			sourceTree = "<group>";
+		};
 		3EF18427217C78C400D24F39 = {
 			isa = PBXGroup;
 			children = (
@@ -108,6 +113,7 @@
 		3EF18432217C78C400D24F39 /* Visualizer */ = {
 			isa = PBXGroup;
 			children = (
+				3E26E7B72517B0E0007A9757 /* Spectrogram */,
 				3EF18437217C78C500D24F39 /* MainMenu.xib */,
 				3EF18433217C78C400D24F39 /* AppDelegate.swift */,
 				3EF18466217C8C3B00D24F39 /* Player.swift */,
@@ -119,7 +125,6 @@
 				3EF18435217C78C500D24F39 /* Assets.xcassets */,
 				3EF1843A217C78C500D24F39 /* Info.plist */,
 				3EF1843B217C78C500D24F39 /* Visualizer.entitlements */,
-				3EB9F0A22517777F006364A8 /* gr.png */,
 			);
 			path = Visualizer;
 			sourceTree = "<group>";
@@ -248,7 +253,6 @@
 			files = (
 				3EF18436217C78C500D24F39 /* Assets.xcassets in Resources */,
 				3EF18439217C78C500D24F39 /* MainMenu.xib in Resources */,
-				3EB9F0A32517777F006364A8 /* gr.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,7 +381,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -432,7 +436,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -453,7 +457,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = anon.Visualizer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -472,7 +476,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = anon.Visualizer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;

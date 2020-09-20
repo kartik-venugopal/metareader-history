@@ -3,8 +3,6 @@ import SpriteKit
 
 class SKVizView: SCNView, VisualizerViewProtocol {
     
-    @IBOutlet weak var cropPreview: NSImageView!
-    
     var data: FrequencyData!
     let magnitudeRange: ClosedRange<Float> = 0...1
     
@@ -15,10 +13,9 @@ class SKVizView: SCNView, VisualizerViewProtocol {
         
         if AppDelegate.play {
         
-        DispatchQueue.main.async {
-            self.update()
-        }
-            
+            DispatchQueue.main.async {
+                self.update()
+            }
         }
     }
     
@@ -33,32 +30,30 @@ class SKVizView: SCNView, VisualizerViewProtocol {
     
     let piOver180: CGFloat = CGFloat.pi / 180
     
-    let maxBarHt: CGFloat = 4
+    let maxBarHt: CGFloat = 3.6
     let barThickness: CGFloat = 0.25
     
     let spImage = NSImage(named: "Sp-Gradient")!
-    lazy var imgWd: CGFloat = spImage.size.width
-    lazy var imgHt: CGFloat = spImage.size.height
     
     override func awakeFromNib() {
         
         AppDelegate.play = true
         
         scene = SCNScene()
-        scene?.background.contents = NSColor(calibratedWhite: 0.05, alpha: 1)
+        scene?.background.contents = NSColor.black
         
         // MARK: Camera ---------------------------------------
 
-        camera = SCNCamera()
-        cameraNode = SCNNode()
-        
-        cameraNode.camera = camera
-        cameraNode.position = SCNVector3(x: 0, y: 2, z: 0)
-        cameraNode.rotation = SCNVector4(x: 0, y: 1, z: 0, w: 4 * piOver180)
-        
-        cameraNode.position = SCNVector3(x: 2.5, y: 1.3, z: 5.5)
-        
-        scene!.rootNode.addChildNode(cameraNode)
+//        camera = SCNCamera()
+//        cameraNode = SCNNode()
+//
+//        cameraNode.camera = camera
+//        cameraNode.position = SCNVector3(x: 2.2, y: 1.6, z: 4)
+////        cameraNode.rotation = SCNVector4(x: 0, y: 1, z: 0, w: 4 * piOver180)
+////
+////        cameraNode.position = SCNVector3(x: 2.5, y: 1.3, z: 5.5)
+//        
+//        scene!.rootNode.addChildNode(cameraNode)
         
         // MARK: Bar ---------------------------------------
         
@@ -68,8 +63,12 @@ class SKVizView: SCNView, VisualizerViewProtocol {
             
             let ht: CGFloat = CGFloat(i + 1) * maxBarHt / 10
             
-            let bar = SCNBox(width: barThickness, height: ht, length: barThickness, chamferRadius: 0.05)
-            bar.materials = [SCNMaterial(), SCNMaterial(), SCNMaterial(), SCNMaterial(), SCNMaterial(), bottomMaterial]
+            let bar = SCNBox(width: barThickness, height: ht, length: barThickness, chamferRadius: 0)
+            
+            let sideMat = SCNMaterial()
+            bar.materials = [sideMat, sideMat, sideMat, sideMat, SCNMaterial(), bottomMaterial]
+            bar.materials[0].diffuse.contents = spImage
+            
             materialsForBar(bar, ht / maxBarHt)
             
             // --------------
@@ -86,15 +85,12 @@ class SKVizView: SCNView, VisualizerViewProtocol {
         
         SCNTransaction.commit()
         
-        cropPreview.image = bars[9].materials[0].diffuse.contents as? NSImage
-
         // MARK: Floor ---------------------------------------
         
         floor = SCNFloor()
-        floor.reflectionCategoryBitMask = 4
-        floor.firstMaterial?.diffuse.contents = NSColor(calibratedWhite: 0.05, alpha: 1)
+        floor.firstMaterial?.diffuse.contents = NSColor.black
         floor.firstMaterial?.lightingModel = .physicallyBased
-        
+
         floorNode = SCNNode(geometry: floor)
         scene!.rootNode.addChildNode(floorNode)
 
@@ -115,17 +111,21 @@ class SKVizView: SCNView, VisualizerViewProtocol {
     
     func materialsForBar(_ bar: SCNBox, _ magn: CGFloat) {
         
-        let crop = NSImage(size: NSSize(width: imgWd, height: magn == 0 ? 1 : imgHt * magn))
-        crop.lockFocus()
-        let drawRect = NSRect(origin: NSPoint.zero, size: crop.size)
-        spImage.draw(in: drawRect, from: drawRect, operation: .copy, fraction: 1)
-        crop.unlockFocus()
-        
-        for index in 0...3 {
-            bar.materials[index].diffuse.contents = crop
+        if magn > 0.3 {
+
+            if !(bar.materials[0].diffuse.contents is NSImage) {
+                bar.materials[0].diffuse.contents = spImage
+            }
+
+            let scale = SCNMatrix4MakeScale(1, bar.height / maxBarHt, 1)
+            bar.materials[0].diffuse.contentsTransform = SCNMatrix4Translate(scale, 0, (maxBarHt - bar.height) / maxBarHt, 0)
+            bar.materials[4].diffuse.contents = NSColor.green.interpolate(NSColor.red, magn).cgColor
+
+        } else {
+            
+            bar.materials[0].diffuse.contents = NSColor.green
+            bar.materials[4].diffuse.contents = NSColor.green
         }
-        
-        bar.materials[4].diffuse.contents = NSColor.green.interpolate(NSColor.red, magn).cgColor
     }
     
     func update() {
@@ -142,7 +142,7 @@ class SKVizView: SCNView, VisualizerViewProtocol {
             let barNode = barNodes[i]
             
             bar.height = height
-            barNode.pivot = SCNMatrix4MakeTranslation(0, -(bar.height / 2), 0) // new height
+            barNode.pivot = SCNMatrix4MakeTranslation(0, -(bar.height / 2), 0)
             materialsForBar(bar, magn)
         }
             

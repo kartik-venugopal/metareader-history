@@ -6,6 +6,13 @@ import Foundation
 import AVFoundation
 import CoreAudioKit
 
+typealias PlayerOutputRenderCallbackFilter = (UnsafeMutableRawPointer,
+UnsafeMutablePointer<AudioUnitRenderActionFlags>,
+UnsafePointer<AudioTimeStamp>,
+UInt32,
+UInt32,
+UnsafeMutablePointer<AudioBufferList>?) -> Bool
+
 protocol PlayerOutputRenderObserver: AURenderCallbackDelegate {}
 
 @objc protocol AURenderCallbackDelegate {
@@ -134,10 +141,7 @@ class Player: NSObject, AURenderCallbackDelegate {
         let playerTime: AVAudioTime = playerNode.playerTime(forNodeTime: nodetime)!
         let sampleRate2 = playerTime.sampleRate
         
-        print("sr2=" + String(sampleRate2))
         let sampleRate = avFile!.processingFormat.sampleRate
-        
-        print("sr=" + String(sampleRate))
         
         let startSample = AVAudioFramePosition(sampleRate * seconds)
         
@@ -159,8 +163,6 @@ class Player: NSObject, AURenderCallbackDelegate {
 //        printVal("lf2", value: String(lengthFrames2))
 //        printVal("lf3", value: String(lengthFrames3))
 //        printVal("lf4", value: String(lengthFrames4))
-        
-        print("\n")
         
         playerNode.stop()
         
@@ -206,11 +208,6 @@ class Player: NSObject, AURenderCallbackDelegate {
                 let t2 = Double((playerTime?.sampleTime)!)
                 let s = Int(t2 / (playerTime?.sampleRate)!)
                 
-                if (pr) {
-                    print("\n" + String(s) + " secs")
-                    print("lastRender.sample=" + String(t1))
-                    print("playerTime.sample=" + String(t2))
-                }
                 return Double(t2)
             }
         }
