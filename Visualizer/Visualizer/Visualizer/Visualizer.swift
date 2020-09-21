@@ -6,28 +6,74 @@ protocol VisualizerViewProtocol {
     func update(with data: FrequencyData)
 }
 
-class Visualizer: PlayerOutputRenderObserver {
+class Visualizer: NSObject, PlayerOutputRenderObserver, NSMenuDelegate {
     
-    var sp: VisualizerViewProtocol!
+    @IBOutlet weak var spectrogram2D: SKVizView!
+    @IBOutlet weak var spectrogram3D: SCNVizView!
+    
+    @IBOutlet weak var typeMenu: NSMenu!
+    @IBOutlet weak var spectrogram2DMenuItem: NSMenuItem!
+    @IBOutlet weak var spectrogram3DMenuItem: NSMenuItem!
+    
+    var vizView: VisualizerViewProtocol!
     private let fft = FFT.instance
     
-    init(sp: VisualizerViewProtocol) {
-        self.sp = sp
+    override func awakeFromNib() {
+        
+        vizView = spectrogram2D
+        
+        spectrogram2D.show()
+        spectrogram3D.hide()
+        
+        spectrogram2DMenuItem.representedObject = VisualizationType.spectrogram2D
+        spectrogram3DMenuItem.representedObject = VisualizationType.spectrogram3D
     }
     
-    var ctr: Int = 0
+    @IBAction func changeTypeAction(_ sender: NSPopUpButton) {
+        
+        if let vizType = sender.selectedItem?.representedObject as? VisualizationType {
+            
+            switch vizType {
+                
+            case .spectrogram2D:
+                
+                vizView = spectrogram2D
+
+                spectrogram2D.show()
+                spectrogram3D.hide()
+                
+            case .spectrogram3D:
+                
+                vizView = spectrogram3D
+                
+                spectrogram2D.hide()
+                spectrogram3D.show()
+                
+            default:
+                
+                vizView = spectrogram2D
+                
+                spectrogram2D.show()
+                spectrogram3D.hide()
+            }
+        }
+    }
+    
+    private var ctr: Int = 0
     
     func performRender(inTimeStamp: AudioTimeStamp, inNumberFrames: UInt32, audioBuffer: AudioBufferList) {
         
         ctr += 1
         
-        //                let cap = Int(buf.mBuffers.mDataByteSize) / MemoryLayout<Float>.size / Int(buf.mBuffers.mNumberChannels)
-        //                NSLog("HOLY SHIT !!! BufSize: \(cap)")
-        
         if ctr % 4 == 0 {
             
-            let data = fft.fft2(audioBuffer)
-            sp.update(with: data)
+            let data = fft.analyze(audioBuffer)
+            vizView.update(with: data)
         }
     }
+}
+
+enum VisualizationType {
+    
+    case spectrogram2D, spectrogram3D, bassBall2D
 }

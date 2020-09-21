@@ -2,6 +2,17 @@ import Cocoa
 import SceneKit
 import SpriteKit
 
+extension NSView {
+    
+    func hide() {
+        self.isHidden = true
+    }
+    
+    func show() {
+        self.isHidden = false
+    }
+}
+
 extension NSColor{
     /**
      * Interpolates between two NSColors

@@ -42,15 +42,12 @@ class SKVizView: SKView, VisualizerViewProtocol {
             bar.size = Self.gradientImage.size
             bars.append(bar)
             scene.addChild(bar)
-
-            bar.texture = nil
-            
-            print("Scale:", bar.yScale, "Size:", bar.size)
-            print("TSize:", bar.texture ?? CGSize.zero, "\n")
         }
         
         presentScene(scene)
     }
+    
+    // TODO: Test this with random mags (with a button to trigger an iteration)
     
     func update() {
         

@@ -68,21 +68,12 @@ class SpectrogramBar {
         self.node.pivot = SCNMatrix4MakeTranslation(0, -(height / 2), 0)
         
         self.sideGradientMaterial.diffuse.contents = Self.gradientImage
-        self.box.materials = [Self.sideColorMaterial, Self.sideColorMaterial, Self.sideColorMaterial, Self.sideColorMaterial, topMaterial, Self.bottomMaterial]
+        self.box.materials = [Self.sideColorMaterial, Self.sideColorMaterial, Self.sideColorMaterial, Self.sideColorMaterial, Self.sideColorMaterial, Self.bottomMaterial]
         
-        if magnitude <= 0.3 {
+        if magnitude > 0.3 {
             
-            for i in 0...4 {
-                box.materials[i] = Self.sideColorMaterial
-            }
-            
-        } else {
-            
-            if box.materials[0] !== sideGradientMaterial {
-                
-                for i in 0...3 {
-                    box.materials[i] = sideGradientMaterial
-                }
+            for i in 0...3 {
+                box.materials[i] = sideGradientMaterial
             }
             
             let scale = SCNMatrix4MakeScale(1, box.height / Self.maxHeight, 1)

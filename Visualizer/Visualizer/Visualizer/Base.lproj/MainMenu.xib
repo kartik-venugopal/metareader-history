@@ -14,11 +14,19 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Visualizer" customModuleProvider="target">
             <connections>
-                <outlet property="sp" destination="EVQ-ep-qMN" id="dmv-qj-leQ"/>
+                <outlet property="visualizer" destination="QkM-WI-cqD" id="ITe-j4-jQr"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
-        <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
+        <customObject id="QkM-WI-cqD" customClass="Visualizer" customModule="Visualizer" customModuleProvider="target">
+            <connections>
+                <outlet property="spectrogram2D" destination="EVQ-ep-qMN" id="w7A-5T-SNW"/>
+                <outlet property="spectrogram2DMenuItem" destination="zI0-Ad-uiR" id="9kJ-WA-hj3"/>
+                <outlet property="spectrogram3D" destination="zOw-rT-vFu" id="7lh-Ej-uWd"/>
+                <outlet property="spectrogram3DMenuItem" destination="Phs-1G-S8d" id="qHz-xT-4AL"/>
+                <outlet property="typeMenu" destination="kLv-ho-9nJ" id="cu6-7U-hTG"/>
+            </connections>
+        </customObject>
         <menu title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
             <items>
                 <menuItem title="Visualizer" id="1Xt-HY-uBw">
@@ -355,37 +363,17 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Font" systemMenu="font" id="aXa-aM-Jaq">
                                     <items>
-                                        <menuItem title="Show Fonts" keyEquivalent="t" id="Q5e-8K-NDq">
-                                            <connections>
-                                                <action selector="orderFrontFontPanel:" target="YLy-65-1bz" id="WHr-nq-2xA"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Bold" tag="2" keyEquivalent="b" id="GB9-OM-e27">
-                                            <connections>
-                                                <action selector="addFontTrait:" target="YLy-65-1bz" id="hqk-hr-sYV"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Italic" tag="1" keyEquivalent="i" id="Vjx-xi-njq">
-                                            <connections>
-                                                <action selector="addFontTrait:" target="YLy-65-1bz" id="IHV-OB-c03"/>
-                                            </connections>
-                                        </menuItem>
+                                        <menuItem title="Show Fonts" keyEquivalent="t" id="Q5e-8K-NDq"/>
+                                        <menuItem title="Bold" tag="2" keyEquivalent="b" id="GB9-OM-e27"/>
+                                        <menuItem title="Italic" tag="1" keyEquivalent="i" id="Vjx-xi-njq"/>
                                         <menuItem title="Underline" keyEquivalent="u" id="WRG-CD-K1S">
                                             <connections>
                                                 <action selector="underline:" target="-1" id="FYS-2b-JAY"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="5gT-KC-WSO"/>
-                                        <menuItem title="Bigger" tag="3" keyEquivalent="+" id="Ptp-SP-VEL">
-                                            <connections>
-                                                <action selector="modifyFont:" target="YLy-65-1bz" id="Uc7-di-UnL"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Smaller" tag="4" keyEquivalent="-" id="i1d-Er-qST">
-                                            <connections>
-                                                <action selector="modifyFont:" target="YLy-65-1bz" id="HcX-Lf-eNd"/>
-                                            </connections>
-                                        </menuItem>
+                                        <menuItem title="Bigger" tag="3" keyEquivalent="+" id="Ptp-SP-VEL"/>
+                                        <menuItem title="Smaller" tag="4" keyEquivalent="-" id="i1d-Er-qST"/>
                                         <menuItem isSeparatorItem="YES" id="kx3-Dk-x3B"/>
                                         <menuItem title="Kern" id="jBQ-r6-VK2">
                                             <modifierMask key="keyEquivalentModifierMask"/>
@@ -679,46 +667,72 @@
                     </menu>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="141" y="154"/>
+            <point key="canvasLocation" x="-539" y="-506"/>
         </menu>
-        <window title="Visualizer" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
+        <window title="Visualizer" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g" userLabel="Visualizer Window">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="653" height="360"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
-            <value key="minSize" type="size" width="653" height="360"/>
-            <value key="maxSize" type="size" width="653" height="360"/>
+            <rect key="contentRect" x="335" y="390" width="653" height="400"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <value key="minSize" type="size" width="653" height="400"/>
+            <value key="maxSize" type="size" width="653" height="400"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="653" height="360"/>
+                <rect key="frame" x="0.0" y="0.0" width="653" height="400"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView id="zOw-rT-vFu" customClass="SCNVizView" customModule="Visualizer" customModuleProvider="target">
-                        <rect key="frame" x="20" y="20" width="440" height="320"/>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XI2-df-obx">
+                        <rect key="frame" x="20" y="359" width="133" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="Visualization Type:" id="BYJ-gb-YTz">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ey4-rN-jj6">
+                        <rect key="frame" x="162" y="358" width="301" height="25"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <popUpButtonCell key="cell" type="push" title="Spectrogram (2D)" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="zI0-Ad-uiR" id="fns-gR-DQ8">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <menu key="menu" id="kLv-ho-9nJ">
+                                <items>
+                                    <menuItem title="Spectrogram (2D)" state="on" id="zI0-Ad-uiR">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="Spectrogram (3D)" id="Phs-1G-S8d">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="Bass Ball (2D)" id="7XX-uN-VD7">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
                         <connections>
-                            <outlet property="cropPreview" destination="8uG-eu-9T3" id="nuh-Ml-MTa"/>
+                            <action selector="changeTypeAction:" target="QkM-WI-cqD" id="uiC-fD-67G"/>
                         </connections>
-                    </customView>
-                    <customView hidden="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sfh-Kk-8vT" customClass="Spectrogram" customModule="Visualizer" customModuleProvider="target">
+                    </popUpButton>
+                    <customView id="zOw-rT-vFu" userLabel="2D Spectrogram" customClass="SCNVizView" customModule="Visualizer" customModuleProvider="target">
                         <rect key="frame" x="20" y="20" width="440" height="320"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
-                    <customView id="EVQ-ep-qMN" customClass="SKVizView" customModule="Visualizer" customModuleProvider="target">
+                    <customView id="EVQ-ep-qMN" userLabel="3D Spectrogram" customClass="SKVizView" customModule="Visualizer" customModuleProvider="target">
                         <rect key="frame" x="20" y="20" width="440" height="320"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
-                    <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8uG-eu-9T3">
-                        <rect key="frame" x="514" y="0.0" width="60" height="360"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="bottom" imageScaling="proportionallyDown" id="RSu-HO-EPu"/>
-                    </imageView>
-                    <customView hidden="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZNy-j7-ZEF" customClass="GrImgView" customModule="Visualizer" customModuleProvider="target">
-                        <rect key="frame" x="590" y="35" width="50" height="300"/>
+                    <customView hidden="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sfh-Kk-8vT" userLabel="Old Spectrogram" customClass="Spectrogram" customModule="Visualizer" customModuleProvider="target">
+                        <rect key="frame" x="20" y="20" width="440" height="320"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="226.5" y="-120"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <point key="canvasLocation" x="-183.5" y="-163"/>
         </window>
     </objects>
 </document>

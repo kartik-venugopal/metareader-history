@@ -18,10 +18,7 @@ class SCNVizView: SCNView, VisualizerViewProtocol {
         }
     }
     
-//    var cameraNode: SCNNode!
-//    var camera: SCNCamera!
-    
-    var sbars: [SpectrogramBar] = []
+    var bars: [SpectrogramBar] = []
     
     var floorNode: SCNNode!
     var floor: SCNFloor!
@@ -36,22 +33,10 @@ class SCNVizView: SCNView, VisualizerViewProtocol {
         scene = SCNScene()
         scene?.background.contents = NSColor.black
         
-        // MARK: Camera ---------------------------------------
-
-//        camera = SCNCamera()
-//        cameraNode = SCNNode()
-//
-//        cameraNode.camera = camera
-//        cameraNode.position = SCNVector3(x: 2.2, y: 1.6, z: 4)
-////        cameraNode.rotation = SCNVector4(x: 0, y: 1, z: 0, w: 4 * piOver180)
-////
-////        cameraNode.position = SCNVector3(x: 2.5, y: 1.3, z: 5.5)
-//
-//        scene!.rootNode.addChildNode(cameraNode)
-        
         // MARK: Bar ---------------------------------------
         
         SCNTransaction.begin()
+        SCNTransaction.animationDuration = 0
         
         for i in 0..<10 {
             
@@ -61,7 +46,7 @@ class SCNVizView: SCNView, VisualizerViewProtocol {
                                      magnitude: magnitude,
                                      thickness: barThickness)
             
-            sbars.append(bar)
+            bars.append(bar)
             scene!.rootNode.addChildNode(bar.node)
         }
         
@@ -77,6 +62,7 @@ class SCNVizView: SCNView, VisualizerViewProtocol {
         scene!.rootNode.addChildNode(floorNode)
 
         // MARK: Scene settings ---------------------------------------
+        
         antialiasingMode = .multisampling4X
         isJitteringEnabled = true
         allowsCameraControl = true
@@ -90,7 +76,7 @@ class SCNVizView: SCNView, VisualizerViewProtocol {
         SCNTransaction.animationDuration = 0
         
         for i in 0..<10 {
-            sbars[i].magnitude = CGFloat(data.magnitudes[i])
+            bars[i].magnitude = CGFloat(data.magnitudes[i])
         }
             
         SCNTransaction.commit()
