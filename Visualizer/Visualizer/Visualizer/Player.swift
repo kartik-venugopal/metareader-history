@@ -72,7 +72,7 @@ class Player: NSObject, AURenderCallbackDelegate {
         let au = audioEngine.outputNode.audioUnit!
         AudioUnitAddRenderNotify(au, renderCallback, Unmanaged.passUnretained(self).toOpaque())
         
-        playerNode.volume = 0.7
+        playerNode.volume = 0.3
         playerNode.pan = 0
     }
     

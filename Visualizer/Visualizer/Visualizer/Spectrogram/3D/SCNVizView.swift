@@ -33,8 +33,6 @@ class SCNVizView: SCNView, VisualizerViewProtocol {
     
     override func awakeFromNib() {
         
-        AppDelegate.play = true
-        
         scene = SCNScene()
         scene?.background.contents = NSColor.black
         
