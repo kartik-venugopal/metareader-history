@@ -4,6 +4,8 @@ import AVFoundation
 protocol VisualizerViewProtocol {
     
     func update(with data: FrequencyData)
+    
+    func setColors(startColor: NSColor, endColor: NSColor)
 }
 
 class Visualizer: NSObject, PlayerOutputRenderObserver, NSMenuDelegate {
@@ -14,6 +16,9 @@ class Visualizer: NSObject, PlayerOutputRenderObserver, NSMenuDelegate {
     @IBOutlet weak var typeMenu: NSMenu!
     @IBOutlet weak var spectrogram2DMenuItem: NSMenuItem!
     @IBOutlet weak var spectrogram3DMenuItem: NSMenuItem!
+    
+    @IBOutlet weak var startColorPicker: NSColorWell!
+    @IBOutlet weak var endColorPicker: NSColorWell!
     
     var vizView: VisualizerViewProtocol!
     private let fft = FFT.instance
@@ -69,6 +74,14 @@ class Visualizer: NSObject, PlayerOutputRenderObserver, NSMenuDelegate {
             
             let data = fft.analyze(audioBuffer)
             vizView.update(with: data)
+        }
+    }
+    
+    @IBAction func setColorsAction(_ sender: NSColorWell) {
+        
+        [spectrogram2D, spectrogram3D].forEach {
+            
+            ($0 as? VisualizerViewProtocol)?.setColors(startColor: self.startColorPicker.color, endColor: self.endColorPicker.color)
         }
     }
 }

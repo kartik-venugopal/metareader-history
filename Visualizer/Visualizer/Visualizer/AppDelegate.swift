@@ -9,7 +9,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var visualizer: Visualizer!
     
-    private var file: URL = URL(fileURLWithPath: "/Volumes/MyData/Music/01-06- Jacqueline (Chill Mix).mp3")
+//    private var file: URL = URL(fileURLWithPath: "/Volumes/MyData/Music/Bedrock_-_For_What_You_Dream_Of_Full_On_Renaissance_Mix.mp3")
+    private var file: URL = URL(fileURLWithPath: "/Volumes/MyData/Music/goingToSanFran.mp3")
     //    private var file: URL = URL(fileURLWithPath: "/Volumes/MyData/Music/Album/Billie Jean.mp3")
     //    private var file: URL = URL(fileURLWithPath: "/Volumes/MyData/Music/0Music for inner stillness/Karitas.mp3")
     //    private var file: URL = URL(fileURLWithPath: "/Volumes/MyData/Music/VTA2/4-06 The Theme.mp3")
@@ -18,12 +19,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
+        NSColorPanel.shared.close()
+        
         if Self.play {
             
             player.outputRenderObserver = visualizer
             
             player.play(file: file)
-            player.seekToTime(seconds: 40)
+            player.seekToTime(seconds: 0)
             
         }
     }

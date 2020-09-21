@@ -52,17 +52,32 @@ extension FloatingPoint {
     }
 }
 
+extension NSImage {
+    
+    convenience init(gradientColors: [NSColor], imageSize: NSSize) {
+        
+        let gradient = NSGradient(colors: gradientColors)!
+        let rect = NSRect(origin: CGPoint.zero, size: imageSize)
+        self.init(size: rect.size)
+        
+        let path = NSBezierPath(rect: rect)
+        self.lockFocus()
+        gradient.draw(in: path, angle: 90.0)
+        self.unlockFocus()
+    }
+}
+
 extension SKTexture {
     
-    convenience init(size:CGSize,color1:CIColor,color2:CIColor) {
+    convenience init(size: CGSize, color1: CIColor, color2: CIColor) {
         
         let coreImageContext = CIContext(options: nil)
         
         let gradientFilter = CIFilter(name: "CILinearGradient")!
         gradientFilter.setDefaults()
         
-        let startVector: CIVector = CIVector(x: size.width/2, y: 0)
-        let endVector: CIVector = CIVector(x: size.width/2, y: size.height)
+        let startVector: CIVector = CIVector(x: size.width / 2, y: 0)
+        let endVector: CIVector = CIVector(x: size.width / 2, y: size.height)
         
         gradientFilter.setValue(startVector, forKey: "inputPoint0")
         gradientFilter.setValue(endVector, forKey: "inputPoint1")

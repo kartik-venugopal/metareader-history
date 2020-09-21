@@ -2,12 +2,8 @@ import SceneKit
 
 class SpectrogramBar {
     
-    static let sideColorMaterial: SCNMaterial = {
-        
-        let material = SCNMaterial()
-        material.diffuse.contents = NSColor.green
-        return material
-    }()
+    static var startColor: NSColor = .green
+    static var endColor: NSColor = .red
     
     static let bottomMaterial: SCNMaterial = {
         
@@ -15,8 +11,6 @@ class SpectrogramBar {
         material.diffuse.contents = NSColor.black
         return material
     }()
-    
-    static let gradientImage: NSImage = NSImage(named: "Sp-Gradient")!
     
     let box: SCNBox
     let node: SCNNode
@@ -26,6 +20,13 @@ class SpectrogramBar {
     
     static let maxHeight: CGFloat = 3.6
     
+    var gradientImage: NSImage {
+        
+        didSet {
+            sideGradientMaterial.diffuse.contents = gradientImage
+        }
+    }
+    
     var magnitude: CGFloat {
         
         didSet {
@@ -33,31 +34,15 @@ class SpectrogramBar {
             box.height = min(Self.maxHeight, magnitude * Self.maxHeight)
             node.pivot = SCNMatrix4MakeTranslation(0, -(box.height / 2), 0)
             
-            if magnitude <= 0.3 {
-                
-                for i in 0...4 {
-                    box.materials[i] = Self.sideColorMaterial
-                }
-                
-            } else {
-                
-                if box.materials[0] !== sideGradientMaterial {
-                    
-                    for i in 0...3 {
-                        box.materials[i] = sideGradientMaterial
-                    }
-                }
-                
-                let scale = SCNMatrix4MakeScale(1, box.height / Self.maxHeight, 1)
-                sideGradientMaterial.diffuse.contentsTransform = SCNMatrix4Translate(scale, 0, (Self.maxHeight - box.height) / Self.maxHeight, 0)
-                
-                box.materials[4] = topMaterial
-                topMaterial.diffuse.contents = NSColor(red: magnitude, green: 1.0 - magnitude, blue: 0, alpha: 1)
-            }
+            let scale = SCNMatrix4MakeScale(1, box.height / Self.maxHeight, 1)
+            sideGradientMaterial.diffuse.contentsTransform = SCNMatrix4Translate(scale, 0, (Self.maxHeight - box.height) / Self.maxHeight, 0)
+            
+            box.materials[4] = topMaterial
+            topMaterial.diffuse.contents = Self.startColor.interpolate(Self.endColor, magnitude)
         }
     }
     
-    init(position: SCNVector3, magnitude: CGFloat = 0, thickness: CGFloat) {
+    init(position: SCNVector3, magnitude: CGFloat = 0, thickness: CGFloat, gradientImage: NSImage) {
         
         self.magnitude = magnitude
         let height = min(Self.maxHeight, magnitude * Self.maxHeight)
@@ -67,20 +52,15 @@ class SpectrogramBar {
         self.node.position = position
         self.node.pivot = SCNMatrix4MakeTranslation(0, -(height / 2), 0)
         
-        self.sideGradientMaterial.diffuse.contents = Self.gradientImage
-        self.box.materials = [Self.sideColorMaterial, Self.sideColorMaterial, Self.sideColorMaterial, Self.sideColorMaterial, Self.sideColorMaterial, Self.bottomMaterial]
+        self.gradientImage = gradientImage
+        self.sideGradientMaterial.diffuse.contents = self.gradientImage
         
-        if magnitude > 0.3 {
-            
-            for i in 0...3 {
-                box.materials[i] = sideGradientMaterial
-            }
-            
-            let scale = SCNMatrix4MakeScale(1, box.height / Self.maxHeight, 1)
-            sideGradientMaterial.diffuse.contentsTransform = SCNMatrix4Translate(scale, 0, (Self.maxHeight - box.height) / Self.maxHeight, 0)
-            
-            box.materials[4] = topMaterial
-            topMaterial.diffuse.contents = NSColor(red: magnitude, green: 1.0 - magnitude, blue: 0, alpha: 1)
-        }
+        self.box.materials = [sideGradientMaterial, sideGradientMaterial, sideGradientMaterial, sideGradientMaterial, topMaterial, Self.bottomMaterial]
+        
+        let scale = SCNMatrix4MakeScale(1, box.height / Self.maxHeight, 1)
+        sideGradientMaterial.diffuse.contentsTransform = SCNMatrix4Translate(scale, 0, (Self.maxHeight - box.height) / Self.maxHeight, 0)
+        
+        box.materials[4] = topMaterial
+        topMaterial.diffuse.contents = Self.startColor.interpolate(Self.endColor, magnitude)
     }
 }

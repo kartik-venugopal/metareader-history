@@ -188,6 +188,9 @@ class Spectrogram: NSView, VisualizerViewProtocol {
         
         return NSColor(deviceRed: min(0.75, red), green: green, blue: 0, alpha: 1)
     }
+    
+    func setColors(startColor: NSColor, endColor: NSColor) {
+    }
 }
 
 public extension NSBezierPath {

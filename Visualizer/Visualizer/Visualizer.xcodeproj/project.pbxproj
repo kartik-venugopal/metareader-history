@@ -98,6 +98,13 @@
 			path = Spectrogram;
 			sourceTree = "<group>";
 		};
+		3E9714272518C93F00765797 /* BassBall */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = BassBall;
+			sourceTree = "<group>";
+		};
 		3EF18427217C78C400D24F39 = {
 			isa = PBXGroup;
 			children = (
@@ -127,6 +134,7 @@
 				3EF18472217C8C6300D24F39 /* FFT.swift */,
 				3EF18468217C8C3B00D24F39 /* FrequencyData.swift */,
 				3E26E7B72517B0E0007A9757 /* Spectrogram */,
+				3E9714272518C93F00765797 /* BassBall */,
 				3EF18466217C8C3B00D24F39 /* Player.swift */,
 				3EF635782517C04E00AC8314 /* Utils.swift */,
 				3EF18435217C78C500D24F39 /* Assets.xcassets */,

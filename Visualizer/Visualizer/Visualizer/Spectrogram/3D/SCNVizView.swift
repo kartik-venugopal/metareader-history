@@ -10,11 +10,8 @@ class SCNVizView: SCNView, VisualizerViewProtocol {
         self.data = data
         data.magnitudes = data.magnitudes.map {(mag: Float) -> Float in mag.clamp(to: magnitudeRange)}
         
-        if AppDelegate.play {
-        
-            DispatchQueue.main.async {
-                self.update()
-            }
+        DispatchQueue.main.async {
+            self.update()
         }
     }
     
@@ -27,6 +24,11 @@ class SCNVizView: SCNView, VisualizerViewProtocol {
     
     let maxBarHt: CGFloat = 3.6
     let barThickness: CGFloat = 0.25
+    
+    var gradientImage: NSImage = NSImage(named: "Sp-Gradient")!
+    
+    private var startColor: NSColor = .green
+    private var endColor: NSColor = .red
     
     override func awakeFromNib() {
         
@@ -44,7 +46,8 @@ class SCNVizView: SCNView, VisualizerViewProtocol {
             
             let bar = SpectrogramBar(position: SCNVector3(CGFloat(i * 2) * barThickness, 0, 0),
                                      magnitude: magnitude,
-                                     thickness: barThickness)
+                                     thickness: barThickness,
+                                     gradientImage: gradientImage)
             
             bars.append(bar)
             scene!.rootNode.addChildNode(bar.node)
@@ -80,5 +83,17 @@ class SCNVizView: SCNView, VisualizerViewProtocol {
         }
             
         SCNTransaction.commit()
+    }
+    
+    func setColors(startColor: NSColor, endColor: NSColor) {
+        
+        self.startColor = startColor
+        self.endColor = endColor
+        
+        SpectrogramBar.startColor = startColor
+        SpectrogramBar.endColor = endColor
+        
+        gradientImage = NSImage(gradientColors: [startColor, endColor], imageSize: gradientImage.size)
+        bars.forEach {$0.gradientImage = gradientImage}
     }
 }
