@@ -64,6 +64,8 @@ class Player: NSObject, AURenderCallbackDelegate {
         setUp()
     }
     
+    var bufferSize: Int = 512
+    
     func setUp() {
         
         audioEngine.attach(playerNode)
@@ -71,6 +73,25 @@ class Player: NSObject, AURenderCallbackDelegate {
         
         let au = audioEngine.outputNode.audioUnit!
         AudioUnitAddRenderNotify(au, renderCallback, Unmanaged.passUnretained(self).toOpaque())
+        
+//        var bufferSize: UInt32 = 0
+//        var sizeOfProp: UInt32 = UInt32(MemoryLayout<UInt32>.size)
+//        let error = AudioUnitGetProperty(au, kAudioDevicePropertyBufferFrameSize, kAudioUnitScope_Global, 0, &bufferSize, &sizeOfProp)
+//        if error == noErr {
+//
+//            self.bufferSize = Int(bufferSize)
+//            FFT.instance.bufferSize = self.bufferSize
+//        }
+        
+        var newBufferSize: UInt32 = 2048
+        let error = AudioUnitSetProperty(au, kAudioDevicePropertyBufferFrameSize, kAudioUnitScope_Global, 0, &newBufferSize, UInt32(MemoryLayout<UInt32>.size))
+        if error == noErr {
+            
+            self.bufferSize = Int(newBufferSize)
+            FFT.instance.bufferSize = self.bufferSize
+            
+            print("\nSUCCESS ! Set buffer size to \(newBufferSize)")
+        }
         
         playerNode.volume = 0.3
         playerNode.pan = 0
@@ -139,7 +160,7 @@ class Player: NSObject, AURenderCallbackDelegate {
         
         let nodetime: AVAudioTime  = playerNode.lastRenderTime!
         let playerTime: AVAudioTime = playerNode.playerTime(forNodeTime: nodetime)!
-        let sampleRate2 = playerTime.sampleRate
+//        let sampleRate2 = playerTime.sampleRate
         
         let sampleRate = avFile!.processingFormat.sampleRate
         

@@ -4,100 +4,110 @@ import AVFoundation
 
 class FFT {
     
-    let frameCount: Int = 1024
-    var sampleRate: Float
+    static let instance: FFT = FFT()
     
-    var log2n: UInt
-    let bufferSizePOT: Int
-    let halfBufferSize: Int
-    let fftSetup: FFTSetup
+    private init() {}
     
-    var realp: [Float]
-    var imagp: [Float]
-    var output: DSPSplitComplex
-    let windowSize: Int
+    var fftSetup: FFTSetup!
     
-    var transferBuffer: [Float]
-    var window: [Float]
+    var log2n: UInt = 9
+    var bufferSizePOT: Int = 512
+    var bufferSizePOT_Float: Float = 512
+    var halfBufferSize: Int = 256
+    var halfBufferSize_Int32: Int32 = 256
+    var halfBufferSize_UInt: UInt = 256
+    var halfBufferSize_Float: Float = 256
+    var vsMulScalar: [Float] = [2.0 / 256]
+    var vvsqrtf_numElements: [Int32] = [256]
     
-    var magnitudes: [Float]
-    var normalizedMagnitudes: [Float]
+    var realp: [Float] = []
+    var imagp: [Float] = []
+    var output: DSPSplitComplex!
+    var windowSize: Int = 512
+    var windowSize_vDSPLength: vDSP_Length = 512
     
-    static let instance: FFT = FFT(sampleRate: 44100)
+    let fftRadix: Int32 = Int32(kFFTRadix2)
+    let vDSP_HANN_NORM_Int32: Int32 = Int32(vDSP_HANN_NORM)
+    let fftDirection: FFTDirection = FFTDirection(FFT_FORWARD)
     
-    private init(sampleRate: Float) {
+    var transferBuffer: [Float] = []
+    var window: [Float] = []
+    
+    var frequencies: [Float] = []
+    var magnitudes: [Float] = []
+    var squareRoots: [Float] = []
+    var normalizedMagnitudes: [Float] = []
+    
+    var sampleRate: Float = 44100 {
         
-        self.sampleRate = sampleRate
-        
-        log2n = UInt(round(log2(Double(frameCount))))
-        bufferSizePOT = Int(1 << log2n)
-        halfBufferSize = bufferSizePOT / 2
-        
-        //        print("half", halfBufferSize, frameCount)
-        
-        fftSetup = vDSP_create_fftsetup(log2n, Int32(kFFTRadix2))!
-        
-        realp = [Float](repeating: 0, count: halfBufferSize)
-        imagp = [Float](repeating: 0, count: halfBufferSize)
-        output = DSPSplitComplex(realp: &realp, imagp: &imagp)
-        windowSize = bufferSizePOT
-        
-        transferBuffer = [Float](repeating: 0, count: windowSize)
-        window = [Float](repeating: 0, count: windowSize)
-        
-        magnitudes = [Float](repeating: 0, count: halfBufferSize)
-        normalizedMagnitudes = [Float](repeating: 0, count: halfBufferSize)
+        didSet {
+            frequencies = (0..<halfBufferSize).map {Float($0) * self.sampleRate / self.bufferSizePOT_Float}
+        }
     }
     
-    func sqrtq(_ x: [Float]) -> [Float] {
+    var bufferSize: Int = 512 {
         
-        var results = [Float](repeating: 0, count: x.count)
-        vvsqrtf(&results, x, [Int32(x.count)])
-        
-        return results
+        didSet {
+            
+            log2n = UInt(round(log2(Double(bufferSize))))
+            bufferSizePOT = Int(1 << log2n)
+            
+            halfBufferSize = bufferSizePOT / 2
+            halfBufferSize_Int32 = Int32(halfBufferSize)
+            halfBufferSize_UInt = UInt(halfBufferSize)
+            halfBufferSize_Float = Float(halfBufferSize)
+            
+            //        print("half", halfBufferSize, frameCount)
+            
+            fftSetup = vDSP_create_fftsetup(log2n, fftRadix)!
+            
+            realp = [Float](repeating: 0, count: halfBufferSize)
+            imagp = [Float](repeating: 0, count: halfBufferSize)
+            output = DSPSplitComplex(realp: &realp, imagp: &imagp)
+            
+            windowSize = bufferSizePOT
+            windowSize_vDSPLength = vDSP_Length(windowSize)
+            
+            transferBuffer = [Float](repeating: 0, count: windowSize)
+            window = [Float](repeating: 0, count: windowSize)
+            
+            frequencies = (0..<halfBufferSize).map {Float($0) * self.sampleRate / self.bufferSizePOT_Float}
+            magnitudes = [Float](repeating: 0, count: halfBufferSize)
+            squareRoots = [Float](repeating: 0, count: halfBufferSize)
+            normalizedMagnitudes = [Float](repeating: 0, count: halfBufferSize)
+            
+            vsMulScalar = [2.0 / halfBufferSize_Float]
+            vvsqrtf_numElements = [halfBufferSize_Int32]
+        }
     }
     
     func analyze(_ buffer: AudioBufferList) -> FrequencyData {
         
-        let pptr: UnsafeMutablePointer<Float> = buffer.mBuffers.mData!.bindMemory(to: Float.self, capacity: Int(buffer.mBuffers.mNumberChannels))
-        let ptr: UnsafePointer<Float> = UnsafePointer(pptr)
+        let bufferPtr: UnsafePointer<Float> = UnsafePointer(buffer.mBuffers.mData!.bindMemory(to: Float.self, capacity: Int(buffer.mBuffers.mNumberChannels)))
         
         // Hann windowing to reduce the frequency leakage
-        vDSP_hann_window(&window, vDSP_Length(windowSize), Int32(vDSP_HANN_NORM))
-        vDSP_vmul(ptr, 1, window,
-                  1, &transferBuffer, 1, vDSP_Length(windowSize))
+        vDSP_hann_window(&window, windowSize_vDSPLength, vDSP_HANN_NORM_Int32)
+        vDSP_vmul(bufferPtr, 1, window, 1, &transferBuffer, 1, windowSize_vDSPLength)
         
-        ptr.withMemoryRebound(to: DSPComplex.self, capacity: bufferSizePOT / 2) {dspComplexStream in
-            vDSP_ctoz(dspComplexStream, 2, &output, 1, UInt(bufferSizePOT / 2))
+        bufferPtr.withMemoryRebound(to: DSPComplex.self, capacity: halfBufferSize) {dspComplexStream in
+            vDSP_ctoz(dspComplexStream, 2, &output, 1, halfBufferSize_UInt)
         }
         
         // Perform the FFT
-        vDSP_fft_zrip(fftSetup, &output, 1, log2n, FFTDirection(FFT_FORWARD))
-        
-        vDSP_zvmags(&output, 1, &magnitudes, 1, vDSP_Length(halfBufferSize))
+        vDSP_fft_zrip(fftSetup, &output, 1, log2n, fftDirection)
+        vDSP_zvmags(&output, 1, &magnitudes, 1, halfBufferSize_UInt)
         
         // Normalizing
-        vDSP_vsmul(self.sqrtq(magnitudes), 1, [2.0 / Float(halfBufferSize)],
-                   &normalizedMagnitudes, 1, vDSP_Length(halfBufferSize))
+        vvsqrtf(&squareRoots, magnitudes, vvsqrtf_numElements)
+        vDSP_vsmul(squareRoots, 1, vsMulScalar, &normalizedMagnitudes, 1, halfBufferSize_UInt)
         
-        //        vDSP_destroy_fftsetup(fftSetup)
+        return FrequencyData(sampleRate: sampleRate, frequencies: frequencies, magnitudes: normalizedMagnitudes)
+    }
+    
+    deinit {
         
-        var freqs = [Float](repeating: 0, count: halfBufferSize)
-        var mags = [Float](repeating: 0, count: halfBufferSize)
-        
-        let frameCount_f = Float(frameCount)
-        
-        //        print("\nNM has " + String(normalizedMagnitudes.count))
-        
-        for i in 0...(normalizedMagnitudes.count) - 1 {
-            
-            freqs[i] = Float(i) * sampleRate / frameCount_f
-            mags[i] = normalizedMagnitudes[i]
+        if fftSetup != nil {
+            vDSP_destroy_fftsetup(fftSetup)
         }
-        
-        let data = FrequencyData(sampleRate: sampleRate, frequencies: freqs, magnitudes: mags)
-        
-        return data
     }
 }
-

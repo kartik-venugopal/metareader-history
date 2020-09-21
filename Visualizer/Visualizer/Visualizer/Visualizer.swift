@@ -10,8 +10,8 @@ protocol VisualizerViewProtocol {
 
 class Visualizer: NSObject, PlayerOutputRenderObserver, NSMenuDelegate {
     
-    @IBOutlet weak var spectrogram2D: SKVizView!
-    @IBOutlet weak var spectrogram3D: SCNVizView!
+    @IBOutlet weak var spectrogram2D: Spectrogram2D!
+    @IBOutlet weak var spectrogram3D: Spectrogram3D!
     
     @IBOutlet weak var typeMenu: NSMenu!
     @IBOutlet weak var spectrogram2DMenuItem: NSMenuItem!
@@ -68,13 +68,13 @@ class Visualizer: NSObject, PlayerOutputRenderObserver, NSMenuDelegate {
     
     func performRender(inTimeStamp: AudioTimeStamp, inNumberFrames: UInt32, audioBuffer: AudioBufferList) {
         
-        ctr += 1
-        
-        if ctr % 4 == 0 {
+//        ctr += 1
+//
+//        if ctr % 4 == 0 {
             
             let data = fft.analyze(audioBuffer)
             vizView.update(with: data)
-        }
+//        }
     }
     
     @IBAction func setColorsAction(_ sender: NSColorWell) {

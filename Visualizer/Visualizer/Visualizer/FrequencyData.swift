@@ -6,7 +6,9 @@ class FrequencyData {
     var frequencies: [Float]
     var magnitudes: [Float]
     
-    var bands: [Band]
+//    var bands: [Band]
+    
+    static var powers: [Int: Int] = [5: 32, 6: 64, 7: 128, 8: 256, 9: 512, 10: 1024, 11: 2048, 12: 4096, 13: 8192, 14: 16384]
     
     init(sampleRate: Float, frequencies: [Float], magnitudes: [Float]) {
         
@@ -14,39 +16,41 @@ class FrequencyData {
         self.frequencies = frequencies
         self.magnitudes = magnitudes
         
-        var minF = 0
-        let firstFreq = frequencies[1]
-        self.bands = [Band]()
+//        var map: [Float: Float] = [:]
+//        var tuples: [(F: Float, M: Float)] = []
+//        
+//        for (freq, mag) in zip(frequencies, magnitudes).sorted(by: {$0.0 < $1.0}) {
+//            map[freq] = mag
+//        }
+//        
+//        for f in frequencies {
+//            print("\(f): \(map[f]!)")
+//        }
+//        
+//        print("\n------------------------\n")
         
-        for power in 5...14 {
-            
-            let maxF = Int(pow(Double(2), Double(power)))
-            
-            let band = Band(minF: minF, maxF: maxF)
-            bands.append(band)
-            
-            let minI = Int(round(Float(minF) / firstFreq))
-            let maxI = Int(round(Float(maxF) / firstFreq))
-            
-            let maxAvg = findMaxAndAverageForFrequencies(minI, maxI: maxI)
-            band.maxVal = maxAvg.max
-            band.avgVal = maxAvg.avg
-            
-            minF = maxF
-        }
-    }
-    
-    func findMagnitudeForFrequency(_ freq: Int) -> Float {
+//        print("\nFreqs: \(map)")
         
-        // TODO: Use interpolation
-        
-        let firstFreq = frequencies[1]
-        
-        let index = Int(round(Float(freq) / firstFreq))
-        
-        //        Swift.print("forFreq:", freq, index, frequencies[index], magnitudes[index])
-        
-        return magnitudes[index]
+//        var minF = 0
+//        let firstFreq = frequencies[1]
+//        self.bands = []
+//
+//        for power in 5...14 {
+//
+//            let maxF = Self.powers[power]!
+//
+//            let band = Band(minF: minF, maxF: maxF)
+//            bands.append(band)
+//
+//            let minI = Int(round(Float(minF) / firstFreq))
+//            let maxI = Int(round(Float(maxF) / firstFreq))
+//
+//            let maxAvg = findMaxAndAverageForFrequencies(minI, maxI: maxI)
+//            band.maxVal = maxAvg.max
+//            band.avgVal = maxAvg.avg
+//
+//            minF = maxF
+//        }
     }
     
     func findMaxAndAverageForFrequencies(_ minI: Int, maxI: Int) -> (max: Float, avg: Float) {
