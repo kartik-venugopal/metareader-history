@@ -5,6 +5,8 @@ protocol VisualizerViewProtocol {
     
     func update(with data: FrequencyData)
     
+    func update()
+    
     func setColors(startColor: NSColor, endColor: NSColor)
 }
 
@@ -64,10 +66,28 @@ class Visualizer: NSObject, PlayerOutputRenderObserver, NSMenuDelegate {
         }
     }
     
+    var cnt: Int = 0
+    var tm: Double = 0
+    
     func performRender(inTimeStamp: AudioTimeStamp, inNumberFrames: UInt32, audioBuffer: AudioBufferList) {
             
-        let data = fft.analyze(audioBuffer)
-        vizView.update(with: data)
+        var st = CFAbsoluteTimeGetCurrent()
+        fft.analyze(audioBuffer)
+        var end = CFAbsoluteTimeGetCurrent()
+        
+        var time = (end - st) * 1000
+        tm += time
+        cnt += 1
+        
+        if cnt == 500 {
+            
+            let avg = tm / 500.0
+            print("\nAvg FFT time: \(avg)")
+        }
+        
+        vizView.update()
+        
+//        vizView.update(with: data)
     }
     
     @IBAction func setColorsAction(_ sender: NSColorWell) {

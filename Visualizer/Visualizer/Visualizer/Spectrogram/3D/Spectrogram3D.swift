@@ -8,7 +8,7 @@ class Spectrogram3D: SCNView, VisualizerViewProtocol {
     func update(with data: FrequencyData) {
         
         self.data = data
-        data.magnitudes = data.magnitudes.map {(mag: Float) -> Float in mag.clamp(to: magnitudeRange)}
+//        data.magnitudes = data.magnitudes.map {(mag: Float) -> Float in mag.clamp(to: magnitudeRange)}
         
         DispatchQueue.main.async {
             self.update()
@@ -79,7 +79,7 @@ class Spectrogram3D: SCNView, VisualizerViewProtocol {
         SCNTransaction.animationDuration = 0
         
         for i in 0..<10 {
-            bars[i].magnitude = CGFloat(data.bands[i].maxVal)
+            bars[i].magnitude = CGFloat(FrequencyData.fbands[i].maxVal)
         }
             
         SCNTransaction.commit()

@@ -11,46 +11,46 @@ struct BandFRange {
 
 class FrequencyData {
     
-    var sampleRate: Float
-    var frequencies: [Float]
-    var magnitudes: [Float]
+    static let fbands: [Band] = {
+        
+        /*
+         bands.append(Band(minF: 22.627417, maxF: 45.254833, minIndex: 1, maxIndex: 1)
+         bands.append(Band(minF: 45.254833, maxF: 90.50967, minIndex: 2, maxIndex: 3)
+         bands.append(Band(minF: 90.50967, maxF: 181.01933, minIndex: 4, maxIndex: 7)
+         bands.append(Band(minF: 181.01933, maxF: 362.03867, minIndex: 8, maxIndex: 14)
+         bands.append(Band(minF: 362.03867, maxF: 724.07733, minIndex: 15, maxIndex: 30)
+         bands.append(Band(minF: 724.07733, maxF: 1448.1547, minIndex: 31, maxIndex: 61)
+         bands.append(Band(minF: 1448.1547, maxF: 2896.3093, minIndex: 62, maxIndex: 123)
+         bands.append(Band(minF: 2896.3093, maxF: 5792.6187, minIndex: 124, maxIndex: 246)
+         bands.append(Band(minF: 5792.6187, maxF: 11585.237, minIndex: 247, maxIndex: 493)
+         bands.append(Band(minF: 11585.237, maxF: 23170.475, minIndex: 494, maxIndex: 988)
+         */
+
+        var bands: [Band] = []
+
+        bands.append(Band(minF: 22.627417, maxF: 45.254833, minIndex: 1, maxIndex: 1))
+        bands.append(Band(minF: 45.254833, maxF: 90.50967, minIndex: 2, maxIndex: 3))
+        bands.append(Band(minF: 90.50967, maxF: 181.01933, minIndex: 4, maxIndex: 7))
+        bands.append(Band(minF: 181.01933, maxF: 362.03867, minIndex: 8, maxIndex: 14))
+        bands.append(Band(minF: 362.03867, maxF: 724.07733, minIndex: 15, maxIndex: 30))
+        bands.append(Band(minF: 724.07733, maxF: 1448.1547, minIndex: 31, maxIndex: 61))
+        bands.append(Band(minF: 1448.1547, maxF: 2896.3093, minIndex: 62, maxIndex: 123))
+        bands.append(Band(minF: 2896.3093, maxF: 5792.6187, minIndex: 124, maxIndex: 246))
+        bands.append(Band(minF: 5792.6187, maxF: 11585.237, minIndex: 247, maxIndex: 493))
+        bands.append(Band(minF: 11585.237, maxF: 23170.475, minIndex: 494, maxIndex: 988))
+
+        return bands
+    }()
     
-//    static let fRanges: [Int: [BandFRange]] = {
-//
-//        func range(centerF: Float, bandwidth: Float) -> (min: Float, max: Float) {
-//
-//            let twoPowerBandwidth = powf(2, bandwidth)
-//            let minF = sqrt((centerF * centerF) / twoPowerBandwidth)
-//            let maxF = minF * twoPowerBandwidth
-//
-//            return (minF, maxF)
-//        }
-//
-//        func indices(minF: Float, maxF: Float, firstF: Float) -> (min: Int, max: Int) {
-//            return (Int(round(minF / firstF)), Int(round(maxF / firstF)) - 1)
-//        }
-//
-//        var map: [Int: [BandFRange]] = [:]
-//
-//        let tenBandFreqs: [Float] = [32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384]
-//        let tenBandFRanges: [BandFRange] = tenBandFreqs.map {
-//
-//            let fRange = range(centerF: $0, bandwidth: 1)
-//            let iRange = indices(fRange.min, fRange.max, firstF: )
-//        }
-//
-//        return map
-//
-//    }()
-    
-    var bands: [Band]
+    static var bands: [Band] = []
+    static var frequencies: [Float] = []
+    static var magnitudes: [Float] = []
     
     static let powers: [Int: Float] = [5: 32, 6: 64, 7: 128, 8: 256, 9: 512, 10: 1024, 11: 2048, 12: 4096, 13: 8192, 14: 16384]
     static let indexRanges: [ClosedRange<Int>] = []
     
-    init(sampleRate: Float, frequencies: [Float], magnitudes: [Float]) {
+    static func update(frequencies: [Float], magnitudes: [Float]) {
         
-        self.sampleRate = sampleRate
         self.frequencies = frequencies
         self.magnitudes = magnitudes
 
@@ -101,31 +101,31 @@ class FrequencyData {
 //        }
     }
     
-    func findMaxAndAverageForFrequencies(_ minI: Int, maxI: Int) -> (max: Float, avg: Float) {
-        
-        var max = 0 - Float.infinity
-        var sum: Float = 0
-        
-        for i in minI...maxI {
-            
-            if (magnitudes[i]) > max {
-                max = magnitudes[i]
-            }
-            
-            sum += magnitudes[i]
-        }
-        
-        return (max, sum / Float(maxI - minI + 1))
-    }
+//    func findMaxAndAverageForFrequencies(_ minI: Int, maxI: Int) -> (max: Float, avg: Float) {
+//
+//        var max = 0 - Float.infinity
+//        var sum: Float = 0
+//
+//        for i in minI...maxI {
+//
+//            if (magnitudes[i]) > max {
+//                max = magnitudes[i]
+//            }
+//
+//            sum += magnitudes[i]
+//        }
+//
+//        return (max, sum / Float(maxI - minI + 1))
+//    }
 }
 
 class Band {
     
-    var minF: Float
-    var maxF: Float
+    let minF: Float
+    let maxF: Float
     
-    var minIndex: Int
-    var maxIndex: Int
+    let minIndex: Int
+    let maxIndex: Int
     
     var avgVal: Float = 0
     var maxVal: Float = 0
@@ -139,10 +139,11 @@ class Band {
         self.maxIndex = maxIndex
         
 //        print("\nFor center F \(centerFreq), min = \(minF), max = \(maxF)")
+//        print(toString())
     }
     
     func toString() -> String {
-        return "minF: \(minF), maxF: \(maxF), avg: \(avgVal), max: \(maxVal)"
+        return "minF: \(minF), maxF: \(maxF), minIndex: \(minIndex), maxIndex: \(maxIndex), avg: \(avgVal), max: \(maxVal)"
     }
 }
 

@@ -70,37 +70,39 @@ class Spectrogram: NSView, VisualizerViewProtocol {
         //        Swift.print("Data:", data.frequencies.count, data.magnitudes.count)
     }
     
+    func update() {}
+    
     override func draw(_ dirtyRect: NSRect) {
         
-//        Spectrogram.instance = self
-        guard data != nil else {return}
-        
-        if (data!.frequencies.count > 0) {
-            
-            //            barCount = (data?.magnitudes.count)!
-            barCount = 10
-//            let interval = data!.magnitudes.count / barCount
-            
-            NSColor.black.set()
-            NSBezierPath.fill(viewRect)
-            
-            for i in 0...barCount - 1 {
-                
-                let x = CGFloat(barWidth * i)
-                let y = -1
-//                                let magn = data!.magnitudes[i * interval + 1]
-//                                let magn = max(minI: i * interval, maxI: ((i + 1) * interval) - 1)
-//                                let magn = avg(minI: i * interval, maxI: ((i + 1) * interval) - 1)
-//                let magn = data!.magnitudes[i]
-                let magn = Float(2)
-                
-                let height = min(Float(maxBarHeight), magn * multiplier * Float(maxBarHeight))
-                let barRect = NSRect(x: x, y: CGFloat(y), width: CGFloat(barWidth), height: CGFloat(height))
-                
-                drawBar(barRect, maxHeight: CGFloat(maxBarHeight))
-                drawFreq(data!.frequencies[i], bar: barRect)
-            }
-        }
+////        Spectrogram.instance = self
+//        guard data != nil else {return}
+//
+//        if (data!.frequencies.count > 0) {
+//
+//            //            barCount = (data?.magnitudes.count)!
+//            barCount = 10
+////            let interval = data!.magnitudes.count / barCount
+//
+//            NSColor.black.set()
+//            NSBezierPath.fill(viewRect)
+//
+//            for i in 0...barCount - 1 {
+//
+//                let x = CGFloat(barWidth * i)
+//                let y = -1
+////                                let magn = data!.magnitudes[i * interval + 1]
+////                                let magn = max(minI: i * interval, maxI: ((i + 1) * interval) - 1)
+////                                let magn = avg(minI: i * interval, maxI: ((i + 1) * interval) - 1)
+////                let magn = data!.magnitudes[i]
+//                let magn = Float(2)
+//
+//                let height = min(Float(maxBarHeight), magn * multiplier * Float(maxBarHeight))
+//                let barRect = NSRect(x: x, y: CGFloat(y), width: CGFloat(barWidth), height: CGFloat(height))
+//
+//                drawBar(barRect, maxHeight: CGFloat(maxBarHeight))
+//                drawFreq(data!.frequencies[i], bar: barRect)
+//            }
+//        }
         
         //        NSColor.blackColor().setFill()
         //        NSBezierPath.fillRect(bottomRect)
@@ -158,9 +160,9 @@ class Spectrogram: NSView, VisualizerViewProtocol {
         
         var sum: Float = 0
         
-        for i in minI...maxI {
-            sum += (data?.magnitudes[i])!
-        }
+//        for i in minI...maxI {
+//            sum += (data?.magnitudes[i])!
+//        }
         
         return sum / Float(maxI - minI + 1)
     }
@@ -171,13 +173,13 @@ class Spectrogram: NSView, VisualizerViewProtocol {
         
         var max: Float = -1
         
-        for i in minI...maxI {
-            let mag = (data?.magnitudes[i])!
-            if (mag > max) {
-                max = mag
-            }
-        }
-        
+//        for i in minI...maxI {
+//            let mag = (data?.magnitudes[i])!
+//            if (mag > max) {
+//                max = mag
+//            }
+//        }
+//
         return max
     }
     

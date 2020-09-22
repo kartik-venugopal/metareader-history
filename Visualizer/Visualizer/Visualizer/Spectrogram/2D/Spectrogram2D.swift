@@ -47,7 +47,7 @@ class Spectrogram2D: SKView, VisualizerViewProtocol {
     func update() {
         
         for i in 0..<10 {
-            bars[i].magnitude = CGFloat(data.bands[i].maxVal)
+            bars[i].magnitude = CGFloat(FrequencyData.fbands[i].maxVal).clamp(to: 0...1)
         }
     }
 }
@@ -63,7 +63,10 @@ class Spectrogram2DBar: SKSpriteNode {
     var magnitude: CGFloat {
         
         didSet {
-
+            
+//            self.yScale = max(magnitude, 0.01)
+//            run(SKAction.colorize(with: Self.startColor.interpolate(Self.endColor, magnitude),
+//                              colorBlendFactor: 1, duration: 0))
             let partialTexture = SKTexture(rect: NSRect(x: 0, y: 0, width: 1, height: max(0.001, magnitude)), in: Self.gradientTexture)
             run(SKAction.setTexture(partialTexture, resize: true))
         }
@@ -72,16 +75,19 @@ class Spectrogram2DBar: SKSpriteNode {
     init(position: NSPoint, magnitude: CGFloat = 0) {
         
         self.magnitude = magnitude
+//        let colorForMagnitude = Self.startColor.interpolate(Self.endColor, magnitude)
+        
         super.init(texture: Self.gradientTexture, color: Self.startColor, size: Self.gradientImage.size)
+//        super.init(texture: nil, color: colorForMagnitude, size: NSSize(width: 30, height: 240))
+        
+        self.yScale = 1
         
         self.anchorPoint = NSPoint.zero
         self.position = position
         
-        self.color = Self.startColor
-        self.blendMode = .replace
+        print("\nSize for bar: \(size)")
         
-        self.size = Self.gradientImage.size
-        self.yScale = 1
+        self.blendMode = .replace
         
         let partialTexture = SKTexture(rect: NSRect(x: 0, y: 0, width: 1, height: max(0.001, magnitude)), in: Self.gradientTexture)
         run(SKAction.setTexture(partialTexture, resize: true))
@@ -92,14 +98,16 @@ class Spectrogram2DBar: SKSpriteNode {
     }
     
     func colorsUpdated() {
+        
         self.color = Self.startColor
+//        self.color = Self.startColor.interpolate(Self.endColor, magnitude)
     }
     
     static func setColors(startColor: NSColor, endColor: NSColor) {
         
         Self.startColor = startColor
         Self.endColor = endColor
-
+        
         // Compute a new gradient image
         gradientImage = NSImage(gradientColors: [startColor, endColor], imageSize: gradientImage.size)
         gradientTexture = SKTexture(image: gradientImage)

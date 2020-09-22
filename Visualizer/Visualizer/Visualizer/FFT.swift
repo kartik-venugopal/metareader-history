@@ -40,7 +40,8 @@ class FFT {
     var frequencies: [Float] = []
     var magnitudes: [Float] = []
     var squareRoots: [Float] = []
-    var normalizedMagnitudes: [Float] = []
+//    var normalizedMagnitudes: [Float] = []
+    var normalizedMagnitudes: UnsafeMutablePointer<Float> = UnsafeMutablePointer<Float>.allocate(capacity: 0)
     
     var sampleRate: Float = 44100 {
 
@@ -86,7 +87,8 @@ class FFT {
             frequencies = (0..<halfBufferSize).map {Float($0) * self.nyquistFrequency / self.halfBufferSize_Float}
             magnitudes = [Float](repeating: 0, count: halfBufferSize)
             squareRoots = [Float](repeating: 0, count: halfBufferSize)
-            normalizedMagnitudes = [Float](repeating: 0, count: halfBufferSize)
+//            normalizedMagnitudes = [Float](repeating: 0, count: halfBufferSize)
+            normalizedMagnitudes = UnsafeMutablePointer<Float>.allocate(capacity: halfBufferSize)
             
 //            vsMulScalar = [2.0 / halfBufferSize_Float]
             vsMulScalar = [Float(1.0) / Float(128.0)]
@@ -94,7 +96,10 @@ class FFT {
         }
     }
     
-    func analyze(_ buffer: AudioBufferList) -> FrequencyData {
+    var cnt: Int = 0
+    var tm: Double = 0
+    
+    func analyze(_ buffer: AudioBufferList) {
         
         let bufferPtr: UnsafePointer<Float> = UnsafePointer(buffer.mBuffers.mData!.assumingMemoryBound(to: Float.self))
         
@@ -112,10 +117,31 @@ class FFT {
         // Convert FFT output to magnitudes
         vDSP_zvmags(&output, 1, &magnitudes, 1, halfBufferSize_UInt)
         
-        vDSP_vdbcon(&magnitudes, 1, &zeroDBReference, &normalizedMagnitudes, 1, halfBufferSize_UInt, 1)
-        vDSP_vsmul(normalizedMagnitudes, 1, vsMulScalar, &normalizedMagnitudes, 1, halfBufferSize_UInt)
+        vDSP_vdbcon(&magnitudes, 1, &zeroDBReference, normalizedMagnitudes, 1, halfBufferSize_UInt, 1)
+        vDSP_vsmul(normalizedMagnitudes, 1, vsMulScalar, normalizedMagnitudes, 1, halfBufferSize_UInt)
         
-        return FrequencyData(sampleRate: sampleRate, frequencies: frequencies, magnitudes: normalizedMagnitudes)
+        let st = CFAbsoluteTimeGetCurrent()
+//        FrequencyData.update(frequencies: frequencies, magnitudes: normalizedMagnitudes)
+        
+        for band in FrequencyData.fbands {
+            
+            vDSP_maxv(normalizedMagnitudes.advanced(by: band.minIndex), 1, &band.maxVal,
+                      UInt(band.maxIndex - band.minIndex + 1))
+        }
+        
+        let end = CFAbsoluteTimeGetCurrent()
+        
+        let time = (end - st) * 1000
+        tm += time
+        cnt += 1
+        
+        if cnt == 500 {
+            
+            let avg = tm / 500.0
+            print("\nAvg FData() time: \(avg)")
+        }
+        
+//        return data
     }
     
     deinit {
