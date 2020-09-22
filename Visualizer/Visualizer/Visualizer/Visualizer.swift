@@ -14,10 +14,12 @@ class Visualizer: NSObject, PlayerOutputRenderObserver, NSMenuDelegate {
     
     @IBOutlet weak var spectrogram2D: Spectrogram2D!
     @IBOutlet weak var spectrogram3D: Spectrogram3D!
+    @IBOutlet weak var bassBall2D: BassBall2D!
     
     @IBOutlet weak var typeMenu: NSMenu!
     @IBOutlet weak var spectrogram2DMenuItem: NSMenuItem!
     @IBOutlet weak var spectrogram3DMenuItem: NSMenuItem!
+    @IBOutlet weak var bassBall2DMenuItem: NSMenuItem!
     
     @IBOutlet weak var startColorPicker: NSColorWell!
     @IBOutlet weak var endColorPicker: NSColorWell!
@@ -27,13 +29,15 @@ class Visualizer: NSObject, PlayerOutputRenderObserver, NSMenuDelegate {
     
     override func awakeFromNib() {
         
-        vizView = spectrogram2D
+        vizView = bassBall2D
         
-        spectrogram2D.show()
+        spectrogram2D.hide()
         spectrogram3D.hide()
+        bassBall2D.show()
         
         spectrogram2DMenuItem.representedObject = VisualizationType.spectrogram2D
         spectrogram3DMenuItem.representedObject = VisualizationType.spectrogram3D
+        bassBall2DMenuItem.representedObject = VisualizationType.bassBall2D
     }
     
     @IBAction func changeTypeAction(_ sender: NSPopUpButton) {
@@ -48,6 +52,7 @@ class Visualizer: NSObject, PlayerOutputRenderObserver, NSMenuDelegate {
 
                 spectrogram2D.show()
                 spectrogram3D.hide()
+                bassBall2D.hide()
                 
             case .spectrogram3D:
                 
@@ -55,35 +60,37 @@ class Visualizer: NSObject, PlayerOutputRenderObserver, NSMenuDelegate {
                 
                 spectrogram2D.hide()
                 spectrogram3D.show()
+                bassBall2D.hide()
                 
-            default:
+            case .bassBall2D:
                 
-                vizView = spectrogram2D
+                vizView = bassBall2D
                 
-                spectrogram2D.show()
+                spectrogram2D.hide()
                 spectrogram3D.hide()
+                bassBall2D.show()
             }
         }
     }
     
-    var cnt: Int = 0
-    var tm: Double = 0
+//    var cnt: Int = 0
+//    var tm: Double = 0
     
     func performRender(inTimeStamp: AudioTimeStamp, inNumberFrames: UInt32, audioBuffer: AudioBufferList) {
             
-        var st = CFAbsoluteTimeGetCurrent()
+//        var st = CFAbsoluteTimeGetCurrent()
         fft.analyze(audioBuffer)
-        var end = CFAbsoluteTimeGetCurrent()
+//        var end = CFAbsoluteTimeGetCurrent()
         
-        var time = (end - st) * 1000
-        tm += time
-        cnt += 1
-        
-        if cnt == 500 {
-            
-            let avg = tm / 500.0
-            print("\nAvg FFT time: \(avg)")
-        }
+//        var time = (end - st) * 1000
+//        tm += time
+//        cnt += 1
+//
+//        if cnt == 500 {
+//
+//            let avg = tm / 500.0
+//            print("\nAvg FFT time: \(avg)")
+//        }
         
         vizView.update()
         
@@ -92,7 +99,7 @@ class Visualizer: NSObject, PlayerOutputRenderObserver, NSMenuDelegate {
     
     @IBAction func setColorsAction(_ sender: NSColorWell) {
         
-        [spectrogram2D, spectrogram3D].forEach {
+        [spectrogram2D, spectrogram3D, bassBall2D].forEach {
             
             ($0 as? VisualizerViewProtocol)?.setColors(startColor: self.startColorPicker.color, endColor: self.endColorPicker.color)
         }

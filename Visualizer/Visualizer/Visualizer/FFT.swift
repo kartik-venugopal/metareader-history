@@ -124,9 +124,9 @@ class FFT {
 //        FrequencyData.update(frequencies: frequencies, magnitudes: normalizedMagnitudes)
         
         for band in FrequencyData.fbands {
-            
-            vDSP_maxv(normalizedMagnitudes.advanced(by: band.minIndex), 1, &band.maxVal,
-                      UInt(band.maxIndex - band.minIndex + 1))
+//            var val: Float = 0
+//            vDSP_maxv(normalizedMagnitudes.advanced(by: band.minIndex), 1, &val, band.indexCount)
+            vDSP_maxv(normalizedMagnitudes.advanced(by: band.minIndex), 1, &band.maxVal, band.indexCount)
         }
         
         let end = CFAbsoluteTimeGetCurrent()

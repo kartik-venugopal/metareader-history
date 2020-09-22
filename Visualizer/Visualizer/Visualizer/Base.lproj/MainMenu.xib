@@ -20,6 +20,8 @@
         </customObject>
         <customObject id="QkM-WI-cqD" customClass="Visualizer" customModule="Visualizer" customModuleProvider="target">
             <connections>
+                <outlet property="bassBall2D" destination="Vg6-j7-uzR" id="mBw-03-VIL"/>
+                <outlet property="bassBall2DMenuItem" destination="7XX-uN-VD7" id="YiV-w4-5dx"/>
                 <outlet property="endColorPicker" destination="wuG-Gq-SRd" id="R1l-eH-OrU"/>
                 <outlet property="spectrogram2D" destination="EVQ-ep-qMN" id="w7A-5T-SNW"/>
                 <outlet property="spectrogram2DMenuItem" destination="zI0-Ad-uiR" id="9kJ-WA-hj3"/>
@@ -675,7 +677,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="653" height="400"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <value key="minSize" type="size" width="653" height="400"/>
             <value key="maxSize" type="size" width="653" height="400"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
@@ -686,7 +688,7 @@
                         <rect key="frame" x="20" y="359" width="133" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" title="Visualization Type:" id="BYJ-gb-YTz">
-                            <font key="font" metaFont="label" size="13"/>
+                            <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
@@ -696,7 +698,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <popUpButtonCell key="cell" type="push" title="Spectrogram (2D)" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="zI0-Ad-uiR" id="fns-gR-DQ8">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="label" size="13"/>
+                            <font key="font" metaFont="system"/>
                             <menu key="menu" id="kLv-ho-9nJ">
                                 <items>
                                     <menuItem title="Spectrogram (2D)" state="on" id="zI0-Ad-uiR">
@@ -720,6 +722,10 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
                     <customView id="EVQ-ep-qMN" userLabel="3D Spectrogram" customClass="Spectrogram2D" customModule="Visualizer" customModuleProvider="target">
+                        <rect key="frame" x="20" y="20" width="440" height="320"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    </customView>
+                    <customView hidden="YES" id="Vg6-j7-uzR" customClass="BassBall2D" customModule="Visualizer" customModuleProvider="target">
                         <rect key="frame" x="20" y="20" width="440" height="320"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>

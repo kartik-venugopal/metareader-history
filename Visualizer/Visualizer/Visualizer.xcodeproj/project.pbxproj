@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3E26E7B92517B231007A9757 /* SpectrogramBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E26E7B82517B231007A9757 /* SpectrogramBar.swift */; };
 		3E410B7F25167F0800BCBF57 /* Spectrogram3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E410B7E25167F0800BCBF57 /* Spectrogram3D.swift */; };
+		3E5E408A251A91D0000E40EA /* BassBall2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5E4089251A91D0000E40EA /* BassBall2D.swift */; };
 		3E82035C2516050400A1C6E1 /* Visualizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E82035B2516050400A1C6E1 /* Visualizer.swift */; };
 		3EF18434217C78C400D24F39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF18433217C78C400D24F39 /* AppDelegate.swift */; };
 		3EF18436217C78C500D24F39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EF18435217C78C500D24F39 /* Assets.xcassets */; };
@@ -43,6 +44,7 @@
 /* Begin PBXFileReference section */
 		3E26E7B82517B231007A9757 /* SpectrogramBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrogramBar.swift; sourceTree = "<group>"; };
 		3E410B7E25167F0800BCBF57 /* Spectrogram3D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spectrogram3D.swift; sourceTree = "<group>"; };
+		3E5E4089251A91D0000E40EA /* BassBall2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BassBall2D.swift; sourceTree = "<group>"; };
 		3E82035B2516050400A1C6E1 /* Visualizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visualizer.swift; sourceTree = "<group>"; };
 		3EF18430217C78C400D24F39 /* Visualizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Visualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EF18433217C78C400D24F39 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				3EF27BDE2517C8840068E566 /* Spectrogram2D.swift */,
+				3E5E4089251A91D0000E40EA /* BassBall2D.swift */,
 				3EF1846A217C8C3B00D24F39 /* Spectrogram.swift */,
 			);
 			path = 2D;
@@ -313,6 +316,7 @@
 				3EF1846C217C8C3B00D24F39 /* Player.swift in Sources */,
 				3E82035C2516050400A1C6E1 /* Visualizer.swift in Sources */,
 				3EF635792517C04E00AC8314 /* Utils.swift in Sources */,
+				3E5E408A251A91D0000E40EA /* BassBall2D.swift in Sources */,
 				3EF18470217C8C3B00D24F39 /* Spectrogram.swift in Sources */,
 				3EF27BDF2517C8840068E566 /* Spectrogram2D.swift in Sources */,
 				3E26E7B92517B231007A9757 /* SpectrogramBar.swift in Sources */,
