@@ -79,7 +79,7 @@ class Spectrogram3D: SCNView, VisualizerViewProtocol {
         SCNTransaction.animationDuration = 0
         
         for i in 0..<10 {
-            bars[i].magnitude = CGFloat(data.magnitudes[i])
+            bars[i].magnitude = CGFloat(data.bands[i].maxVal)
         }
             
         SCNTransaction.commit()

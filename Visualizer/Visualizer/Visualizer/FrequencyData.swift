@@ -1,10 +1,47 @@
 import Cocoa
 
+struct BandFRange {
+    
+    let minF: Float
+    let maxF: Float
+    
+    let minIndex: Int
+    let maxIndex: Int
+}
+
 class FrequencyData {
     
     var sampleRate: Float
     var frequencies: [Float]
     var magnitudes: [Float]
+    
+//    static let fRanges: [Int: [BandFRange]] = {
+//
+//        func range(centerF: Float, bandwidth: Float) -> (min: Float, max: Float) {
+//
+//            let twoPowerBandwidth = powf(2, bandwidth)
+//            let minF = sqrt((centerF * centerF) / twoPowerBandwidth)
+//            let maxF = minF * twoPowerBandwidth
+//
+//            return (minF, maxF)
+//        }
+//
+//        func indices(minF: Float, maxF: Float, firstF: Float) -> (min: Int, max: Int) {
+//            return (Int(round(minF / firstF)), Int(round(maxF / firstF)) - 1)
+//        }
+//
+//        var map: [Int: [BandFRange]] = [:]
+//
+//        let tenBandFreqs: [Float] = [32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384]
+//        let tenBandFRanges: [BandFRange] = tenBandFreqs.map {
+//
+//            let fRange = range(centerF: $0, bandwidth: 1)
+//            let iRange = indices(fRange.min, fRange.max, firstF: )
+//        }
+//
+//        return map
+//
+//    }()
     
     var bands: [Band]
     
@@ -27,11 +64,11 @@ class FrequencyData {
 
         for power in 5...14 {
             
-            let twoPowerBandwidth = powf(2, 1)
+//            let twoPowerBandwidth = powf(2, 1)
             let centerFreq = Self.powers[power]!
             
-            let minF = sqrt((centerFreq * centerFreq) / twoPowerBandwidth)
-            let maxF = minF * twoPowerBandwidth
+            let minF = sqrt((centerFreq * centerFreq) / 2)
+            let maxF = minF * 2
 
             let minI = Int(round(minF / firstFreq))
             let maxI = min(magnitudes.count - 1, Int(round(maxF / firstFreq)) - 1)
