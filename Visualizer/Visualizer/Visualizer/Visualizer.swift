@@ -64,17 +64,10 @@ class Visualizer: NSObject, PlayerOutputRenderObserver, NSMenuDelegate {
         }
     }
     
-    private var ctr: Int = 0
-    
     func performRender(inTimeStamp: AudioTimeStamp, inNumberFrames: UInt32, audioBuffer: AudioBufferList) {
-        
-//        ctr += 1
-//
-//        if ctr % 4 == 0 {
             
-            let data = fft.analyze(audioBuffer)
-            vizView.update(with: data)
-//        }
+        let data = fft.analyze(audioBuffer)
+        vizView.update(with: data)
     }
     
     @IBAction func setColorsAction(_ sender: NSColorWell) {

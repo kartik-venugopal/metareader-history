@@ -74,17 +74,17 @@ class Player: NSObject, AURenderCallbackDelegate {
         let au = audioEngine.outputNode.audioUnit!
         AudioUnitAddRenderNotify(au, renderCallback, Unmanaged.passUnretained(self).toOpaque())
         
-//        var bufferSize: UInt32 = 0
-//        var sizeOfProp: UInt32 = UInt32(MemoryLayout<UInt32>.size)
-//        let error = AudioUnitGetProperty(au, kAudioDevicePropertyBufferFrameSize, kAudioUnitScope_Global, 0, &bufferSize, &sizeOfProp)
-//        if error == noErr {
-//
-//            self.bufferSize = Int(bufferSize)
-//            FFT.instance.bufferSize = self.bufferSize
-//        }
+        var sampleRate: Double = 0
+        var sizeOfProp: UInt32 = UInt32(MemoryLayout<Double>.size)
+        var error = AudioUnitGetProperty(au, kAudioDevicePropertyActualSampleRate, kAudioUnitScope_Global, 0, &sampleRate, &sizeOfProp)
+        if error == noErr {
+            
+            FFT.instance.sampleRate = Float(sampleRate)
+            print("\nAU Device Sample Rate = \(sampleRate)")
+        }
         
         var newBufferSize: UInt32 = 2048
-        let error = AudioUnitSetProperty(au, kAudioDevicePropertyBufferFrameSize, kAudioUnitScope_Global, 0, &newBufferSize, UInt32(MemoryLayout<UInt32>.size))
+        error = AudioUnitSetProperty(au, kAudioDevicePropertyBufferFrameSize, kAudioUnitScope_Global, 0, &newBufferSize, UInt32(MemoryLayout<UInt32>.size))
         if error == noErr {
             
             self.bufferSize = Int(newBufferSize)
@@ -93,7 +93,10 @@ class Player: NSObject, AURenderCallbackDelegate {
             print("\nSUCCESS ! Set buffer size to \(newBufferSize)")
         }
         
+        print("\nDevice Sample Rate = \(audioEngine.outputNode.inputFormat(forBus: 0).sampleRate) \(audioEngine.outputNode.outputFormat(forBus: 0).sampleRate)")
+        
         playerNode.volume = 0.3
+        audioEngine.mainMixerNode.volume = 1
         playerNode.pan = 0
     }
     
@@ -110,8 +113,6 @@ class Player: NSObject, AURenderCallbackDelegate {
             
             audioEngine.prepare()
             
-            FFT.instance.sampleRate = Float(avFile!.processingFormat.sampleRate)
-            
             print("fFormat=" + (avFile?.fileFormat.description)!)
             print("pFormat=" + (avFile?.processingFormat.description)!)
             print("playerOutput=" + playerNode.outputFormat(forBus: 0).description)
@@ -122,7 +123,10 @@ class Player: NSObject, AURenderCallbackDelegate {
     }
     
     func performRender(inTimeStamp: AudioTimeStamp, inNumberFrames: UInt32, audioBuffer: AudioBufferList) {
-        outputRenderObserver?.performRender(inTimeStamp: inTimeStamp, inNumberFrames: inNumberFrames, audioBuffer: audioBuffer)
+        
+        DispatchQueue.global(qos: .userInteractive).async {
+            self.outputRenderObserver?.performRender(inTimeStamp: inTimeStamp, inNumberFrames: inNumberFrames, audioBuffer: audioBuffer)
+        }
     }
     
     // Resumes playback
