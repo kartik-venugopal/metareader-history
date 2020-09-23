@@ -29,6 +29,8 @@ class FrequencyData {
         return bands
     }()
     
+    static var peakBassMagnitude: Float = 0
+    
     static var bands: [Band] = []
     
 //    static let powers: [Int: Float] = [5: 32, 6: 64, 7: 128, 8: 256, 9: 512, 10: 1024, 11: 2048, 12: 4096, 13: 8192, 14: 16384]

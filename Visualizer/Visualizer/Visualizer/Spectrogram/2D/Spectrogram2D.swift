@@ -81,6 +81,7 @@ class Spectrogram2DBar: SKSpriteNode {
 //        super.init(texture: nil, color: colorForMagnitude, size: NSSize(width: 30, height: 240))
         
         self.yScale = 1
+        self.alpha = 0
         
         self.anchorPoint = NSPoint.zero
         self.position = position
@@ -90,7 +91,10 @@ class Spectrogram2DBar: SKSpriteNode {
         self.blendMode = .replace
         
         let partialTexture = SKTexture(rect: NSRect(x: 0, y: 0, width: 1, height: max(0.001, magnitude)), in: Self.gradientTexture)
-        run(SKAction.setTexture(partialTexture, resize: true))
+        let textureAction = SKAction.setTexture(partialTexture, resize: true)
+        let fadeInAction = SKAction.fadeIn(withDuration: 1)
+        
+        run(SKAction.sequence([textureAction, fadeInAction]))
     }
     
     required init?(coder aDecoder: NSCoder) {

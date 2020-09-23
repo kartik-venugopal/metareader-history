@@ -10,6 +10,8 @@ class BassBall2D: SKView, VisualizerViewProtocol {
     }
     
     var ball: SKShapeNode!
+    private var gradientImage: NSImage = NSImage(named: "BallTex")!
+    private lazy var gradientTexture = SKTexture(image: gradientImage)
     
     override func awakeFromNib() {
         
@@ -19,13 +21,22 @@ class BassBall2D: SKView, VisualizerViewProtocol {
         
         self.ball = SKShapeNode(circleOfRadius: 140)
         ball.position = NSPoint(x: 220, y: 160)
-        ball.fillColor = NSColor.green
+        ball.fillColor = NSColor.black
+        
+        ball.strokeTexture = gradientTexture
+        ball.strokeColor = startColor
+        ball.lineWidth = 10
+        ball.glowWidth = 25
+        ball.alpha = 0
+        
         ball.yScale = 1
         ball.blendMode = .replace
+        ball.isAntialiased = true
         
         scene.addChild(ball)
-        
         presentScene(scene)
+        
+        ball.run(SKAction.fadeIn(withDuration: 1))
     }
     
     var startColor: NSColor = .green
@@ -39,17 +50,11 @@ class BassBall2D: SKView, VisualizerViewProtocol {
     
     func update() {
         
-        let newScale = CGFloat(FrequencyData.fbands[1].maxVal).clamp(to: 0...1)
+        let peakMagnitude = CGFloat(FrequencyData.peakBassMagnitude.clamp(to: 0...1))
+
+        let newColor = startColor.interpolate(endColor, peakMagnitude)
+        ball.strokeColor = newColor
         
-        let newColor = startColor.interpolate(endColor, newScale)
-//        let colorAction: SKAction = SKAction.colorize(with: newColor, colorBlendFactor: 1, duration: 0)
-        ball.fillColor = newColor
-        
-        let scaleAction: SKAction = SKAction.scale(to: newScale, duration: 0)
-//        let newPos: NSPoint = NSPoint(x: 220 - newRadius, y: 160 - newRadius)
-//        let moveAction: SKAction = SKAction.move(to: newPos, duration: 0)
-        
-//        let sequence = SKAction.sequence([colorAction, scaleAction])
-        ball.run(scaleAction)
+        ball.run(SKAction.scale(to: peakMagnitude, duration: 0.05))
     }
 }

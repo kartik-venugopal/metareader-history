@@ -120,28 +120,12 @@ class FFT {
         vDSP_vdbcon(&magnitudes, 1, &zeroDBReference, normalizedMagnitudes, 1, halfBufferSize_UInt, 1)
         vDSP_vsmul(normalizedMagnitudes, 1, vsMulScalar, normalizedMagnitudes, 1, halfBufferSize_UInt)
         
-        let st = CFAbsoluteTimeGetCurrent()
-//        FrequencyData.update(frequencies: frequencies, magnitudes: normalizedMagnitudes)
-        
         for band in FrequencyData.fbands {
-//            var val: Float = 0
-//            vDSP_maxv(normalizedMagnitudes.advanced(by: band.minIndex), 1, &val, band.indexCount)
             vDSP_maxv(normalizedMagnitudes.advanced(by: band.minIndex), 1, &band.maxVal, band.indexCount)
         }
-        
-        let end = CFAbsoluteTimeGetCurrent()
-        
-        let time = (end - st) * 1000
-        tm += time
-        cnt += 1
-        
-        if cnt == 500 {
-            
-            let avg = tm / 500.0
-            print("\nAvg FData() time: \(avg)")
-        }
-        
-//        return data
+
+        // Bass bands peak
+        vDSP_maxv((0...1).map {FrequencyData.fbands[$0].maxVal}, 1, &FrequencyData.peakBassMagnitude, 2)
     }
     
     deinit {

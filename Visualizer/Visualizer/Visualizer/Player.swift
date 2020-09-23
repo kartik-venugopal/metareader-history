@@ -95,7 +95,7 @@ class Player: NSObject, AURenderCallbackDelegate {
         
         print("\nDevice Sample Rate = \(audioEngine.outputNode.inputFormat(forBus: 0).sampleRate) \(audioEngine.outputNode.outputFormat(forBus: 0).sampleRate)")
         
-        playerNode.volume = 0.3
+        playerNode.volume = 1
         audioEngine.mainMixerNode.volume = 1
         playerNode.pan = 0
     }
