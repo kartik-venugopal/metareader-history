@@ -5,16 +5,6 @@ class Spectrogram2D: SKView, VisualizerViewProtocol {
     var data: FrequencyData!
     let magnitudeRange: ClosedRange<Float> = 0...1
     
-    func update(with data: FrequencyData) {
-        
-        self.data = data
-//        data.magnitudes = data.magnitudes.map {(mag: Float) -> Float in mag.clamp(to: magnitudeRange)}
-        
-        DispatchQueue.main.async {
-            self.update()
-        }
-    }
-    
     var bars: [Spectrogram2DBar] = []
     
     override func awakeFromNib() {
@@ -67,7 +57,7 @@ class Spectrogram2DBar: SKSpriteNode {
 //            self.yScale = max(magnitude, 0.01)
 //            run(SKAction.colorize(with: Self.startColor.interpolate(Self.endColor, magnitude),
 //                              colorBlendFactor: 1, duration: 0))
-            let partialTexture = SKTexture(rect: NSRect(x: 0, y: 0, width: 1, height: max(0.001, magnitude)), in: Self.gradientTexture)
+            let partialTexture = SKTexture(rect: NSRect(x: 0, y: 0, width: 1, height: max(0.05, magnitude)), in: Self.gradientTexture)
             run(SKAction.setTexture(partialTexture, resize: true))
         }
     }
@@ -86,11 +76,9 @@ class Spectrogram2DBar: SKSpriteNode {
         self.anchorPoint = NSPoint.zero
         self.position = position
         
-        print("\nSize for bar: \(size)")
-        
         self.blendMode = .replace
         
-        let partialTexture = SKTexture(rect: NSRect(x: 0, y: 0, width: 1, height: max(0.001, magnitude)), in: Self.gradientTexture)
+        let partialTexture = SKTexture(rect: NSRect(x: 0, y: 0, width: 1, height: max(0.05, magnitude)), in: Self.gradientTexture)
         let textureAction = SKAction.setTexture(partialTexture, resize: true)
         let fadeInAction = SKAction.fadeIn(withDuration: 1)
         

@@ -5,16 +5,6 @@ class Spectrogram3D: SCNView, VisualizerViewProtocol {
     var data: FrequencyData!
     let magnitudeRange: ClosedRange<Float> = 0...1
     
-    func update(with data: FrequencyData) {
-        
-        self.data = data
-//        data.magnitudes = data.magnitudes.map {(mag: Float) -> Float in mag.clamp(to: magnitudeRange)}
-        
-        DispatchQueue.main.async {
-            self.update()
-        }
-    }
-    
     var bars: [SpectrogramBar] = []
     
     var floorNode: SCNNode!

@@ -18,9 +18,9 @@ class Supernova: SKView, VisualizerViewProtocol {
         
         ring.strokeTexture = gradientTexture
         ring.strokeColor = startColor
-        ring.lineWidth = 100
+        ring.lineWidth = 75
         ring.glowWidth = 50
-//        ring.alpha = 0
+        ring.alpha = 0
 
         ring.yScale = 1
         ring.blendMode = .replace
@@ -29,7 +29,7 @@ class Supernova: SKView, VisualizerViewProtocol {
         scene.addChild(ring)
         presentScene(scene)
         
-//        ring.run(SKAction.fadeIn(withDuration: 1))
+        ring.run(SKAction.fadeIn(withDuration: 1))
     }
     
     var startColor: NSColor = .green
@@ -41,17 +41,12 @@ class Supernova: SKView, VisualizerViewProtocol {
         self.endColor = endColor
     }
     
-    var rotation: CGFloat = 0
-    
     func update() {
         
         let peakMagnitude = CGFloat(FrequencyData.peakBassMagnitude.clamp(to: 0...1))
 
         let newColor = startColor.interpolate(endColor, peakMagnitude)
         ring.strokeColor = newColor
-        
-        rotation -= peakMagnitude * 2
-        ring.zRotation = rotation * CGFloat.pi / 180.0
         
         ring.run(SKAction.scale(to: peakMagnitude, duration: 0.05))
     }

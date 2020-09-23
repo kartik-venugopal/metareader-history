@@ -58,18 +58,6 @@ class Spectrogram: NSView, VisualizerViewProtocol {
     let viewRect = NSRect(x: 0, y: 0, width: 512, height: 308)
     let bottomRect = NSRect(x: CGFloat(0), y: CGFloat(0), width: 512, height: CGFloat(4))
     
-    func update(with data: FrequencyData) {
-        
-        self.data = data
-        
-        DispatchQueue.main.async {
-            self.setNeedsDisplay(self.bounds)
-        }
-        
-        //        Swift.print("Data: ", data.bandMags)
-        //        Swift.print("Data:", data.frequencies.count, data.magnitudes.count)
-    }
-    
     func update() {}
     
     override func draw(_ dirtyRect: NSRect) {
