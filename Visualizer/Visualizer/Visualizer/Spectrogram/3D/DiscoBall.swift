@@ -53,6 +53,17 @@ class DiscoBall: SCNView, VisualizerViewProtocol {
         allowsCameraControl = true
         autoenablesDefaultLighting = false
         showsStatistics = false
+        
+        for level in 0...10 {
+            textureCache.append(gradientImage.tinting(startColor.interpolate(endColor, CGFloat(level) * 0.1)))
+        }
+    }
+    
+    func updateTextureCache() {
+        
+        for level in 0...10 {
+            textureCache[level] = gradientImage.tinting(startColor.interpolate(endColor, CGFloat(level) * 0.1))
+        }
     }
     
     override func viewDidUnhide() {
@@ -62,6 +73,9 @@ class DiscoBall: SCNView, VisualizerViewProtocol {
     var startColor: NSColor = .green
     var endColor: NSColor = .red
     var rotation: CGFloat = 0
+    
+    // 11 images (11 levels of interpolation)
+    var textureCache: [NSImage] = []
     
     func update() {
         
@@ -73,7 +87,8 @@ class DiscoBall: SCNView, VisualizerViewProtocol {
         ball.radius = 1 + (mag / 4.0)
         node.position = SCNVector3(1, 2, 1)
         
-        ball.firstMaterial?.diffuse.contents = gradientImage.tinting(startColor.interpolate(endColor, mag))
+        let interpolationLevel: Int = min(Int(round(mag * 10.0)), 10)
+        ball.firstMaterial?.diffuse.contents = textureCache[interpolationLevel]
         
         rotation += mag * 5
         node.rotation = SCNVector4Make(0, 1, 0, rotation * CGFloat.pi / 180.0)
@@ -85,5 +100,7 @@ class DiscoBall: SCNView, VisualizerViewProtocol {
         
         self.startColor = startColor
         self.endColor = endColor
+        
+        updateTextureCache()
     }
 }
