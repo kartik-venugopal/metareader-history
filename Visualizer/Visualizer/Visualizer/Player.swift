@@ -78,9 +78,7 @@ class Player: NSObject, AURenderCallbackDelegate {
         var sizeOfProp: UInt32 = UInt32(MemoryLayout<Double>.size)
         var error = AudioUnitGetProperty(au, kAudioDevicePropertyActualSampleRate, kAudioUnitScope_Global, 0, &sampleRate, &sizeOfProp)
         if error == noErr {
-            
-            FFT.instance.sampleRate = Float(sampleRate)
-            print("\nAU Device Sample Rate = \(sampleRate)")
+//            FFT.instance.sampleRate = Float(sampleRate)
         }
         
         var newBufferSize: UInt32 = 2048
@@ -88,14 +86,10 @@ class Player: NSObject, AURenderCallbackDelegate {
         if error == noErr {
             
             self.bufferSize = Int(newBufferSize)
-            FFT.instance.bufferSize = self.bufferSize
-            
-            print("\nSUCCESS ! Set buffer size to \(newBufferSize)")
+            FFT.instance.setUp(sampleRate: Float(sampleRate), bufferSize: self.bufferSize)
         }
         
-        print("\nDevice Sample Rate = \(audioEngine.outputNode.inputFormat(forBus: 0).sampleRate) \(audioEngine.outputNode.outputFormat(forBus: 0).sampleRate)")
-        
-        playerNode.volume = 0.7
+        playerNode.volume = 0.5
         audioEngine.mainMixerNode.volume = 1
         playerNode.pan = 0
     }
@@ -113,10 +107,6 @@ class Player: NSObject, AURenderCallbackDelegate {
             
             audioEngine.prepare()
             
-            print("fFormat=" + (avFile?.fileFormat.description)!)
-            print("pFormat=" + (avFile?.processingFormat.description)!)
-            print("playerOutput=" + playerNode.outputFormat(forBus: 0).description)
-            
         } catch let error as NSError {
             print("Error reading track: " + file.path + ", error=" + error.description)
         }
@@ -132,8 +122,6 @@ class Player: NSObject, AURenderCallbackDelegate {
     // Resumes playback
     func play() {
         
-        // NOTE - Beware of closures - memory leaks)
-//        (avFile!, atTime: nil, completionHandler: nil)
         playerNode.scheduleFile(avFile!, at: nil, completionHandler: nil)
         
         do {
@@ -162,8 +150,8 @@ class Player: NSObject, AURenderCallbackDelegate {
         
         duration = 392
         
-        let nodetime: AVAudioTime  = playerNode.lastRenderTime!
-        let playerTime: AVAudioTime = playerNode.playerTime(forNodeTime: nodetime)!
+//        let nodetime: AVAudioTime  = playerNode.lastRenderTime!
+//        let playerTime: AVAudioTime = playerNode.playerTime(forNodeTime: nodetime)!
 //        let sampleRate2 = playerTime.sampleRate
         
         let sampleRate = avFile!.processingFormat.sampleRate
@@ -229,9 +217,9 @@ class Player: NSObject, AURenderCallbackDelegate {
             let playerTime: AVAudioTime? = playerNode.playerTime(forNodeTime: nodeTime!)
             if (playerTime != nil ) {
                 //                print("playerSampleRate=" + String(playerTime!.sampleRate))
-                let t1 = playerNode.lastRenderTime!.sampleTime
+//                let t1 = playerNode.lastRenderTime!.sampleTime
                 let t2 = Double((playerTime?.sampleTime)!)
-                let s = Int(t2 / (playerTime?.sampleRate)!)
+//                let s = Int(t2 / (playerTime?.sampleRate)!)
                 
                 return Double(t2)
             }

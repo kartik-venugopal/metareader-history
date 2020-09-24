@@ -7,6 +7,33 @@ class Spectrogram2D: SKView, VisualizerViewProtocol {
     
     var bars: [Spectrogram2DBar] = []
     
+    var xMargin: CGFloat = 25
+    var yMargin: CGFloat = 20
+    
+    var spacing: CGFloat = 10
+    
+    var numberOfBands: Int = 10 {
+        
+        didSet {
+            
+            Spectrogram2DBar.numberOfBands = numberOfBands
+            spacing = numberOfBands == 10 ? 10 : 2
+            
+            self.isPaused = true
+            bars.removeAll()
+            scene?.removeAllChildren()
+            
+            for i in 0..<numberOfBands {
+            
+                let bar = Spectrogram2DBar(position: NSPoint(x: (CGFloat(i) * (Spectrogram2DBar.barWidth + spacing)) + xMargin, y: yMargin))
+                bars.append(bar)
+                scene?.addChild(bar)
+            }
+            
+            self.isPaused = false
+        }
+    }
+    
     override func awakeFromNib() {
         
         AppDelegate.play = true
@@ -14,18 +41,11 @@ class Spectrogram2D: SKView, VisualizerViewProtocol {
         let scene = SKScene(size: self.bounds.size)
         scene.anchorPoint = CGPoint(x: 0, y: 0)
         scene.backgroundColor = NSColor.black
-        
-        for i in 0..<10 {
-        
-            let bar = Spectrogram2DBar(position: NSPoint(x: i * 40 + 25, y: 20))
-            bars.append(bar)
-            scene.addChild(bar)
-        }
-        
         presentScene(scene)
+        
+        numberOfBands = 10
     }
     
-    // TODO
     func setColors(startColor: NSColor, endColor: NSColor) {
         
         Spectrogram2DBar.setColors(startColor: startColor, endColor: endColor)
@@ -36,8 +56,8 @@ class Spectrogram2D: SKView, VisualizerViewProtocol {
     
     func update() {
         
-        for i in 0..<10 {
-            bars[i].magnitude = CGFloat(FrequencyData.fbands[i].maxVal).clamp(to: 0...1)
+        for i in 0..<numberOfBands {
+            bars[i].magnitude = CGFloat(FrequencyData.bands[i].maxVal).clamp(to: 0...1)
         }
     }
 }
@@ -47,7 +67,27 @@ class Spectrogram2DBar: SKSpriteNode {
     static var startColor: NSColor = .green
     static var endColor: NSColor = .red
     
-    private static var gradientImage: NSImage = NSImage(named: "Sp-Gradient-Narrow")!
+    static var barWidth: CGFloat = 30
+    
+    static var numberOfBands: Int = 10 {
+        
+        didSet {
+            
+            gradientImage = numberOfBands == 10 ? gradientImage_10Band : gradientImage_31Band
+            barWidth = numberOfBands == 10 ? 30 : 10
+        }
+    }
+    
+    private static var gradientImage_10Band: NSImage = NSImage(named: "Sp-Gradient-10Band")!
+    private static var gradientImage_31Band: NSImage = NSImage(named: "Sp-Gradient-31Band")!
+    
+    private static var gradientImage: NSImage = gradientImage_10Band {
+        
+        didSet {
+            gradientTexture = SKTexture(image: gradientImage)
+        }
+    }
+    
     private static var gradientTexture = SKTexture(image: gradientImage)
     
     var magnitude: CGFloat {
@@ -57,7 +97,7 @@ class Spectrogram2DBar: SKSpriteNode {
 //            self.yScale = max(magnitude, 0.01)
 //            run(SKAction.colorize(with: Self.startColor.interpolate(Self.endColor, magnitude),
 //                              colorBlendFactor: 1, duration: 0))
-            let partialTexture = SKTexture(rect: NSRect(x: 0, y: 0, width: 1, height: max(0.05, magnitude)), in: Self.gradientTexture)
+            let partialTexture = SKTexture(rect: NSRect(x: 0, y: 0, width: 1, height: max(0.01, magnitude)), in: Self.gradientTexture)
             run(SKAction.setTexture(partialTexture, resize: true))
         }
     }
@@ -72,13 +112,13 @@ class Spectrogram2DBar: SKSpriteNode {
         
         self.yScale = 1
         self.alpha = 0
-        
+
         self.anchorPoint = NSPoint.zero
         self.position = position
         
         self.blendMode = .replace
         
-        let partialTexture = SKTexture(rect: NSRect(x: 0, y: 0, width: 1, height: max(0.05, magnitude)), in: Self.gradientTexture)
+        let partialTexture = SKTexture(rect: NSRect(x: 0, y: 0, width: 1, height: max(0.01, magnitude)), in: Self.gradientTexture)
         let textureAction = SKAction.setTexture(partialTexture, resize: true)
         let fadeInAction = SKAction.fadeIn(withDuration: 1)
         

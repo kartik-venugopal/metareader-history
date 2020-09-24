@@ -90,8 +90,10 @@ class DiscoBall: SCNView, VisualizerViewProtocol {
         let interpolationLevel: Int = min(Int(round(mag * 10.0)), 10)
         ball.firstMaterial?.diffuse.contents = textureCache[interpolationLevel]
         
+        if mag > 0.3 {
         rotation += mag * 5
         node.rotation = SCNVector4Make(0, 1, 0, rotation * CGFloat.pi / 180.0)
+        }
         
         SCNTransaction.commit()
     }

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3E26E7B92517B231007A9757 /* SpectrogramBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E26E7B82517B231007A9757 /* SpectrogramBar.swift */; };
+		3E26E7B92517B231007A9757 /* Spectrogram3DBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E26E7B82517B231007A9757 /* Spectrogram3DBar.swift */; };
 		3E410B7F25167F0800BCBF57 /* Spectrogram3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E410B7E25167F0800BCBF57 /* Spectrogram3D.swift */; };
 		3E5E408A251A91D0000E40EA /* Supernova.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5E4089251A91D0000E40EA /* Supernova.swift */; };
 		3E7728F2251B2E930024607F /* DiscoBall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7728F1251B2E930024607F /* DiscoBall.swift */; };
@@ -19,7 +19,6 @@
 		3EF18450217C78C500D24F39 /* VisualizerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF1844F217C78C500D24F39 /* VisualizerUITests.swift */; };
 		3EF1846C217C8C3B00D24F39 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF18466217C8C3B00D24F39 /* Player.swift */; };
 		3EF1846E217C8C3B00D24F39 /* FrequencyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF18468217C8C3B00D24F39 /* FrequencyData.swift */; };
-		3EF18470217C8C3B00D24F39 /* Spectrogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF1846A217C8C3B00D24F39 /* Spectrogram.swift */; };
 		3EF18473217C8C6300D24F39 /* FFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF18472217C8C6300D24F39 /* FFT.swift */; };
 		3EF27BDF2517C8840068E566 /* Spectrogram2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF27BDE2517C8840068E566 /* Spectrogram2D.swift */; };
 		3EF635792517C04E00AC8314 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF635782517C04E00AC8314 /* Utils.swift */; };
@@ -43,7 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3E26E7B82517B231007A9757 /* SpectrogramBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrogramBar.swift; sourceTree = "<group>"; };
+		3E26E7B82517B231007A9757 /* Spectrogram3DBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spectrogram3DBar.swift; sourceTree = "<group>"; };
 		3E410B7E25167F0800BCBF57 /* Spectrogram3D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spectrogram3D.swift; sourceTree = "<group>"; };
 		3E5E4089251A91D0000E40EA /* Supernova.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Supernova.swift; sourceTree = "<group>"; };
 		3E7728F1251B2E930024607F /* DiscoBall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoBall.swift; sourceTree = "<group>"; };
@@ -62,7 +61,6 @@
 		3EF18451217C78C500D24F39 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3EF18466217C8C3B00D24F39 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		3EF18468217C8C3B00D24F39 /* FrequencyData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrequencyData.swift; sourceTree = "<group>"; };
-		3EF1846A217C8C3B00D24F39 /* Spectrogram.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spectrogram.swift; sourceTree = "<group>"; };
 		3EF18472217C8C6300D24F39 /* FFT.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FFT.swift; sourceTree = "<group>"; };
 		3EF27BDE2517C8840068E566 /* Spectrogram2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spectrogram2D.swift; sourceTree = "<group>"; };
 		3EF635782517C04E00AC8314 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
@@ -93,20 +91,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3E26E7B72517B0E0007A9757 /* Spectrogram */ = {
+		3E26E7B72517B0E0007A9757 /* VisualizationViews */ = {
 			isa = PBXGroup;
 			children = (
-				3EF6357A2517C64A00AC8314 /* 2D */,
-				3EF6357B2517C65100AC8314 /* 3D */,
+				3EF27BDE2517C8840068E566 /* Spectrogram2D.swift */,
+				3E410B7E25167F0800BCBF57 /* Spectrogram3D.swift */,
+				3E26E7B82517B231007A9757 /* Spectrogram3DBar.swift */,
+				3E5E4089251A91D0000E40EA /* Supernova.swift */,
+				3E7728F1251B2E930024607F /* DiscoBall.swift */,
 			);
-			path = Spectrogram;
+			path = VisualizationViews;
 			sourceTree = "<group>";
 		};
-		3E9714272518C93F00765797 /* BassBall */ = {
+		3EB4B671251B8FA000E3511F /* Spectrogram3D */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = BassBall;
+			path = Spectrogram3D;
 			sourceTree = "<group>";
 		};
 		3EF18427217C78C400D24F39 = {
@@ -132,13 +133,13 @@
 		3EF18432217C78C400D24F39 /* Visualizer */ = {
 			isa = PBXGroup;
 			children = (
+				3EB4B671251B8FA000E3511F /* Spectrogram3D */,
 				3EF18437217C78C500D24F39 /* MainMenu.xib */,
 				3EF18433217C78C400D24F39 /* AppDelegate.swift */,
 				3E82035B2516050400A1C6E1 /* Visualizer.swift */,
 				3EF18472217C8C6300D24F39 /* FFT.swift */,
 				3EF18468217C8C3B00D24F39 /* FrequencyData.swift */,
-				3E26E7B72517B0E0007A9757 /* Spectrogram */,
-				3E9714272518C93F00765797 /* BassBall */,
+				3E26E7B72517B0E0007A9757 /* VisualizationViews */,
 				3EF18466217C8C3B00D24F39 /* Player.swift */,
 				3EF635782517C04E00AC8314 /* Utils.swift */,
 				3EF18435217C78C500D24F39 /* Assets.xcassets */,
@@ -164,26 +165,6 @@
 				3EF18451217C78C500D24F39 /* Info.plist */,
 			);
 			path = VisualizerUITests;
-			sourceTree = "<group>";
-		};
-		3EF6357A2517C64A00AC8314 /* 2D */ = {
-			isa = PBXGroup;
-			children = (
-				3EF27BDE2517C8840068E566 /* Spectrogram2D.swift */,
-				3E5E4089251A91D0000E40EA /* Supernova.swift */,
-				3EF1846A217C8C3B00D24F39 /* Spectrogram.swift */,
-			);
-			path = 2D;
-			sourceTree = "<group>";
-		};
-		3EF6357B2517C65100AC8314 /* 3D */ = {
-			isa = PBXGroup;
-			children = (
-				3E410B7E25167F0800BCBF57 /* Spectrogram3D.swift */,
-				3E26E7B82517B231007A9757 /* SpectrogramBar.swift */,
-				3E7728F1251B2E930024607F /* DiscoBall.swift */,
-			);
-			path = 3D;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -320,9 +301,8 @@
 				3E82035C2516050400A1C6E1 /* Visualizer.swift in Sources */,
 				3EF635792517C04E00AC8314 /* Utils.swift in Sources */,
 				3E5E408A251A91D0000E40EA /* Supernova.swift in Sources */,
-				3EF18470217C8C3B00D24F39 /* Spectrogram.swift in Sources */,
 				3EF27BDF2517C8840068E566 /* Spectrogram2D.swift in Sources */,
-				3E26E7B92517B231007A9757 /* SpectrogramBar.swift in Sources */,
+				3E26E7B92517B231007A9757 /* Spectrogram3DBar.swift in Sources */,
 				3E7728F2251B2E930024607F /* DiscoBall.swift in Sources */,
 				3EF18473217C8C6300D24F39 /* FFT.swift in Sources */,
 				3EF1846E217C8C3B00D24F39 /* FrequencyData.swift in Sources */,
@@ -425,7 +405,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -480,7 +460,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -501,7 +481,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = anon.Visualizer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -520,7 +500,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = anon.Visualizer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;

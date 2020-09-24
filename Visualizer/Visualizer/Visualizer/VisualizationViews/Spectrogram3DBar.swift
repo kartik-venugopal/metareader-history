@@ -1,6 +1,6 @@
 import SceneKit
 
-class SpectrogramBar {
+class Spectrogram3DBar {
     
     static var startColor: NSColor = .green
     static var endColor: NSColor = .red

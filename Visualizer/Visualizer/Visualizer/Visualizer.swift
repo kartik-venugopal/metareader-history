@@ -31,6 +31,9 @@ class Visualizer: NSObject, PlayerOutputRenderObserver, NSMenuDelegate {
     
     override func awakeFromNib() {
         
+        vizView = spectrogram2D
+        spectrogram2D.show()
+        
         spectrogram2DMenuItem.representedObject = VisualizationType.spectrogram2D
         spectrogram3DMenuItem.representedObject = VisualizationType.spectrogram3D
         supernovaMenuItem.representedObject = VisualizationType.supernova
@@ -82,9 +85,23 @@ class Visualizer: NSObject, PlayerOutputRenderObserver, NSMenuDelegate {
         }
     }
     
+    @IBAction func changeNumberOfBandsAction(_ sender: NSPopUpButton) {
+        
+        let numBands = sender.selectedTag()
+        
+        if numBands > 0 {
+            FrequencyData.numBands = numBands
+            spectrogram2D.numberOfBands = numBands
+        }
+    }
+    
     func performRender(inTimeStamp: AudioTimeStamp, inNumberFrames: UInt32, audioBuffer: AudioBufferList) {
             
         fft.analyze(audioBuffer)
+        
+//        if FrequencyData.numBands != 10 {
+//            NSLog("Bands: \(FrequencyData.bands.map {$0.maxVal})")
+//        }
 
         DispatchQueue.main.async {
             self.vizView?.update()
@@ -93,9 +110,13 @@ class Visualizer: NSObject, PlayerOutputRenderObserver, NSMenuDelegate {
     
     @IBAction func setColorsAction(_ sender: NSColorWell) {
         
+        vizView.setColors(startColor: self.startColorPicker.color, endColor: self.endColorPicker.color)
+        
         [spectrogram2D, spectrogram3D, supernova, discoBall].forEach {
             
-            ($0 as? VisualizerViewProtocol)?.setColors(startColor: self.startColorPicker.color, endColor: self.endColorPicker.color)
+            if $0 !== (vizView as! NSView) {
+                ($0 as? VisualizerViewProtocol)?.setColors(startColor: self.startColorPicker.color, endColor: self.endColorPicker.color)
+            }
         }
     }
 }

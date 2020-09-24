@@ -5,7 +5,7 @@ class Spectrogram3D: SCNView, VisualizerViewProtocol {
     var data: FrequencyData!
     let magnitudeRange: ClosedRange<Float> = 0...1
     
-    var bars: [SpectrogramBar] = []
+    var bars: [Spectrogram3DBar] = []
     
     var floorNode: SCNNode!
     var floor: SCNFloor!
@@ -15,7 +15,7 @@ class Spectrogram3D: SCNView, VisualizerViewProtocol {
     let maxBarHt: CGFloat = 3.6
     let barThickness: CGFloat = 0.25
     
-    var gradientImage: NSImage = NSImage(named: "Sp-Gradient")!
+    var gradientImage: NSImage = NSImage(named: "Sp-Gradient-10Band")!
     
     private var startColor: NSColor = .green
     private var endColor: NSColor = .red
@@ -34,7 +34,7 @@ class Spectrogram3D: SCNView, VisualizerViewProtocol {
             
             let magnitude: CGFloat = CGFloat(i + 1) * 0.1
             
-            let bar = SpectrogramBar(position: SCNVector3(CGFloat(i * 2) * barThickness, 0, 0),
+            let bar = Spectrogram3DBar(position: SCNVector3(CGFloat(i * 2) * barThickness, 0, 0),
                                      magnitude: magnitude,
                                      thickness: barThickness,
                                      gradientImage: gradientImage)
@@ -69,7 +69,7 @@ class Spectrogram3D: SCNView, VisualizerViewProtocol {
         SCNTransaction.animationDuration = 0
         
         for i in 0..<10 {
-            bars[i].magnitude = CGFloat(FrequencyData.fbands[i].maxVal)
+            bars[i].magnitude = CGFloat(FrequencyData.bands[i].maxVal)
         }
             
         SCNTransaction.commit()
@@ -80,8 +80,8 @@ class Spectrogram3D: SCNView, VisualizerViewProtocol {
         self.startColor = startColor
         self.endColor = endColor
         
-        SpectrogramBar.startColor = startColor
-        SpectrogramBar.endColor = endColor
+        Spectrogram3DBar.startColor = startColor
+        Spectrogram3DBar.endColor = endColor
         
         gradientImage = NSImage(gradientColors: [startColor, endColor], imageSize: gradientImage.size)
         bars.forEach {$0.gradientImage = gradientImage}

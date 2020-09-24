@@ -44,10 +44,7 @@ class Supernova: SKView, VisualizerViewProtocol {
     func update() {
         
         let peakMagnitude = CGFloat(FrequencyData.peakBassMagnitude.clamp(to: 0...1))
-
-        let newColor = startColor.interpolate(endColor, peakMagnitude)
-        ring.strokeColor = newColor
-        
+        ring.strokeColor = startColor.interpolate(endColor, peakMagnitude)
         ring.run(SKAction.scale(to: peakMagnitude, duration: 0.05))
     }
 }
